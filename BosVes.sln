@@ -1,0 +1,36 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.10.34928.147
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BosVesUI", "BosVesUI\BosVesUI.csproj", "{492C2573-C1D1-4655-9120-7DD41607C25D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BosVesAppLibrary", "BosVesAppLibrary\BosVesAppLibrary.csproj", "{B7621AA3-F92B-403C-8D24-DDC8A6DE3EAF}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{10F033BA-FFE5-440C-A5A1-4F28208003E0}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{492C2573-C1D1-4655-9120-7DD41607C25D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{492C2573-C1D1-4655-9120-7DD41607C25D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{492C2573-C1D1-4655-9120-7DD41607C25D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{492C2573-C1D1-4655-9120-7DD41607C25D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B7621AA3-F92B-403C-8D24-DDC8A6DE3EAF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B7621AA3-F92B-403C-8D24-DDC8A6DE3EAF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B7621AA3-F92B-403C-8D24-DDC8A6DE3EAF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B7621AA3-F92B-403C-8D24-DDC8A6DE3EAF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {079CB9D2-24E5-4018-870C-E696188F3B17}
+	EndGlobalSection
+EndGlobal
