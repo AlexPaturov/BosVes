@@ -12,4 +12,8 @@
     <Folder Include="wwwroot\images\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\BosVesAppLibrary\BosVesAppLibrary.csproj" />
+  </ItemGroup>
+
 </Project>
