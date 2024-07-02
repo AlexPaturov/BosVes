@@ -1,7 +1,7 @@
 ﻿// Справочник цехов
 namespace BosVesAppLibrary.Models
 {
-    public class Kcex_gdModel
+    public class KcexGdModel
     {
         public Int16 CEX { get; set; }
 

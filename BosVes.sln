@@ -1,11 +1,11 @@
-﻿
+
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.10.34928.147
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BosVesUI", "BosVesUI\BosVesUI.csproj", "{492C2573-C1D1-4655-9120-7DD41607C25D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BosVesUI", "BosVesUI\BosVesUI.csproj", "{492C2573-C1D1-4655-9120-7DD41607C25D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BosVesAppLibrary", "BosVesAppLibrary\BosVesAppLibrary.csproj", "{B7621AA3-F92B-403C-8D24-DDC8A6DE3EAF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BosVesAppLibrary", "BosVesAppLibrary\BosVesAppLibrary.csproj", "{B7621AA3-F92B-403C-8D24-DDC8A6DE3EAF}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{10F033BA-FFE5-440C-A5A1-4F28208003E0}"
 	ProjectSection(SolutionItems) = preProject

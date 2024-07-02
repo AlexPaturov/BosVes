@@ -1,7 +1,7 @@
 ﻿// Вагоны из централизованной системы весоизмерения
 namespace BosVesAppLibrary.Models
 {
-    public class Vik_vagsModel
+    public class VikVagModel
     {
         public int id { get; set; }                         // Идентификатор вагона
         public string vikno { get; set; }                   // Номер весов

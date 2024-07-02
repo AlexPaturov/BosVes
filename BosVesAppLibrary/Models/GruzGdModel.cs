@@ -1,7 +1,7 @@
 ﻿// Справочник Ж.Д. грузов
 namespace BosVesAppLibrary.Models
 {
-    public class Gruz_gdModel
+    public class GruzGdModel
     {
         public string GRUZIK { get; set; }
         public string KOD_SAP { get; set; }

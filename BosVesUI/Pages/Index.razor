@@ -1,7 +1,63 @@
 ﻿@page "/"
+@using BosVesAppLibrary.Models
+@inject BosVesAppLibrary.DataAccess.GruzGdData gruzgddata
+
 
 <PageTitle>Index</PageTitle>
 
 <h1>Hello, world!</h1>
 
-Welcome to your new app.
+<div class="row">
+    <div class="col text-center">
+        <h2>Show All</h2>
+
+        @if (gruzes == null)
+        {
+            <p><em>Loading...</em></p>
+        }
+        else
+        {
+            <div>
+                @foreach (var gruz in gruzes)
+                {
+                    <div>
+                        <span>Gruz: @gruz.GRUZIK</span>
+                        <span>kod_sap: @gruz.KOD_SAP</span>
+                        <span>NAME_OZM: @gruz.NAME_OZM</span>
+                        <span>NAME_SAP: @gruz.NAME_SAP</span>
+                    </div>
+
+                }
+            </div>
+        }
+    </div>
+</div>
+
+
+
+
+@code {
+    private List<GruzGdModel> gruzes { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        gruzes = (List<GruzGdModel>)await gruzgddata.GetAll();
+    }
+}
+@* @code{
+    private List<GruzGdModel> gruzes { get; set; }
+
+    protected async override Task OnInitializedAsync()
+    {
+        gruzes = new List<GruzGdModel>()
+        {
+            new GruzGdModel()
+            { GRUZIK = "gr1", KOD_SAP = "9", NAME_OZM="0", NAME_SAP="zzz" },
+
+            new GruzGdModel()
+            { GRUZIK = "Lom stalnoy", KOD_SAP = "03409340", NAME_OZM="0", NAME_SAP="uwyweh" }
+
+        };
+
+    }
+} *@

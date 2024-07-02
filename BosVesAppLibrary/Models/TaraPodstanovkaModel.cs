@@ -2,7 +2,7 @@
 
 namespace BosVesAppLibrary.Models
 {
-    public class ContainerSubstitutionModel
+    public class TaraPodstanovkaModel
     {
         public DateTime DT { get; set; }                // дата взвешивания состава
         public DateTime VR { get; set; }                // время взвешивания состава
