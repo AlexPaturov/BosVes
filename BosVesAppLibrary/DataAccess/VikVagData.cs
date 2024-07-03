@@ -2,7 +2,6 @@
 using FirebirdSql.Data.FirebirdClient;
 using Microsoft.Extensions.Options;
 using System.Data;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace BosVesAppLibrary.DataAccess;
 public class VikVagData

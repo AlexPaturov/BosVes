@@ -40,7 +40,5 @@ namespace BosVesAppLibrary.Models
         public string PLATFORMS_BRUTTO { get; set; }    // комбинация включённых платформ при взвешивании
         public int ID { get; }                          // уникальный идентификатор записи
         public int ID_PLATFORMS { get; set; }           // id записи, которая была взята для подставления тары
-        public DateTime WHEN_INSERT { get; set; }
-        public DateTime WHEN_UPDATE { get; set; }
     }
 }
