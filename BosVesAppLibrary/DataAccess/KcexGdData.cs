@@ -48,10 +48,9 @@ public class KcexGdData
    }
 
    // сделать класс - справочник
-   public async Task<IEnumerable<KcexGdModel>> GetNumByCex(string cexName) 
-   { 
-      
-   }
+   //public async Task<IEnumerable<KcexGdModel>> GetNumByCex(string cexName) 
+   //{ 
+   //}
    //public List<Kcex_gd> GetCexByNum(string cexNum);
 
 }

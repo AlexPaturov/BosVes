@@ -32,4 +32,15 @@ public class TaraPodstanovkaData
       }
    }
 
+   // В зависимости от номера весов будут меняться правила для выборки списка вагонов
+   // подходящих под ограничивающие условия для данных весов.
+   private string GetQuery(DateTime begin, DateTime end, string vagnom, string vikno) 
+   {
+      return "";
+   }
+
+   private string GetParameters(DateTime begin, DateTime end, string vagnom, string vikno)
+   {
+      return "";
+   }
 }
