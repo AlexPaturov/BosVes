@@ -12,6 +12,6 @@ namespace BosVesAppLibrary.Models
         public decimal NETTO { get; set; }              // нетто фактическое
         public Int16 VESY { get; set; }                 // номер весов
         public int ID { get; }                          // уникальный идентификатор записи
-
-    }
+                                                        //  
+   }
 }
