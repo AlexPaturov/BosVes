@@ -1,0 +1,143 @@
+﻿@page "/SampleData"
+@inject GruzGdData gruzgddata
+@inject NavigationManager navManager
+
+<h3>SampleData</h3>
+
+<div>
+    <label>
+        <input @bind="inputGRUZIK" @oninput="OnInputGruzic" id="idGruzic" placeholder="GRUZIK" />
+    </label>
+    <label>
+        <input @bind="inputKOD_SAP" @oninput="OnInputKodap" id="idKodSap" placeholder="KOD_SAP" />
+    </label>
+    <label>
+        <input @bind="inputNAME_OZM" @oninput="OnInputNameOzm" id="idNameOzm" placeholder="NAME_OZM" />
+    </label>
+    <label>
+        <input @bind="inputNAME_SAP" @oninput="OnInputNameSap" id="NameSap" placeholder="NAME_SAP" />
+    </label>
+</div>
+
+@* <button class="btn btn-primary" @onclick="ShowInputInConsole">Show input data in console</button> *@ @* Показываю в консоли введённые в input данные *@
+<button class="btn btn-primary" @onclick="SaveToDb">Save input in db</button> @* Сохраняю введённые данные из инпутов в базу *@
+
+@* <button class="btn btn-primary" @onclick="GetAllGruzes">GetAllGruzes</button> *@
+
+@* <button class="btn btn-primary" @onclick="(() => GetNameByPartName(inputValue))">GetNameByPartName</button> *@
+
+
+@* Запрос с параметром получаемым из input *@
+@* <label>
+    <input @bind="inputValue" placeholder="Enter text" />
+</label>
+<b utton class="btn btn-primary" @onclick="(() => GetNameByPartName(inputValue))">Show gruzes</button>
+*@
+
+<div class="row">
+    <div class="col text-center">
+        <h2>Show All</h2>
+
+        @if (gruzes == null)
+        {
+            <p><em>Loading...</em></p>
+        }
+        else
+        {
+            <div>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>GRUZIK</th>
+                            <th>KOD_SAP</th>
+                            <th>NAME_OZM</th>
+                            <th>NAME_SAP</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var gruz in gruzes)
+                        {
+                            <tr @onclick="() => TrClickedAtIndex(new GruzGdModel { 
+                                                                                   KOD_SAP = gruz.KOD_SAP,  
+                                                                                   NAME_OZM = gruz.NAME_OZM,
+                                                                                   NAME_SAP = gruz.NAME_SAP
+                                                                                    })">
+                                <td>@gruz.GRUZIK</td>
+                                <td>@gruz.KOD_SAP</td>
+                                <td>@gruz.NAME_OZM</td>
+                                <td>@gruz.NAME_SAP</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </div>
+</div>
+
+
+@code {
+    private string inputGRUZIK;
+    private string inputKOD_SAP;
+    private string inputNAME_OZM;
+    private string inputNAME_SAP;
+
+
+    public List<GruzGdModel> gruzes { get; set; }
+
+    private async void GetAllGruzes()
+    {
+        gruzes = (List<GruzGdModel>)await gruzgddata.GetAll();
+    }
+
+    private async void GetNameByPartName(string name)
+    {
+        gruzes = (List<GruzGdModel>)await gruzgddata.GetNameByPartName(name);
+    }
+
+
+    private void OnInputGruzic(ChangeEventArgs e)
+    {
+        inputGRUZIK = e.Value.ToString();
+    }
+
+    // Забираю значение из поля ввода
+    // private void HandleInput(ChangeEventArgs e)
+    // {
+    //     inputKOD_SAP = e.Value.ToString();
+    // }
+
+    private void OnInputKodap(ChangeEventArgs e)
+    {
+        inputKOD_SAP = e.Value.ToString();
+    }
+
+    private void OnInputNameOzm(ChangeEventArgs e)
+    {
+        inputNAME_OZM = e.Value.ToString();
+    }
+
+    private void OnInputNameSap(ChangeEventArgs e)
+    {
+        inputNAME_SAP = e.Value.ToString();
+    }
+
+    private void ShowInputInConsole()
+    {
+        Console.WriteLine("| gr:" + inputGRUZIK + " | sap:" + inputKOD_SAP + " | ozm:" + inputNAME_OZM + " | namSap:" + inputNAME_SAP +" | ");
+    }
+
+    private async void SaveToDb()
+    {
+        await gruzgddata.InsNew(new GruzGdModel { GRUZIK = inputGRUZIK, KOD_SAP = inputKOD_SAP, NAME_OZM = inputNAME_OZM, NAME_SAP = inputNAME_SAP });
+    }
+
+    // Клик по полю таблицы
+    ElementReference inputTypeFileElement;
+
+    public async void TrClickedAtIndex(GruzGdModel gruz)
+    {
+        //Console.WriteLine($"tr clicked at  {gruz} ");
+        await gruzgddata.UpdGruz(gruz);
+    }
+}

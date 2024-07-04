@@ -1,11 +1,11 @@
 ﻿@page "/"
-@using BosVesAppLibrary.Models
-@inject BosVesAppLibrary.DataAccess.GruzGdData gruzgddata
+@inject GruzGdData gruzgddata
+@inject NavigationManager navManager
 
+<PageTitle>BosVes</PageTitle>
+<button class="btn btn-primary" @onclick=redirect>Go to SampleData</button>
 
-<PageTitle>Index</PageTitle>
-
-<h1>Hello, world!</h1>
+<h1 class="page-heading text-uppercase mb-4">New Bos Ves</h1>
 
 <div class="row">
     <div class="col text-center">
@@ -43,6 +43,12 @@
     {
         gruzes = (List<GruzGdModel>)await gruzgddata.GetAll();
     }
+
+    private void redirect()
+    {
+        navManager.NavigateTo("/SampleData");
+
+    } 
 }
 @* @code{
     private List<GruzGdModel> gruzes { get; set; }

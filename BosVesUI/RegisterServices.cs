@@ -12,6 +12,13 @@ public static class RegisterServices
       builder.Services.AddMemoryCache();
 
       builder.Services.Configure<BosVesAppSettings>(builder.Configuration.GetSection("BosVesAppSettings")); // заполняю конфигурационными настройками классс, который планирую использовать во всём приложении
-      builder.Services.AddScoped<GruzGdData>(); // добавил список сотрудников
+      builder.Services.AddSingleton<GpriData>();            // 
+      builder.Services.AddSingleton<GrasData>();            // 
+      builder.Services.AddSingleton<GruzGdData>();          // 
+      builder.Services.AddSingleton<KcexGdData>();          // 
+      builder.Services.AddSingleton<OtvesnayaRPData>();     // 
+      builder.Services.AddSingleton<ShablonData>();         // 
+      builder.Services.AddSingleton<TaraPodstanovkaData>(); // 
+      builder.Services.AddSingleton<VikVagData>();          // 
    }
 }

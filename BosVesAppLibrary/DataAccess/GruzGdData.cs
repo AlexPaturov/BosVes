@@ -2,9 +2,10 @@
 using FirebirdSql.Data.FirebirdClient;
 using Microsoft.Extensions.Options;
 using System.Data;
+using System.Xml.Linq;
 
 namespace BosVesAppLibrary.DataAccess;
-public class GruzGdData
+public class GruzGdData : IGruzGdData
 {
    private readonly string _connectionString;
 
@@ -18,7 +19,7 @@ public class GruzGdData
       return new FbConnection(_connectionString);
    }
 
-   public async Task InsNew(GruzGdModel gruz)                                       // не проверено
+   public async Task InsNew(GruzGdModel gruz)                                       // проверено
    {
       using (var connection = CreateConnection())
       {
@@ -27,24 +28,23 @@ public class GruzGdData
       }
    }
 
-   public async Task UpdGruz(GruzGdModel gruz)                                      // не проверено
+   public async Task UpdGruz(GruzGdModel gruz)                                      // проверено - не использовать пока не будет уникального идентификатора записи
    {
       using (var connection = CreateConnection())
       {
-         var query = "update gruz_gd set GRUZIK = @GRUZIK, "  +
-                                        "KOD_SAP = @KOD_SAP, "  +
-                                        "NAME_SAP = @NAME_SAP, "  +
-                                        "NAME_OZM = @NAME_OZM"; // не поставил matching 
+         var query = "update gruz_gd set GRUZIK = @GRUZIK " +
+                                        "where KOD_SAP = @KOD_SAP";                 // код сап не везде есть 
          await connection.ExecuteAsync(query, gruz);
       }
    }
 
-   public async Task<IEnumerable<GruzGdModel>> GetNameByPartName(string name)       // не проверено
+   public async Task<IEnumerable<GruzGdModel>> GetNameByPartName(string pName)       // проверено
    {
       using (var connection = CreateConnection())
       {
-         var query = "select GRUZIK, KOD_SAP, NAME_SAP, NAME_OZM from gruz_gd where GRUZIK like %@name%"; // не отладил LIKE
-         return await connection.QueryAsync<GruzGdModel>(query);
+         var query = "select GRUZIK, KOD_SAP, NAME_SAP, NAME_OZM from gruz_gd where GRUZIK like @name"; 
+         var parameters = new { name = "%" + pName + "%" };
+         return await connection.QueryAsync<GruzGdModel>(query, parameters);
       }
    }
 
@@ -52,10 +52,10 @@ public class GruzGdData
    {
       using (var connection = CreateConnection())
       {
-         var query = "SELECT GRUZIK, KOD_SAP, NAME_SAP, NAME_OZM FROM gruz_gd";
+         var query = "SELECT GRUZIK, KOD_SAP, NAME_SAP, NAME_OZM FROM gruz_gd order by GRUZIK";
          return await connection.QueryAsync<GruzGdModel>(query);
       }
    }
 
- 
+
 }
