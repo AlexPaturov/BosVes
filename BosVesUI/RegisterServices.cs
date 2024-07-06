@@ -7,6 +7,14 @@ public static class RegisterServices
    public static void ConfigureServices(this WebApplicationBuilder builder) 
    {
       // Add services to the container.
+      builder.Services.Configure<RequestLocalizationOptions>(options =>
+      {
+         var supportedCultures = new[] { "en-US", "ru", "uk" };
+         options.SetDefaultCulture(supportedCultures[0])
+             .AddSupportedCultures(supportedCultures)
+             .AddSupportedUICultures(supportedCultures);
+      });
+
       builder.Services.AddRazorPages();
       builder.Services.AddServerSideBlazor();
       builder.Services.AddMemoryCache();

@@ -22,7 +22,7 @@ public class GpriData
    {
       using (var connection = CreateConnection()) 
       {
-         var query = "INSERT INTO gpri (" +
+         var query = "insert into gpri (" +
                                        "DT " +
                                        ",VR " +
                                        ",NVAG " +
@@ -41,27 +41,24 @@ public class GpriData
                                        ",SKOR " +
                                        ",VESY " +
                                        ",TN " +
-                                       ",NPP " +
-                                       ",V13 " +
-                                       ",V24 " +
-                                       ",V12 " +
-                                       ",V34 " +
-                                       ",PP " +
-                                       ",PR " +
-                                       ",DELTA " +
-                                       ",DATPER " +
-                                       ",DT1 " +   // убрать ? где формируется
-                                       ",VR1 " +   // убрать ? где формируется
-                                       ",KOD_SAP " +
-                                       ",N_TEPLOVOZ " +
-                                       ",VR_PRV " +
-                                       ",POGRESHNOST " +
-                                       ",REJVZVESH " +
-                                       ",PLATFORMS_TARA " +
-                                       ",PLATFORMS_BRUTTO " +
-                                       ",ID_PLATFORMS " +
-                                       "SHABLON " +
-                      "values(" +
+                                       //",NPP " +
+                                       //",V13 " +
+                                       //",V24 " +
+                                       //",V12 " +
+                                       //",V34 " +
+                                       //",PP " +
+                                       //",PR " +
+                                       //",DELTA " +
+                                       //",KOD_SAP " +
+                                       //",N_TEPLOVOZ " +
+                                       //",POGRESHNOST " +
+                                       //",REJVZVESH " +
+                                       //",PLATFORMS_TARA " +
+                                       //",PLATFORMS_BRUTTO " +
+                                       //",ID_PLATFORMS " +
+                                       //",SHABLON " +
+                                       ") " +
+                      "values (" +
                              "@DT " +
                              ",@VR " +
                              ",@NVAG " +
@@ -80,27 +77,32 @@ public class GpriData
                              ",@SKOR " +
                              ",@VESY " +
                              ",@TN " +
-                             ",@NPP " +
-                             ",@V13 " +
-                             ",@V24 " +
-                             ",@V12 " +
-                             ",@V34 " +
-                             ",@PP " +
-                             ",@PR " +
-                             ",@DELTA " +
-                             ",@DATPER " +
-                             ",@DT1 " +   // убрать ? где формируется
-                             ",@VR1 " +   // убрать ? где формируется
-                             ",@KOD_SAP " +
-                             ",@N_TEPLOVOZ " +
-                             ",@VR_PRV " +
-                             ",@POGRESHNOST " +
-                             ",@REJVZVESH " +
-                             ",@PLATFORMS_TARA " +
-                             ",@PLATFORMS_BRUTTO " +
-                             ",@ID_PLATFORMS " +
-                             "@SHABLON )";
-         await connection.ExecuteAsync(query, vagon);
+                             //",@NPP " +
+                             //",@V13 " +
+                             //",@V24 " +
+                             //",@V12 " +
+                             //",@V34 " +
+                             //",@PP " +
+                             //",@PR " +
+                             //",@DELTA " +
+                             //",@KOD_SAP " +
+                             //",@N_TEPLOVOZ " +
+                             //",@POGRESHNOST " +
+                             //",@REJVZVESH " +
+                             //",@PLATFORMS_TARA " +
+                             //",@PLATFORMS_BRUTTO " +
+                             //",@ID_PLATFORMS " +
+                             //",@SHABLON" + 
+                             ")";
+         
+         try
+         {
+            await connection.ExecuteAsync(query, vagon);
+         }
+         catch (Exception ex) 
+         { 
+            Console.WriteLine(ex.ToString());
+         }
       }
    }
 
@@ -182,9 +184,6 @@ public class GpriData
                            ",PP " +
                            ",PR " +
                            ",DELTA " +
-                           ",DATPER " +
-                           ",DT1 " +
-                           ",VR1 " +
                            ",KOD_SAP " +
                            ",N_TEPLOVOZ " +
                            ",VR_PRV " +
@@ -235,9 +234,6 @@ public class GpriData
                               ",PP " +
                               ",PR " +
                               ",DELTA " +
-                              ",DATPER " +
-                              ",DT1 " +
-                              ",VR1 " +
                               ",KOD_SAP " +
                               ",N_TEPLOVOZ " +
                               ",VR_PRV " +

@@ -1,88 +1,274 @@
 ﻿@page "/SampleData"
+@using System.Globalization
+@using System.ComponentModel.DataAnnotations
 @inject GruzGdData gruzgddata
+@inject GpriData gpridata
 @inject NavigationManager navManager
 
 <h3>SampleData</h3>
+<div asp-validation-summary="All" class="text-danger text-center"></div> <!-- Теперь у нас будут выводиться все ошибки уровня модели. -->
 
-<div>
-    <label>
-        <input @bind="inputGRUZIK" @oninput="OnInputGruzic" id="idGruzic" placeholder="GRUZIK" />
-    </label>
-    <label>
-        <input @bind="inputKOD_SAP" @oninput="OnInputKodap" id="idKodSap" placeholder="KOD_SAP" />
-    </label>
-    <label>
-        <input @bind="inputNAME_OZM" @oninput="OnInputNameOzm" id="idNameOzm" placeholder="NAME_OZM" />
-    </label>
-    <label>
-        <input @bind="inputNAME_SAP" @oninput="OnInputNameSap" id="NameSap" placeholder="NAME_SAP" />
-    </label>
-</div>
+<div class="row" style="background-color:aqua">
+    <EditForm Model="vagon" OnValidSubmit="HandleValidSubmit">
+        <DataAnnotationsValidator />
 
-@* <button class="btn btn-primary" @onclick="ShowInputInConsole">Show input data in console</button> *@ @* Показываю в консоли введённые в input данные *@
-<button class="btn btn-primary" @onclick="SaveToDb">Save input in db</button> @* Сохраняю введённые данные из инпутов в базу *@
-
-@* <button class="btn btn-primary" @onclick="GetAllGruzes">GetAllGruzes</button> *@
-
-@* <button class="btn btn-primary" @onclick="(() => GetNameByPartName(inputValue))">GetNameByPartName</button> *@
-
-
-@* Запрос с параметром получаемым из input *@
-@* <label>
-    <input @bind="inputValue" placeholder="Enter text" />
-</label>
-<b utton class="btn btn-primary" @onclick="(() => GetNameByPartName(inputValue))">Show gruzes</button>
-*@
-
-<div class="row">
-    <div class="col text-center">
-        <h2>Show All</h2>
-
-        @if (gruzes == null)
-        {
-            <p><em>Loading...</em></p>
-        }
-        else
-        {
+        <div style="background-color:beige">
             <div>
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>GRUZIK</th>
-                            <th>KOD_SAP</th>
-                            <th>NAME_OZM</th>
-                            <th>NAME_SAP</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var gruz in gruzes)
-                        {
-                            <tr @onclick="() => TrClickedAtIndex(new GruzGdModel { 
-                                                                                   KOD_SAP = gruz.KOD_SAP,  
-                                                                                   NAME_OZM = gruz.NAME_OZM,
-                                                                                   NAME_SAP = gruz.NAME_SAP
-                                                                                    })">
-                                <td>@gruz.GRUZIK</td>
-                                <td>@gruz.KOD_SAP</td>
-                                <td>@gruz.NAME_OZM</td>
-                                <td>@gruz.NAME_SAP</td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
+                <label for="DT">Дата взвешивания</label>
+                <InputDate Type="InputDateType.Date" @bind-Value="@vagon.DT" id="idDT" class="form-control" />
+                <ValidationMessage For="@(() => vagon.DT)" />
             </div>
-        }
-    </div>
+
+            <div>
+                <label for="VR">Время взвешивания</label>
+                <InputDate Type="InputDateType.Time" @bind-Value:format="hh:mm:ss" @bind-Value="@vagon.VR" id="VR" step="1" class="form-control" />
+                <ValidationMessage For="@(() => vagon.VR)" />
+            </div>
+
+            <div>
+                <label for="NVAG">Номер вагона</label>
+                <InputText @bind-Value="@vagon.NVAG" id="NVAG" class="form-control" />
+                <ValidationMessage For="@(() => vagon.NVAG)" />
+            </div>
+        </div>
+
+        <div>
+            <label for="NDOK">Номер докум.</label>
+            <InputNumber @bind-Value="@vagon.NDOK" id="NDOK" class="form-control" />
+            <ValidationMessage For="@(() => vagon.NDOK)" />
+        </div>
+
+        <div>
+            <label for="GRUZ">Груз</label>
+            <InputText @bind-Value="@vagon.GRUZ" id="GRUZ" class="form-control" />
+            <ValidationMessage For="@(() => vagon.GRUZ)" />
+        </div>
+
+        <div>
+            <label for="BRUTTO">Брутто</label>
+            <InputNumber @bind-Value="@vagon.BRUTTO" id="BRUTTO" class="form-control" />
+            <ValidationMessage For="@(() => vagon.BRUTTO)" />
+        </div>
+
+        <div>
+            <label for="TAR_BRS">Тара брус</label>
+            <InputNumber @bind-Value="@vagon.TAR_BRS" id="TAR_BRS" class="form-control" />
+            <ValidationMessage For="@(() => vagon.TAR_BRS)" />
+        </div>
+
+        <div>
+            <label for="TAR_DOK">Тара докум.</label>
+            <InputNumber @bind-Value="@vagon.TAR_DOK" id="TAR_DOK" class="form-control" />
+            <ValidationMessage For="@(() => vagon.TAR_DOK)" />
+        </div>
+
+        <div>
+            <label for="NETTO">Нетто</label>
+            <InputNumber @bind-Value="@vagon.NETTO" id="NETTO" class="form-control" />
+            <ValidationMessage For="@(() => vagon.NETTO)" />
+        </div>
+
+        <div>
+            <label for="NET_DOK">Нетто докум.</label>
+            <InputNumber @bind-Value="@vagon.NET_DOK" id="NET_DOK" class="form-control" />
+            <ValidationMessage For="@(() => vagon.NET_DOK)" />
+        </div>
+
+        <div>
+            <label for="MUSOR">Мусор</label>
+            <InputNumber @bind-Value="@vagon.MUSOR" id="MUSOR" class="form-control" />
+            <ValidationMessage For="@(() => vagon.MUSOR)" />
+        </div>
+
+        <div class="form-group">
+            <label for="CEX">Цех</label>
+            <InputNumber @bind-Value="@vagon.CEX" id="CEX" class="form-control" />
+            <ValidationMessage For="@(() => vagon.CEX)" />
+        </div>
+
+        <div>
+            <label for="TARIF">Тариф</label>
+            <InputNumber @bind-Value="@vagon.TARIF" id="TARIF" class="form-control" />
+            <ValidationMessage For="@(() => vagon.)" />
+        </div>
+
+        <div>
+            <label for="POTR">Потребитель</label>
+            <InputNumber @bind-Value="vagon.POTR" type="text" id="POTR" class="form-control" />
+            <ValidationMessage For="@(() => vagon.)" />
+        </div>
+
+        <div>
+            <label for="PLAT">Плательщик</label>
+            <InputNumber @bind-Value="vagon.PLAT" type="text" id="PLAT" class="form-control" />
+            <ValidationMessage For="@(() => vagon.)" />
+        </div>
+
+        
+
+        <div>
+            <label for="VESY">Весы</label>
+            <InputNumber @bind-Value="vagon.VESY" type="text" id="VESY" class="form-control" />
+            <ValidationMessage For="@(() => vagon.)" />
+        </div>
+
+        <div>
+            <label for="TN">Таб.ном.</label>
+            <InputNumber @bind-Value="vagon.TN" type="text" id="TN" class="form-control" />
+            <ValidationMessage For="@(() => vagon.)" />
+        </div>
+
+        <div>
+            <label for="NPP">
+                NPP:
+                <input @bind="vagon.NPP" @oninput="OnInpNPP" type="text" id="NPP" name="NPP">
+                <ValidationMessage For="@(() => vagon.NPP)" />
+            </label>
+        </div>
+
+        <div>
+            <label for="V13">
+                V13:
+                <input @bind="vagon.V13" type="text" id="V13" name="V13">
+                <ValidationMessage For="@(() => vagon.V13)" />
+            </label>
+        </div>
+
+        <div>
+            <label for="V24">
+                V24:
+                <input @bind="vagon.V24" type="text" id="V24" name="V24">
+                <ValidationMessage For="@(() => vagon.V24)" />
+            </label>
+        </div>
+
+        <div>
+            <label for="V12">
+                V12:
+                <input @bind="vagon.V12" type="text" id="V12" name="V12">
+                <ValidationMessage For="@(() => vagon.V12)" />
+            </label>
+        </div>
+
+        <div>
+            <label for="V34">
+                V34:
+                <input @bind="vagon.V34" type="text" id="V34" name="V34">
+                <ValidationMessage For="@(() => vagon.V34)" />
+            </label>
+        </div>
+
+        <div>
+            <label for="PP">
+                PP:
+                <input @bind="vagon.PP" type="text" id="PP" name="PP">
+                <ValidationMessage For="@(() => vagon.PP)" />
+            </label>
+        </div>
+
+        <div>
+            <label for="PR">
+                PR:
+                <input @bind="vagon.PR" type="text" id="PR" name="PR">
+                <ValidationMessage For="@(() => vagon.PR)" />
+            </label>
+        </div>
+
+        <div>
+            <label for="DELTA">
+                DELTA:
+                <input @bind="vagon.DELTA" type="text" id="DELTA" name="DELTA">
+                <ValidationMessage For="@(() => vagon.DELTA)" />
+            </label>
+        </div>
+
+        <div>
+            <label for="KOD_SAP">
+                KOD_SAP:
+                <input @bind="vagon.KOD_SAP" type="text" id="KOD_SAP" name="KOD_SAP" maxlength="20">
+                <ValidationMessage For="@(() => vagon.KOD_SAP)" />
+            </label>
+        </div>
+
+        <div>
+            <label for="N_TEPLOVOZ">
+                N_TEPLOVOZ:
+                <input @bind="vagon.N_TEPLOVOZ" type="text" id="N_TEPLOVOZ" name="N_TEPLOVOZ" maxlength="30">
+                <ValidationMessage For="@(() => vagon.N_TEPLOVOZ)" />
+            </label>
+        </div>
+
+        <div>
+            <label for="POGRESHNOST">
+                POGRESHNOST:
+                <input @bind="vagon.POGRESHNOST" type="text" id="POGRESHNOST" name="POGRESHNOST">
+                <ValidationMessage For="@(() => vagon.POGRESHNOST)" />
+            </label>
+        </div>
+
+        <div>
+            <label for="REJVZVESH">
+                REJVZVESH:
+                <input @bind="vagon.REJVZVESH" type="text" id="REJVZVESH" >
+                <ValidationMessage For="@(() => vagon.REJVZVESH)" />
+            </label>
+        </div>
+
+        <div>
+            <label for="PLATFORMS_TARA">
+                PLATFORMS_TARA:
+                <input @bind="vagon.PLATFORMS_TARA" id="PLATFORMS_TARA" >
+                <ValidationMessage For="@(() => vagon.PLATFORMS_TARA)" />
+            </label>
+        </div>
+
+        <div>
+            <label for="PLATFORMS_BRUTTO">
+                PLATFORMS_BRUTTO:
+                <input @bind="vagon.PLATFORMS_BRUTTO" id="PLATFORMS_BRUTTO" name="PLATFORMS_BRUTTO" maxlength="8">
+                <ValidationMessage For="@(() => vagon.PLATFORMS_BRUTTO)" />
+            </label>
+        </div>
+
+        <div>
+            <label for="ID_PLATFORMS">
+                ID_PLATFORMS:
+                <input @bind="vagon.ID_PLATFORMS" id="ID_PLATFORMS" >
+                <ValidationMessage For="@(() => vagon.ID_PLATFORMS)" />
+            </label>
+        </div>
+    </EditForm>
 </div>
+
+<button class="btn btn-primary" @onclick="SaveToDb">Save input in db</button> @* Сохраняю введённые данные из инпутов в базу *@
 
 
 @code {
+
+    #region GruzGdModel fields
     private string inputGRUZIK;
     private string inputKOD_SAP;
     private string inputNAME_OZM;
     private string inputNAME_SAP;
+    #endregion
 
+    #region GpriModel fields
+    private GpriModel vagon = new GpriModel();
 
+    private void HandleValidSubmit()
+    {
+        // Handle the valid form submission
+        //if (vagon.ModelState.isValid)
+    }
+
+    #endregion
+
+    private async void SaveToDb()
+    {
+         await gpridata.InsNew(vagon);
+    }
+
+    #region GruzGdModel logic
     public List<GruzGdModel> gruzes { get; set; }
 
     private async void GetAllGruzes()
@@ -95,17 +281,10 @@
         gruzes = (List<GruzGdModel>)await gruzgddata.GetNameByPartName(name);
     }
 
-
     private void OnInputGruzic(ChangeEventArgs e)
     {
         inputGRUZIK = e.Value.ToString();
     }
-
-    // Забираю значение из поля ввода
-    // private void HandleInput(ChangeEventArgs e)
-    // {
-    //     inputKOD_SAP = e.Value.ToString();
-    // }
 
     private void OnInputKodap(ChangeEventArgs e)
     {
@@ -124,20 +303,20 @@
 
     private void ShowInputInConsole()
     {
-        Console.WriteLine("| gr:" + inputGRUZIK + " | sap:" + inputKOD_SAP + " | ozm:" + inputNAME_OZM + " | namSap:" + inputNAME_SAP +" | ");
+        Console.WriteLine("| gr:" + inputGRUZIK + " | sap:" + inputKOD_SAP + " | ozm:" + inputNAME_OZM + " | namSap:" + inputNAME_SAP + " | ");
     }
 
-    private async void SaveToDb()
-    {
-        await gruzgddata.InsNew(new GruzGdModel { GRUZIK = inputGRUZIK, KOD_SAP = inputKOD_SAP, NAME_OZM = inputNAME_OZM, NAME_SAP = inputNAME_SAP });
-    }
+    // private async void SaveToDb()
+    // {
+    //     await gruzgddata.InsNew(new GruzGdModel { GRUZIK = inputGRUZIK, KOD_SAP = inputKOD_SAP, NAME_OZM = inputNAME_OZM, NAME_SAP = inputNAME_SAP });
+    // }
 
     // Клик по полю таблицы
     ElementReference inputTypeFileElement;
 
     public async void TrClickedAtIndex(GruzGdModel gruz)
     {
-        //Console.WriteLine($"tr clicked at  {gruz} ");
         await gruzgddata.UpdGruz(gruz);
     }
+    #endregion
 }
