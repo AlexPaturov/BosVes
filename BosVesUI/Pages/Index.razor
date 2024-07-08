@@ -3,7 +3,22 @@
 @inject NavigationManager navManager
 
 <PageTitle>BosVes</PageTitle>
-<button class="btn btn-primary" @onclick=redirect>Go to SampleData</button>
+<div>
+
+    <button class="btn btn-primary" @onclick=redirect>Go to SampleData</button>
+    @* <br/>
+    <button class="btn btn-primary" @onclick=inputtest>Input many</button>
+    <br/>
+    <button class="btn btn-primary" @onclick=inputTwo>inputTwo</button>
+    <br/> *@
+    <br />
+    <button class="btn btn-primary" @onclick=inputThree>KorrGpri</button>
+    <br/>
+   @*  <button class="btn btn-primary" @onclick=inputAdaptive>inputAdaptive</button>*@
+    <br/> 
+    <button class="btn btn-primary" @onclick=tableOne>tableOne</button>
+
+</div>
 
 <h1 class="page-heading text-uppercase mb-4">New Bos Ves</h1>
 
@@ -33,9 +48,6 @@
     </div>
 </div>
 
-
-
-
 @code {
     private List<GruzGdModel> gruzes { get; set; }
 
@@ -47,10 +59,36 @@
     private void redirect()
     {
         navManager.NavigateTo("/SampleData");
+    }
 
-    } 
+    private void inputtest()
+    {
+        navManager.NavigateTo("/Pages/InputMany");
+    }
+
+    private void inputTwo()
+    {
+        navManager.NavigateTo("/Pages/InputTwo");
+    }
+
+    private void inputThree()
+    {
+        navManager.NavigateTo("/Pages/KorrGpri");
+    }
+
+    private void inputAdaptive()
+    {
+        navManager.NavigateTo("/Pages/InputAdaptive");
+    }
+
+    private void tableOne()
+    {
+        navManager.NavigateTo("/Pages/TableOne");
+    }
+
 }
-@* @code{
+
+@* @code{ "/Pages/InputThree" /Pages/TableOne
     private List<GruzGdModel> gruzes { get; set; }
 
     protected async override Task OnInitializedAsync()

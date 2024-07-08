@@ -1,5 +1,6 @@
 ﻿using Dapper;
 using FirebirdSql.Data.FirebirdClient;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Extensions.Options;
 using System.Data;
 
@@ -18,8 +19,9 @@ public class GpriData
       return new FbConnection(_connectionString);
    }
 
-   public async Task InsNew(GpriModel vagon)
+   public async Task InsNew(GpriModel vagon)  // прооверен
    {
+      
       using (var connection = CreateConnection()) 
       {
          var query = "insert into gpri (" +
@@ -41,22 +43,22 @@ public class GpriData
                                        ",SKOR " +
                                        ",VESY " +
                                        ",TN " +
-                                       //",NPP " +
-                                       //",V13 " +
-                                       //",V24 " +
-                                       //",V12 " +
-                                       //",V34 " +
-                                       //",PP " +
-                                       //",PR " +
-                                       //",DELTA " +
-                                       //",KOD_SAP " +
-                                       //",N_TEPLOVOZ " +
-                                       //",POGRESHNOST " +
-                                       //",REJVZVESH " +
-                                       //",PLATFORMS_TARA " +
-                                       //",PLATFORMS_BRUTTO " +
-                                       //",ID_PLATFORMS " +
-                                       //",SHABLON " +
+                                       ",NPP " +
+                                       ",V13 " +
+                                       ",V24 " +
+                                       ",V12 " +
+                                       ",V34 " +
+                                       ",PP " +
+                                       ",PR " +
+                                       ",DELTA " +
+                                       ",KOD_SAP " +
+                                       ",N_TEPLOVOZ " +
+                                       ",POGRESHNOST " +
+                                       ",REJVZVESH " +
+                                       ",PLATFORMS_TARA " +
+                                       ",PLATFORMS_BRUTTO " +
+                                       ",ID_PLATFORMS " +
+                                       ",SHABLON " +
                                        ") " +
                       "values (" +
                              "@DT " +
@@ -77,22 +79,22 @@ public class GpriData
                              ",@SKOR " +
                              ",@VESY " +
                              ",@TN " +
-                             //",@NPP " +
-                             //",@V13 " +
-                             //",@V24 " +
-                             //",@V12 " +
-                             //",@V34 " +
-                             //",@PP " +
-                             //",@PR " +
-                             //",@DELTA " +
-                             //",@KOD_SAP " +
-                             //",@N_TEPLOVOZ " +
-                             //",@POGRESHNOST " +
-                             //",@REJVZVESH " +
-                             //",@PLATFORMS_TARA " +
-                             //",@PLATFORMS_BRUTTO " +
-                             //",@ID_PLATFORMS " +
-                             //",@SHABLON" + 
+                             ",@NPP " +
+                             ",@V13 " +
+                             ",@V24 " +
+                             ",@V12 " +
+                             ",@V34 " +
+                             ",@PP " +
+                             ",@PR " +
+                             ",@DELTA " +
+                             ",@KOD_SAP " +
+                             ",@N_TEPLOVOZ " +
+                             ",@POGRESHNOST " +
+                             ",@REJVZVESH " +
+                             ",@PLATFORMS_TARA " +
+                             ",@PLATFORMS_BRUTTO " +
+                             ",@ID_PLATFORMS " +
+                             ",@SHABLON" +
                              ")";
          
          try
@@ -153,50 +155,50 @@ public class GpriData
       }
    }
 
-   public async Task<IEnumerable<GpriModel>> GetByDtVr(string pDt, string pVr, string vikno)
+   public async Task<IEnumerable<GpriModel>> GetByDtVr(string pDt, string pVr, string vikno) // в работе
    {
       using (var connection = CreateConnection())
       {
-         var query = "SELECT " +
-                           "DT " +
-                           ",VR " +
-                           ",NVAG " +
-                           ",NDOK " +
-                           ",GRUZ " +
-                           ",BRUTTO " +
-                           ",TAR_BRS " +
-                           ",TAR_DOK " +
-                           ",NETTO " +
-                           ",NET_DOK " +
-                           ",MUSOR " +
-                           ",CEX " +
-                           ",TARIF " +
-                           ",POTR " +
-                           ",PLAT " +
-                           ",SKOR " +
-                           ",VESY " +
-                           ",TN " +
-                           ",NPP " +
-                           ",V13 " +
-                           ",V24 " +
-                           ",V12 " +
-                           ",V34 " +
-                           ",PP " +
-                           ",PR " +
-                           ",DELTA " +
-                           ",KOD_SAP " +
-                           ",N_TEPLOVOZ " +
-                           ",VR_PRV " +
-                           ",POGRESHNOST " +
-                           ",REJVZVESH " +
-                           ",ID " +
-                           ",PLATFORMS_TARA " +
-                           ",PLATFORMS_BRUTTO " +
-                           ",ID_PLATFORMS " +
-                     "FROM gpri " +
-                     "where DT = @DT " +
-                     "and VR = @VR " +
-                     "and VESY = @VESY";
+         var query = "SELECT " +                   //
+                           "DT " +                 //
+                           ",VR " +                //
+                           ",NVAG " +              //
+                           ",NDOK " +              //
+                           ",GRUZ " +              //
+                           ",BRUTTO " +            //
+                           ",TAR_BRS " +           //
+                           ",TAR_DOK " +           //
+                           ",NETTO " +             //
+                           ",NET_DOK " +           //
+                           ",MUSOR " +             //
+                           ",CEX " +               //
+                           ",TARIF " +             //
+                           ",POTR " +              //
+                           ",PLAT " +              //
+                           ",SKOR " +              //
+                           ",VESY " +              //
+                           ",TN " +                //
+                           ",NPP " +               //
+                           ",V13 " +               //
+                           ",V24 " +               //
+                           ",V12 " +               //
+                           ",V34 " +               //
+                           ",PP " +                //
+                           ",PR " +                //
+                           ",DELTA " +             //
+                           ",KOD_SAP " +           //
+                           ",N_TEPLOVOZ " +        //
+                           ",VR_PRV " +            //
+                           ",POGRESHNOST " +       //
+                           ",REJVZVESH " +         //
+                           ",ID " +                //
+                           ",PLATFORMS_TARA " +    //
+                           ",PLATFORMS_BRUTTO " +  //
+                           ",ID_PLATFORMS " +      //
+                     "FROM gpri " +                //
+                     "where DT = @DT " +           //
+                     "and VR = @VR " +             //
+                     "and VESY = @VESY";           //
 
          var parameters = new { DT = pDt, VR = pVr, VESY = vikno };
          return await connection.QueryAsync<GpriModel>(query, parameters);
