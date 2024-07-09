@@ -1,0 +1,272 @@
+﻿@page "/Pages/TableOne"
+@inject GpriData gpridata
+@inject NavigationManager navManager
+@inject IJSRuntime JS
+
+<div>
+    Width: @width px  Height: @height px
+    <button class="btn btn-primary" @onclick="GetWindowSize">Get Window Size</button>    
+</div>
+<br />
+
+
+<div class="container border border-dark" style="background-color: darkgray">
+    <h4>cotainer</h4>
+    
+    @* Поля ввода даты, времени, номера вагона, наименование груза, номер отвесной, кнопка запроса *@
+    <div class="row" style="background-color:brown">
+        
+        <h5>1-st row for input field</h5>
+        @* <div class="col-md col-sm" style="background-color: cornsilk; border border-color:crimson"> *@
+            <p class="p-3 fs-5 border bg-light">Поля для ввода</p>
+        @* </div> *@
+    </div>
+
+    @* Контейнер для таблицы. Нужно ограничить максимальную ширину и высоту *@
+
+
+
+
+
+    <div class="row">
+        <div class="col-md-12 col-sm" style="background-color: cornsilk; border border-color:crimson">
+            <p class="p-3 fs-5 border bg-light">Таблица</p>
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        @foreach (var vp in GridCaptionHelper.GpriGridChapters.Values)
+                        {
+                            <th> @vp </th>
+                        }
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        @foreach (var kp in GridCaptionHelper.GpriGridChapters.Keys)
+                        {
+                            <td> @kp </td>
+                        }
+                    </tr>
+                </tbody>
+            </table>
+
+
+
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="col-md-4 col-sm-2 position-relative" style="background-color: coral">
+
+            <div class="col">
+                <div class="form-group row">
+                    <label for="inputEmail3" class="col col-form-label">Дата взвешивания</label>
+                    <div class="col">
+                        <input type="email" class="form-control" id="inputEmail3" placeholder="Email">
+                    </div>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="form-group row">
+                    <label for="inputEmail3" class="col col-form-label">Время взвешивания</label>
+                    <div class="col">
+                        <input type="email" class="form-control" id="inputEmail3" placeholder="Email">
+                    </div>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="form-group row">
+                    <label for="inputEmail3" class="col col-form-label">Время взвешивания</label>
+                    <div class="col">
+                        <input type="email" class="form-control" id="inputEmail3" placeholder="Email">
+                    </div>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="form-group row">
+                    <label for="inputEmail3" class="col col-form-label">Время взвешивания</label>
+                    <div class="col">
+                        <input type="email" class="form-control" id="inputEmail3" placeholder="Email">
+                    </div>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="form-group row">
+                    <label for="inputEmail3" class="col col-form-label">Время взвешивания</label>
+                    <div class="col">
+                        <input type="email" class="form-control" id="inputEmail3" placeholder="Email">
+                    </div>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="form-group row">
+                    <label for="inputEmail3" class="col col-form-label">Время взвешивания</label>
+                    <div class="col">
+                        <input type="email" class="form-control" id="inputEmail3" placeholder="Email">
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="col-md-4 col-sm-2 position-relative" style="background-color: aquamarine">
+
+            <div class="col">
+                <div class="form-group row">
+                    <label for="inputEmail3" class="col col-form-label">Дата взвешивания</label>
+                    <div class="col">
+                        <input type="email" class="form-control" id="inputEmail3" placeholder="Email">
+                    </div>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="form-group row">
+                    <label for="inputEmail3" class="col col-form-label">Время взвешивания</label>
+                    <div class="col">
+                        <input type="email" class="form-control" id="inputEmail3" placeholder="Email">
+                    </div>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="form-group row">
+                    <label for="inputEmail3" class="col col-form-label">Время взвешивания</label>
+                    <div class="col">
+                        <input type="email" class="form-control" id="inputEmail3" placeholder="Email">
+                    </div>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="form-group row">
+                    <label for="inputEmail3" class="col col-form-label">Время взвешивания</label>
+                    <div class="col">
+                        <input type="email" class="form-control" id="inputEmail3" placeholder="Email">
+                    </div>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="form-group row">
+                    <label for="inputEmail3" class="col col-form-label">Время взвешивания</label>
+                    <div class="col">
+                        <input type="email" class="form-control" id="inputEmail3" placeholder="Email">
+                    </div>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="form-group row">
+                    <label for="inputEmail3" class="col col-form-label">Время взвешивания</label>
+                    <div class="col">
+                        <input type="email" class="form-control" id="inputEmail3" placeholder="Email">
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="col-md-4 col-sm-2 position-relative" style="background-color: cornflowerblue">
+
+            <div class="col">
+                <div class="form-group row">
+                    <label for="inputEmail3" class="col col-form-label">Дата взвешивания</label>
+                    <div class="col">
+                        <input type="email" class="form-control" id="inputEmail3" placeholder="Email">
+                    </div>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="form-group row">
+                    <label for="inputEmail3" class="col col-form-label">Время взвешивания</label>
+                    <div class="col">
+                        <input type="email" class="form-control" id="inputEmail3" placeholder="Email">
+                    </div>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="form-group row">
+                    <label for="inputEmail3" class="col col-form-label">Время взвешивания</label>
+                    <div class="col">
+                        <input type="email" class="form-control" id="inputEmail3" placeholder="Email">
+                    </div>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="form-group row">
+                    <label for="inputEmail3" class="col col-form-label">Время взвешивания</label>
+                    <div class="col">
+                        <input type="email" class="form-control" id="inputEmail3" placeholder="Email">
+                    </div>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="form-group row">
+                    <label for="inputEmail3" class="col col-form-label">Время взвешивания</label>
+                    <div class="col">
+                        <input type="email" class="form-control" id="inputEmail3" placeholder="Email">
+                    </div>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="form-group row">
+                    <label for="inputEmail3" class="col col-form-label">Время взвешивания</label>
+                    <div class="col">
+                        <input type="email" class="form-control" id="inputEmail3" placeholder="Email">
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@code {
+    private GpriModel vagon = new GpriModel();
+    private int width;
+    private int height;
+
+    private async Task GetWindowSize()
+    {
+        var size = await JS.InvokeAsync<WindowSize>("getWindowSize");
+        width = size.Width;
+        height = size.Height;
+    }
+
+    public class WindowSize
+    {
+        public int Width { get; set; }
+        public int Height { get; set; }
+    }
+}
