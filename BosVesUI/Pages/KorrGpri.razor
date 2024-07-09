@@ -4,15 +4,44 @@
 @inject GpriData gpridata
 @inject NavigationManager navManager
 
-<div class="container-fluid" style="background-color:darkgray">
+<div class="container" style="background-color:darkgray">
     <EditForm Model="vagon" OnValidSubmit="HandleValidSubmit">
         <DataAnnotationsValidator />
 
-        @* Фильтры *@
+        
+        <div class="row">
+            <div class="col-md-12 col-sm" style="background-color: cornsilk; border border-color:crimson">
+                <p class="p-3 fs-5 border bg-light">Таблица</p>
 
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                @foreach (var kvp in GridCaptionHelper.GpriGridChapters.Values)
+                                {
+                                    <th> @kvp </th>
+                                }
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @*  @foreach (var person in people)
+                            {
+                            <tr>
+                            <td>@person.Id</td>
+                            <td>@person.Name</td>
+                            <td>@person.Age</td>
+                            <td>@person.City</td>
+                            </tr>
+                            } *@
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
         
 
-        <div class="container border border-dark">
+        <div class="row border border-dark">
 
             <div class="row">
                 @* первый блок начало *@
