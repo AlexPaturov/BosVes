@@ -4,385 +4,358 @@
 @inject GpriData gpridata
 @inject NavigationManager navManager
 
-<div class="container" style="background-color:darkgray">
-    <form class="">
-        <EditForm Model="vagon" OnValidSubmit="HandleValidSubmit">
-            <DataAnnotationsValidator />
+<div class="container-fluid" style="background-color:darkgray">
+    <EditForm Model="vagon" OnValidSubmit="HandleValidSubmit">
+        <DataAnnotationsValidator />
 
-            @* Фильтры *@
+        @* Фильтры *@
+
+        
+
+        <div class="container border border-dark">
 
             <div class="row">
-                @* Таблица *@
-                <div class="table-responsive" style="background-color: darksalmon">
-                    <table class="table table-bordered table-hower">
-                        <thead>
-                            <tr>
-                                @foreach (var kvp in GridCaptionHelper.GpriGridChapters.Values)
-                                {
-                                    <th>@kvp</th>
-                                }
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @*  @foreach (var person in people)
-                            {
-                            <tr>
-                            <td>@person.Id</td>
-                            <td>@person.Name</td>
-                            <td>@person.Age</td>
-                            <td>@person.City</td>
-                            </tr>
-                            } *@
-                        </tbody>
-                    </table>
+                @* первый блок начало *@
+                <div class="col-md-3" style="background-color: antiquewhite">
+
+                    @* 1 *@
+                    <div class="col">
+                        <div class="form-group row">
+                            <label for="DT" class="col col-form-label">Дата взвешивания</label>
+                            <div class="col">
+                                <InputDate Type="InputDateType.Date" @bind-Value="@vagon.DT" id="idDT" class="form-control" />
+                                <ValidationMessage For="@(() => vagon.DT)" />
+                            </div>
+                        </div>
+                    </div>
+
+                    @* 2 *@
+                    <div class="col">
+                        <div class="form-group row">
+                            <label for="VR" class="col col-form-label">Время взвешивания</label>
+                            <div class="col">
+                                <InputDate Type="InputDateType.Time" @bind-Value:format="hh:mm:ss" @bind-Value="@vagon.VR" id="VR" step="1" class="form-control" />
+                                <ValidationMessage For="@(() => vagon.VR)" />
+                            </div>
+                        </div>
+                    </div>
+
+                    @* 3 *@
+                    <div class="col">
+                        <div class="form-group row">
+                            <label for="NVAG" class="col col-form-label">Номер вагона</label>
+                            <div class="col">
+                                <InputText @bind-Value="@vagon.NVAG" id="NVAG" class="form-control" />
+                                <ValidationMessage For="@(() => vagon.NVAG)" />
+                            </div>
+                        </div>
+                    </div>
+
+                    @* 4 *@
+                    <div class="col">
+                        <div class="form-group row">
+                            <label for="NDOK" class="col col-form-label">Номер докум.</label>
+                            <div class="col">
+                                <InputNumber @bind-Value="@vagon.NDOK" id="NDOK" class="form-control" />
+                                <ValidationMessage For="@(() => vagon.NDOK)" />
+                            </div>
+                        </div>
+                    </div>
+
+                    @* 5 *@
+                    <div class="form-group row">
+                        <label for="GRUZ" class="col col-form-label">Груз</label>
+                        <div class="col">
+                            <InputText @bind-Value="@vagon.GRUZ" id="GRUZ" class="form-control" />
+                            <ValidationMessage For="@(() => vagon.GRUZ)" />
+                        </div>
+                    </div>
+
+                    @* 6 *@
+                    <div class="form-group row">
+                        <label for="BRUTTO" class="col col-form-label">Брутто</label>
+                        <div class="col">
+                            <InputNumber @bind-Value="@vagon.BRUTTO" id="BRUTTO" class="form-control" />
+                            <ValidationMessage For="@(() => vagon.BRUTTO)" />
+                        </div>
+                    </div>
+
+                    @* 7 *@
+                    <div class="form-group row">
+                        <label for="TAR_BRS" class="col col-form-label">Тара брус</label>
+                        <div class="col">
+                            <InputNumber @bind-Value="@vagon.TAR_BRS" id="TAR_BRS" class="form-control" />
+                            <ValidationMessage For="@(() => vagon.TAR_BRS)" />
+                        </div>
+                    </div>
+
+                    @* 8 *@
+                    <div class="form-group row">
+                        <label for="TAR_DOK" class="col col-form-label">Тара докум.</label>
+                        <div class="col">
+                            <InputNumber @bind-Value="@vagon.TAR_DOK" id="TAR_DOK" class="form-control" />
+                            <ValidationMessage For="@(() => vagon.TAR_DOK)" />
+                        </div>
+                    </div>
+
                 </div>
+                @* первый блок окончание *@
+
+                @* второй блок начало *@
+                <div class="col-md-3" style="background-color: aqua">
+
+                    @* 9 *@
+                    <div class="form-group row">
+                        <label for="NETTO" class="col col-form-label">Нетто</label>
+                        <div class="col">
+                            <InputNumber @bind-Value="@vagon.NETTO" id="NETTO" class="form-control" />
+                            <ValidationMessage For="@(() => vagon.NETTO)" />
+                        </div>
+                    </div>
+
+                    @* 10 *@
+                    <div class="form-group row">
+                        <label for="NET_DOK" class="col col-form-label">Нетто докум.</label>
+                        <div class="col">
+                            <InputNumber @bind-Value="@vagon.NET_DOK" id="NET_DOK" class="form-control" />
+                            <ValidationMessage For="@(() => vagon.NET_DOK)" />
+                        </div>
+                    </div>
+
+                    @* 11 *@
+                    <div class="form-group row">
+                        <label for="MUSOR" class="col col-form-label">Мусор</label>
+                        <div class="col">
+                            <InputNumber @bind-Value="@vagon.MUSOR" id="MUSOR" class="form-control" />
+                            <ValidationMessage For="@(() => vagon.MUSOR)" />
+                        </div>
+                    </div>
+
+                    @* 12 *@
+                    <div class="form-group row">
+                        <label for="CEX" class="col col-form-label">Цех</label>
+                        <div class="col">
+                            <InputNumber @bind-Value="@vagon.CEX" id="CEX" class="form-control" />
+                            <ValidationMessage For="@(() => vagon.CEX)" />
+                        </div>
+                    </div>
+
+                    @* 13 *@
+                    <div class="form-group row">
+                        <label for="TARIF" class="col col-form-label">Тариф</label>
+                        <div class="col">
+                            <InputNumber @bind-Value="@vagon.TARIF" id="TARIF" class="form-control" />
+                            <ValidationMessage For="@(() => vagon.TARIF)" />
+                        </div>
+                    </div>
+
+                    @* 14 *@
+                    <div class="form-group row">
+                        <label for="POTR" class="col col-form-label">Потребитель</label>
+                        <div class="col">
+                            <InputText @bind-Value="vagon.POTR" id="POTR" class="form-control" />
+                            <ValidationMessage For="@(() => vagon.POTR)" />
+                        </div>
+                    </div>
+
+                    @* 15 *@
+                    <div class="form-group row">
+                        <label for="PLAT" class="col col-form-label">Плательщик</label>
+                        <div class="col">
+                            <InputText @bind-Value="vagon.PLAT" id="PLAT" class="form-control" />
+                            <ValidationMessage For="@(() => vagon.PLAT)" />
+                        </div>
+                    </div>
+
+                    @* 16 *@
+                    <div class="form-group row">
+                        <label for="VESY" class="col col-form-label">Весы</label>
+                        <div class="col">
+                            <InputNumber @bind-Value="vagon.VESY" id="VESY" class="form-control" />
+                            <ValidationMessage For="@(() => vagon.VESY)" />
+                        </div>
+                    </div>
+
+                </div>
+                @* второй блок окончание *@
+
+                @* третий блок начало *@
+                <div class="col-md-3" style="background-color: blueviolet">
+
+                    @* 17 *@
+                    <div class="form-group row">
+                        <label for="TN" class="col col-form-label">Таб.ном.</label>
+                        <div class="col">
+                            <InputNumber @bind-Value="vagon.TN" id="TN" class="form-control" />
+                            <ValidationMessage For="@(() => vagon.TN)" />
+                        </div>
+                    </div>
+
+                    @* 18 *@
+                    <div class="form-group row">
+                        <label for="NPP" class="col col-form-label">Номер в составе"</label>
+                        <div class="col">
+                            <InputNumber @bind-Value="vagon.NPP" id="NPP" class="form-control" />
+                            <ValidationMessage For="@(() => vagon.NPP)" />
+                        </div>
+                    </div>
+
+                    @* 19 *@
+                    <div class="form-group row">
+                        <label for="V13" class="col col-form-label">V13:</label>
+                        <div class="col">
+                            <InputNumber @bind-Value="vagon.V13" id="V13" class="form-control" />
+                            <ValidationMessage For="@(() => vagon.V13)" />
+                        </div>
+                    </div>
+
+                    @* 20 *@
+                    <div class="form-group row">
+                        <label for="V24" class="col col-form-label">V24:</label>
+                        <div class="col">
+                            <InputNumber @bind-Value="vagon.V24" id="V24" class="form-control" />
+                            <ValidationMessage For="@(() => vagon.V24)" />
+                        </div>
+                    </div>
+
+                    @* 21 *@
+                    <div class="form-group row">
+                        <label for="V12" class="col col-form-label">V12:</label>
+                        <div class="col">
+                            <InputNumber @bind-Value="vagon.V12" id="V12" class="form-control" />
+                            <ValidationMessage For="@(() => vagon.V12)" />
+                        </div>
+                    </div>
+
+                    @* 22 *@
+                    <div class="form-group row">
+                        <label for="V34" class="col col-form-label">V34:</label>
+                        <div class="col">
+                            <InputNumber @bind-Value="vagon.V34" id="V34" class="form-control" />
+                            <ValidationMessage For="@(() => vagon.V34)" />
+                        </div>
+                    </div>
+
+                    @* 23 *@
+                    <div class="form-group row">
+                        <label for="PP" class="col col-form-label">PP:</label>
+                        <div class="col">
+                            <InputNumber @bind-Value="vagon.PP" id="PP" class="form-control" />
+                            <ValidationMessage For="@(() => vagon.PP)" />
+                        </div>
+                    </div>
+
+                    @* 24 *@
+                    <div class="form-group row">
+                        <label for="PR" class="col col-form-label">PR:</label>
+                        <div class="col">
+                            <InputNumber @bind-Value="vagon.PR" id="PR" class="form-control" />
+                            <ValidationMessage For="@(() => vagon.PR)" />
+                        </div>
+                    </div>
+
+
+                </div>
+                @* третий блок окончание *@
+
+                @* четвёртый блок начало *@
+                <div class="col-md-3" style="background-color: gold">
+
+                    @* 25 *@
+                    <div class="form-group row">
+                        <label for="DELTA" class="col col-form-label">DELTA:</label>
+                        <div class="col">
+                            <InputNumber @bind-Value="vagon.DELTA" id="DELTA" class="form-control" />
+                            <ValidationMessage For="@(() => vagon.DELTA)" />
+                        </div>
+                    </div>
+
+                    @* 26 *@
+                    <div class="form-group row">
+                        <label for="KOD_SAP" class="col col-form-label">KOD_SAP:</label>
+                        <div class="col">
+                            <InputText @bind-Value="vagon.KOD_SAP" id="KOD_SAP" class="form-control" />
+                            <ValidationMessage For="@(() => vagon.KOD_SAP)" />
+                        </div>
+                    </div>
+
+                    @* 27 *@
+                    <div class="form-group row">
+                        <label for="N_TEPLOVOZ" class="col col-form-label">N_TEPLOVOZ:</label>
+                        <div class="col">
+                            <InputText @bind-Value="vagon.N_TEPLOVOZ" id="N_TEPLOVOZ" class="form-control" />
+                            <ValidationMessage For="@(() => vagon.N_TEPLOVOZ)" />
+                        </div>
+                    </div>
+
+                    @* 28 *@
+                    <div class="form-group row">
+                        <label for="POGRESHNOST" class="col col-form-label">POGRESHNOST:</label>
+                        <div class="col">
+                            <InputNumber @bind-Value="vagon.POGRESHNOST" id="POGRESHNOST" class="form-control" />
+                            <ValidationMessage For="@(() => vagon.POGRESHNOST)" />
+                        </div>
+                    </div>
+
+                    @* 29 *@
+                    <div class="form-group row">
+                        <label for="REJVZVESH" class="col col-form-label">REJVZVESH:</label>
+                        <div class="col">
+                            <InputText @bind-Value="vagon.REJVZVESH" type="text" id="REJVZVESH" class="form-control" />
+                            <ValidationMessage For="@(() => vagon.REJVZVESH)" />
+                        </div>
+                    </div>
+
+                    @* 30 *@
+                    <div class="form-group row">
+                        <label for="PLATFORMS_TARA" class="col col-form-label">PLATFORMS_TARA:</label>
+                        <div class="col">
+                            <InputText @bind-Value="vagon.PLATFORMS_TARA" id="PLATFORMS_TARA" class="form-control" />
+                            <ValidationMessage For="@(() => vagon.PLATFORMS_TARA)" />
+                        </div>
+                    </div>
+
+                    @* 31 *@
+                    <div class="form-group row">
+                        <label for="PLATFORMS_BRUTTO" class="col col-form-label">PLATFORMS_BRUTTO:</label>
+                        <div class="col">
+                            <InputText @bind-Value="vagon.PLATFORMS_BRUTTO" id="PLATFORMS_BRUTTO" class="form-control" />
+                            <ValidationMessage For="@(() => vagon.PLATFORMS_BRUTTO)" />
+                        </div>
+                    </div>
+
+                    @* 32 *@
+                    <div class="form-group row">
+                        <label for="ID_PLATFORMS" class="col col-form-label">ID_PLATFORMS:</label>
+                        <div class="col">
+                            <InputNumber @bind-Value="vagon.ID_PLATFORMS" id="ID_PLATFORMS" class="form-control" />
+                            <ValidationMessage For="@(() => vagon.ID_PLATFORMS)" />
+                        </div>
+                    </div>
+
+                </div>
+                @* четвёртый блок окончание *@
             </div>
 
+        </div>
 
-            <div class="container-fluid border border-dark">
-                <div class="row">
-                    @* первый блок начало *@
-                    <div class="col-md-3" style="background-color: antiquewhite">
+        <br />
+        <div class="container-fluid border border-dark">
 
-                        @* 1 *@
-                        <div class="col">
-                            <div class="form-group row">
-                                <label for="DT" class="col col-form-label">Дата взвешивания</label>
-                                <div class="col">
-                                    <InputDate Type="InputDateType.Date" @bind-Value="@vagon.DT" id="idDT" class="form-control" />
-                                    <ValidationMessage For="@(() => vagon.DT)" />
-                                </div>
-                            </div>
-                        </div>
+            <div class="row">
 
-                        @* 2 *@
-                        <div class="col">
-                            <div class="form-group row">
-                                <label for="VR" class="col col-form-label">Время взвешивания</label>
-                                <div class="col">
-                                    <InputDate Type="InputDateType.Time" @bind-Value:format="hh:mm:ss" @bind-Value="@vagon.VR" id="VR" step="1" class="form-control" />
-                                    <ValidationMessage For="@(() => vagon.VR)" />
-                                </div>
-                            </div>
-                        </div>
-
-                        @* 3 *@
-                        <div class="col">
-                            <div class="form-group row">
-                                <label for="NVAG" class="col col-form-label">Номер вагона</label>
-                                <div class="col">
-                                    <InputText @bind-Value="@vagon.NVAG" id="NVAG" class="form-control" />
-                                    <ValidationMessage For="@(() => vagon.NVAG)" />
-                                </div>
-                            </div>
-                        </div>
-
-                        @* 4 *@
-                        <div class="col">
-                            <div class="form-group row">
-                                <label for="NDOK" class="col col-form-label">Номер докум.</label>
-                                <div class="col">
-                                    <InputNumber @bind-Value="@vagon.NDOK" id="NDOK" class="form-control" />
-                                    <ValidationMessage For="@(() => vagon.NDOK)" />
-                                </div>
-                            </div>
-                        </div>
-
-                        @* 5 *@
-                        <div class="form-group row">
-                            <label for="GRUZ" class="col col-form-label">Груз</label>
-                            <div class="col">
-                                <InputText @bind-Value="@vagon.GRUZ" id="GRUZ" class="form-control" />
-                                <ValidationMessage For="@(() => vagon.GRUZ)" />
-                            </div>
-                        </div>
-
-                        @* 6 *@
-                        <div class="form-group row">
-                            <label for="BRUTTO" class="col col-form-label">Брутто</label>
-                            <div class="col">
-                                <InputNumber @bind-Value="@vagon.BRUTTO" id="BRUTTO" class="form-control" />
-                                <ValidationMessage For="@(() => vagon.BRUTTO)" />
-                            </div>
-                        </div>
-
-                        @* 7 *@
-                        <div class="form-group row">
-                            <label for="TAR_BRS" class="col col-form-label">Тара брус</label>
-                            <div class="col">
-                                <InputNumber @bind-Value="@vagon.TAR_BRS" id="TAR_BRS" class="form-control" />
-                                <ValidationMessage For="@(() => vagon.TAR_BRS)" />
-                            </div>
-                        </div>
-
-                        @* 8 *@
-                        <div class="form-group row">
-                            <label for="TAR_DOK" class="col col-form-label">Тара докум.</label>
-                            <div class="col">
-                                <InputNumber @bind-Value="@vagon.TAR_DOK" id="TAR_DOK" class="form-control" />
-                                <ValidationMessage For="@(() => vagon.TAR_DOK)" />
-                            </div>
-                        </div>
-
-                    </div>
-                    @* первый блок окончание *@
-
-                    @* второй блок начало *@
-                    <div class="col-md-3" style="background-color: aqua">
-
-                        @* 9 *@
-                        <div class="form-group row">
-                            <label for="NETTO" class="col col-form-label">Нетто</label>
-                            <div class="col">
-                                <InputNumber @bind-Value="@vagon.NETTO" id="NETTO" class="form-control" />
-                                <ValidationMessage For="@(() => vagon.NETTO)" />
-                            </div>
-                        </div>
-
-                        @* 10 *@
-                        <div class="form-group row">
-                            <label for="NET_DOK" class="col col-form-label">Нетто докум.</label>
-                            <div class="col">
-                                <InputNumber @bind-Value="@vagon.NET_DOK" id="NET_DOK" class="form-control" />
-                                <ValidationMessage For="@(() => vagon.NET_DOK)" />
-                            </div>
-                        </div>
-
-                        @* 11 *@
-                        <div class="form-group row">
-                            <label for="MUSOR" class="col col-form-label">Мусор</label>
-                            <div class="col">
-                                <InputNumber @bind-Value="@vagon.MUSOR" id="MUSOR" class="form-control" />
-                                <ValidationMessage For="@(() => vagon.MUSOR)" />
-                            </div>
-                        </div>
-
-                        @* 12 *@
-                        <div class="form-group row">
-                            <label for="CEX" class="col col-form-label">Цех</label>
-                            <div class="col">
-                                <InputNumber @bind-Value="@vagon.CEX" id="CEX" class="form-control" />
-                                <ValidationMessage For="@(() => vagon.CEX)" />
-                            </div>
-                        </div>
-
-                        @* 13 *@
-                        <div class="form-group row">
-                            <label for="TARIF" class="col col-form-label">Тариф</label>
-                            <div class="col">
-                                <InputNumber @bind-Value="@vagon.TARIF" id="TARIF" class="form-control" />
-                                <ValidationMessage For="@(() => vagon.TARIF)" />
-                            </div>
-                        </div>
-
-                        @* 14 *@
-                        <div class="form-group row">
-                            <label for="POTR" class="col col-form-label">Потребитель</label>
-                            <div class="col">
-                                <InputText @bind-Value="vagon.POTR" id="POTR" class="form-control" />
-                                <ValidationMessage For="@(() => vagon.POTR)" />
-                            </div>
-                        </div>
-
-                        @* 15 *@
-                        <div class="form-group row">
-                            <label for="PLAT" class="col col-form-label">Плательщик</label>
-                            <div class="col">
-                                <InputText @bind-Value="vagon.PLAT" id="PLAT" class="form-control" />
-                                <ValidationMessage For="@(() => vagon.PLAT)" />
-                            </div>
-                        </div>
-
-                        @* 16 *@
-                        <div class="form-group row">
-                            <label for="VESY" class="col col-form-label">Весы</label>
-                            <div class="col">
-                                <InputNumber @bind-Value="vagon.VESY" id="VESY" class="form-control" />
-                                <ValidationMessage For="@(() => vagon.VESY)" />
-                            </div>
-                        </div>
-
-                    </div>
-                    @* второй блок окончание *@
-
-                    @* третий блок начало *@
-                    <div class="col-md-3" style="background-color: blueviolet">
-
-                        @* 17 *@
-                        <div class="form-group row">
-                            <label for="TN" class="col col-form-label">Таб.ном.</label>
-                            <div class="col">
-                                <InputNumber @bind-Value="vagon.TN" id="TN" class="form-control" />
-                                <ValidationMessage For="@(() => vagon.TN)" />
-                            </div>
-                        </div>
-
-                        @* 18 *@
-                        <div class="form-group row">
-                            <label for="NPP" class="col col-form-label">Номер в составе"</label>
-                            <div class="col">
-                                <InputNumber @bind-Value="vagon.NPP" id="NPP" class="form-control" />
-                                <ValidationMessage For="@(() => vagon.NPP)" />
-                            </div>
-                        </div>
-
-                        @* 19 *@
-                        <div class="form-group row">
-                            <label for="V13" class="col col-form-label">V13:</label>
-                            <div class="col">
-                                <InputNumber @bind-Value="vagon.V13" id="V13" class="form-control" />
-                                <ValidationMessage For="@(() => vagon.V13)" />
-                            </div>
-                        </div>
-
-                        @* 20 *@
-                        <div class="form-group row">
-                            <label for="V24" class="col col-form-label">V24:</label>
-                            <div class="col">
-                                <InputNumber @bind-Value="vagon.V24" id="V24" class="form-control" />
-                                <ValidationMessage For="@(() => vagon.V24)" />
-                            </div>
-                        </div>
-
-                        @* 21 *@
-                        <div class="form-group row">
-                            <label for="V12" class="col col-form-label">V12:</label>
-                            <div class="col">
-                                <InputNumber @bind-Value="vagon.V12" id="V12" class="form-control" />
-                                <ValidationMessage For="@(() => vagon.V12)" />
-                            </div>
-                        </div>
-
-                        @* 22 *@
-                        <div class="form-group row">
-                            <label for="V34" class="col col-form-label">V34:</label>
-                            <div class="col">
-                                <InputNumber @bind-Value="vagon.V34" id="V34" class="form-control" />
-                                <ValidationMessage For="@(() => vagon.V34)" />
-                            </div>
-                        </div>
-
-                        @* 23 *@
-                        <div class="form-group row">
-                            <label for="PP" class="col col-form-label">PP:</label>
-                            <div class="col">
-                                <InputNumber @bind-Value="vagon.PP" id="PP" class="form-control" />
-                                <ValidationMessage For="@(() => vagon.PP)" />
-                            </div>
-                        </div>
-
-                        @* 24 *@
-                        <div class="form-group row">
-                            <label for="PR" class="col col-form-label">PR:</label>
-                            <div class="col">
-                                <InputNumber @bind-Value="vagon.PR" id="PR" class="form-control" />
-                                <ValidationMessage For="@(() => vagon.PR)" />
-                            </div>
-                        </div>
-
-
-                    </div>
-                    @* третий блок окончание *@
-
-                    @* четвёртый блок начало *@
-                    <div class="col-md-3" style="background-color: gold">
-
-                        @* 25 *@
-                        <div class="form-group row">
-                            <label for="DELTA" class="col col-form-label">DELTA:</label>
-                            <div class="col">
-                                <InputNumber @bind-Value="vagon.DELTA" id="DELTA" class="form-control" />
-                                <ValidationMessage For="@(() => vagon.DELTA)" />
-                            </div>
-                        </div>
-
-                        @* 26 *@
-                        <div class="form-group row">
-                            <label for="KOD_SAP" class="col col-form-label">KOD_SAP:</label>
-                            <div class="col">
-                                <InputText @bind-Value="vagon.KOD_SAP" id="KOD_SAP" class="form-control" />
-                                <ValidationMessage For="@(() => vagon.KOD_SAP)" />
-                            </div>
-                        </div>
-
-                        @* 27 *@
-                        <div class="form-group row">
-                            <label for="N_TEPLOVOZ" class="col col-form-label">N_TEPLOVOZ:</label>
-                            <div class="col">
-                                <InputText @bind-Value="vagon.N_TEPLOVOZ" id="N_TEPLOVOZ" class="form-control" />
-                                <ValidationMessage For="@(() => vagon.N_TEPLOVOZ)" />
-                            </div>
-                        </div>
-
-                        @* 28 *@
-                        <div class="form-group row">
-                            <label for="POGRESHNOST" class="col col-form-label">POGRESHNOST:</label>
-                            <div class="col">
-                                <InputNumber @bind-Value="vagon.POGRESHNOST" id="POGRESHNOST" class="form-control" />
-                                <ValidationMessage For="@(() => vagon.POGRESHNOST)" />
-                            </div>
-                        </div>
-
-                        @* 29 *@
-                        <div class="form-group row">
-                            <label for="REJVZVESH" class="col col-form-label">REJVZVESH:</label>
-                            <div class="col">
-                                <InputText @bind-Value="vagon.REJVZVESH" type="text" id="REJVZVESH" class="form-control" />
-                                <ValidationMessage For="@(() => vagon.REJVZVESH)" />
-                            </div>
-                        </div>
-
-                        @* 30 *@
-                        <div class="form-group row">
-                            <label for="PLATFORMS_TARA" class="col col-form-label">PLATFORMS_TARA:</label>
-                            <div class="col">
-                                <InputText @bind-Value="vagon.PLATFORMS_TARA" id="PLATFORMS_TARA" class="form-control" />
-                                <ValidationMessage For="@(() => vagon.PLATFORMS_TARA)" />
-                            </div>
-                        </div>
-
-                        @* 31 *@
-                        <div class="form-group row">
-                            <label for="PLATFORMS_BRUTTO" class="col col-form-label">PLATFORMS_BRUTTO:</label>
-                            <div class="col">
-                                <InputText @bind-Value="vagon.PLATFORMS_BRUTTO" id="PLATFORMS_BRUTTO" class="form-control" />
-                                <ValidationMessage For="@(() => vagon.PLATFORMS_BRUTTO)" />
-                            </div>
-                        </div>
-
-                        @* 32 *@
-                        <div class="form-group row">
-                            <label for="ID_PLATFORMS" class="col col-form-label">ID_PLATFORMS:</label>
-                            <div class="col">
-                                <InputNumber @bind-Value="vagon.ID_PLATFORMS" id="ID_PLATFORMS" class="form-control" />
-                                <ValidationMessage For="@(() => vagon.ID_PLATFORMS)" />
-                            </div>
-                        </div>
-
-                    </div>
-                    @* четвёртый блок окончание *@
+                <div class="col-md-3" style="background-color: antiquewhite">
+                    <button class="btn btn-primary" @onclick="SaveToDb">Save input in db</button>
                 </div>
+
+                <div class="col-md-3" style="background-color: aqua">tree</div>
+
+                <div class="col-md-3" style="background-color: blueviolet">one</div>
 
             </div>
 
-            <br />
-            <div class="container-fluid border border-dark">
-
-                <div class="row">
-
-                    <div class="col-md-3" style="background-color: antiquewhite">
-                        <button class="btn btn-primary" @onclick="SaveToDb">Save input in db</button>
-                    </div>
-
-                    <div class="col-md-3" style="background-color: aqua">tree</div>
-
-                    <div class="col-md-3" style="background-color: blueviolet">one</div>
-
-                </div>
-
-            </div>
-        </EditForm>
-    </form>
+        </div>
+    </EditForm>
 </div>
 
 @code {
