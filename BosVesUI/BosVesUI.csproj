@@ -5,11 +5,26 @@
     <UserSecretsId>36a2323d-317b-456f-897c-10f265e9bd3c</UserSecretsId>
   </PropertyGroup>
   <ItemGroup>
+    <Content Remove="Components\InputTime.razor" />
+  </ItemGroup>
+  <ItemGroup>
     <Folder Include="Components\" />
     <Folder Include="Models\" />
     <Folder Include="wwwroot\images\" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Components.QuickGrid" Version="8.0.6" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\BosVesAppLibrary\BosVesAppLibrary.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Components\InputTime.razor" />
+  </ItemGroup>
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="Components\InputTime.razor" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Shared\Components\InputTime.razor" />
   </ItemGroup>
 </Project>
