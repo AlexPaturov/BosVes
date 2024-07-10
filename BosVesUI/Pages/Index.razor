@@ -17,7 +17,8 @@
    @*  <button class="btn btn-primary" @onclick=inputAdaptive>inputAdaptive</button>*@
     <br/> 
     <button class="btn btn-primary" @onclick=tableOne>tableOne</button>
-
+    <br />
+    <button class="btn btn-primary" @onclick=QuickGridOne>QuickGridOne</button>
 </div>
 
 <h1 class="page-heading text-uppercase mb-4">New Bos Ves</h1>
@@ -86,9 +87,14 @@
         navManager.NavigateTo("/Pages/TableOne");
     }
 
+    private void QuickGridOne()
+    {
+        navManager.NavigateTo("/Pages/QuickGridOne");
+    }
+
 }
 
-@* @code{ "/Pages/InputThree" /Pages/TableOne
+@* @code{ "/Pages/InputThree" /Pages/QuickGridOne
     private List<GruzGdModel> gruzes { get; set; }
 
     protected async override Task OnInitializedAsync()

@@ -250,6 +250,7 @@ public class GpriData
                       "and VR = @VR " +
                       "and VESY = @VESY " + 
                       "and NVAG = @NVAG";
+
          var parameters = new { DT = pDt, VR = pVr, NVAG = nvag, VESY = vikno };
          return await connection.QueryAsync<GpriModel>(query, parameters);
       }

@@ -1,4 +1,4 @@
-@import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
+﻿@import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
 
 html, body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
@@ -62,10 +62,36 @@ a, .btn-link {
     .blazor-error-boundary::after {
         content: "An error has occurred."
     }
-
+/* Начало проекта */
 .container {
-    max-width: 1800px;
+    max-width: auto;
+    margin: 0px auto 10px;
+    padding: 0px 0px;
+}
 
-    margin: 0px auto;
-    padding: 0px 10px;
+.table-responsive {
+    overflow-x: auto;
+    white-space: nowrap;
+}
+
+/* Оформление грида - цвет и границы между ячейками */
+.styled-grid table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.styled-grid th, .styled-grid td {
+    border: 1px solid black;
+    padding: 8px;
+    text-align: left;
+}
+
+.styled-grid th {
+    /*background-color: #f2f2f2;*/
+    background-color:aqua;
+    /*font-weight:100;*/
+}
+
+.col-dt td {
+    width: 500px;
 }
