@@ -1,4 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 // Ж.Д. приход
 
 
@@ -7,11 +10,14 @@ namespace BosVesAppLibrary.Models
    public class GpriModel
    {
 
+      [DataType(DataType.Date)]
+      public DateTime DT { get; set; } = DateTime.Now;    // дата взвешивания состава
 
-      public DateTime DT { get; set; } = DateTime.Now;      // дата взвешивания состава
-      
-      
-      public DateTime VR { get; set; } = DateTime.Now;       // время взвешивания состава
+      public TimeSpan VR { get; set; } = new TimeSpan(DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second);
+
+      [NotMapped]
+      [DataType(DataType.Time)]
+      public DateTime VRDateTime => DateTime.Today.Add(VR);
 
       [StringLength(10, ErrorMessage = "Максимальная длина 10 символов")]
       public string NVAG { get; set; }                // номер вагона
@@ -112,7 +118,9 @@ namespace BosVesAppLibrary.Models
       [Range(0, int.MaxValue, ErrorMessage = "Ошибка подстановки ID ")]
       public int? ID_PLATFORMS { get; set; }          // id записи, которая была взята для подставления тары
 
-      [StringLength(3, ErrorMessage = "Максимальная длина 3 символа")]
+      [Column(TypeName = "VARCHAR")]
+      [StringLength(3)]
+      [Unicode(false)]
       public string SHABLON { get; set; }            // был ли взят шаблон 
    }
 }
