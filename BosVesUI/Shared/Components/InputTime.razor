@@ -1,0 +1,36 @@
+﻿@inherits InputBase<TimeSpan>
+
+<input type="time" @bind-value="formattedTime" @bind-value:event="oninput" class="form-control" />
+
+@code {
+
+    private DateTime formattedTime
+    {
+        get
+        {
+            return DateTime.ParseExact(Value.ToString(@"hh\:mm\:ss"), "HH:mm:ss",
+                                       System.Globalization.CultureInfo.InvariantCulture);
+        }
+
+        set
+        {
+            if (TimeSpan.TryParseExact(value.ToString(@"hh\:mm\:ss"), @"hh\:mm\:ss", null, out var parsedValue))
+            {
+                CurrentValue = parsedValue;
+            }
+        }
+    }
+
+    protected override bool TryParseValueFromString(string value, out TimeSpan result, out string validationErrorMessage)
+    {
+        if (TimeSpan.TryParseExact(value, @"hh\:mm\:ss", null, out result))
+        {
+            validationErrorMessage = null;
+            return true;
+        }
+
+        result = default;
+        validationErrorMessage = "Invalid time format";
+        return false;
+    }
+}
