@@ -1,16 +1,14 @@
-﻿@page "/SampleData"
+﻿@page "/Pages/SampleData"
 @using System.Globalization
 @using System.ComponentModel.DataAnnotations
-@using BosVesUI.Shared.Components
+@* @using BosVesUI.Shared.Components *@
 @inject GruzGdData gruzgddata
 @inject GpriData gpridata
 @inject NavigationManager navManager
 
 <h3>SampleData</h3>
-<div asp-validation-summary="All" class="text-danger text-center"></div> <!-- Теперь у нас будут выводиться все ошибки уровня модели. -->
 
-<form>
-    <div class="form-row" style="background-color:aqua">
+    <div class="container" style="background-color:aqua">
         <EditForm Model="vagon" OnValidSubmit="HandleValidSubmit">
             <DataAnnotationsValidator />
             
@@ -25,13 +23,13 @@
             </div>
 
             @* 2 *@
-            <div class="form-group row">
+           @*  <div class="form-group row">
                 <label for="VR" class="col-sm-2 col-form-label">Время взвешивания</label>
                 <div class="col-sm-2">
-                    <InputTime @bind-Value="vagon.VR" id="VR" class="form-control" />
+                  
                     <ValidationMessage For="@(() => vagon.VR)" />
                 </div>
-            </div>
+            </div> *@
 
             @* 3 *@
             <div class="form-group row">
@@ -246,15 +244,6 @@
                 </div>
             </div>
 
-            @* 26 *@
-            <div class="form-group row">
-                <label for="KOD_SAP" class="col-sm-2 col-form-label">KOD_SAP:</label>
-                <div class="col-sm-2">
-                    <InputText @bind-Value="vagon.KOD_SAP" id="KOD_SAP" class="form-control" />
-                    <ValidationMessage For="@(() => vagon.KOD_SAP)" />
-                </div>
-            </div>
-
             @* 27 *@
             <div class="form-group row">
                 <label for="N_TEPLOVOZ" class="col-sm-2 col-form-label">N_TEPLOVOZ:</label>
@@ -313,7 +302,7 @@
     </div>
 
     <button class="btn btn-primary" @onclick="SaveToDb">Save input in db</button> @* Сохраняю введённые данные из инпутов в базу *@
-</form>
+
 
 @code {
 

@@ -69,29 +69,40 @@ a, .btn-link {
     padding: 0px 0px;
 }
 
+
 .table-responsive {
     overflow-x: auto;
+    overflow-y: scroll;
+    height: 300px;                   /* Adjust the height as needed */ 
     white-space: nowrap;
 }
 
-/* Оформление грида - цвет и границы между ячейками */
-.styled-grid table {
-    border-collapse: collapse;
-    width: 100%;
+.selected-row {
+    background-color: #f2f2f2;       /* Add more styling as needed */
 }
 
-.styled-grid th, .styled-grid td {
-    border: 1px solid black;
-    padding: 8px;
+table {
     text-align: left;
+    position: relative;
 }
 
-.styled-grid th {
-    /*background-color: #f2f2f2;*/
-    background-color:aqua;
-    /*font-weight:100;*/
+th {
+    background: white;
+    position: sticky;
+    top: 0;
 }
 
-.col-dt td {
-    width: 500px;
+/*table thead tr{
+    display:block;
 }
+
+table th,table td{
+    width:100px;//fixed width
+}
+
+
+table  tbody{
+  display:block;
+  height:200px;
+  overflow:auto;//set tbody to auto
+}*/

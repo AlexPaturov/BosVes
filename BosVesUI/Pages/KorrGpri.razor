@@ -1,6 +1,7 @@
 ﻿@page "/Pages/KorrGpri"
 @using System.Globalization
 @using System.ComponentModel.DataAnnotations
+@using BosVesUI.Shared.Components
 @inject GpriData gpridata
 @inject NavigationManager navManager
 
@@ -89,15 +90,15 @@
                         </div>
 
                         @* 2 *@
-                       @*  <div class="col">
+                        <div class="col">
                             <div class="form-group row">
                                 <label for="VR" class="col col-form-label">Время взвешивания</label>
                                 <div class="col">
-                                    <InputDate Type="InputDateType.Time" @bind-Value:format="hh:mm:ss" @bind-Value="@vagon.VR" id="VR" step="1" class="form-control" />
+                                    <InputTime @bind-Value="vagon.VR" id="VR" step="1" class="form-control" />
                                     <ValidationMessage For="@(() => vagon.VR)" />
                                 </div>
                             </div>
-                        </div> *@
+                        </div>
 
                         @* 3 *@
                         <div class="col">
@@ -329,14 +330,7 @@
                             </div>
                         </div>
 
-                        @* 26 *@
-                        <div class="form-group row">
-                            <label for="KOD_SAP" class="col col-form-label">KOD_SAP:</label>
-                            <div class="col">
-                                <InputText @bind-Value="vagon.KOD_SAP" id="KOD_SAP" class="form-control" />
-                                <ValidationMessage For="@(() => vagon.KOD_SAP)" />
-                            </div>
-                        </div>
+
 
                         @* 27 *@
                         <div class="form-group row">

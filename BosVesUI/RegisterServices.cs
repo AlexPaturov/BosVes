@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using BosVesUI.Pages;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace BosVesUI;
 

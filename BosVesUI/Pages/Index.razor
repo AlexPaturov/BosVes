@@ -11,14 +11,23 @@
     <br/>
     <button class="btn btn-primary" @onclick=inputTwo>inputTwo</button>
     <br/> *@
+
     <br />
-    <button class="btn btn-primary" @onclick=inputThree>KorrGpri</button>
-    <br/>
-   @*  <button class="btn btn-primary" @onclick=inputAdaptive>inputAdaptive</button>*@
-    <br/> 
+    <button class="btn btn-primary" @onclick=KorrGpri>KorrGpri</button>
+    @*  <br/>
+    <button class="btn btn-primary" @onclick=inputAdaptive>inputAdaptive</button>*@
+
+    <br />
     <button class="btn btn-primary" @onclick=tableOne>tableOne</button>
+
+    @* <br />
+    <button class="btn btn-primary" @onclick=QuickGridOne>QuickGridOne</button>*@
+
+@*     <br />
+    <button class="btn btn-primary" @onclick=tableone>tableone</button> *@
+
     <br />
-    <button class="btn btn-primary" @onclick=QuickGridOne>QuickGridOne</button>
+    <button class="btn btn-primary" @onclick=tabletwo>tabletwo</button>
 </div>
 
 <h1 class="page-heading text-uppercase mb-4">New Bos Ves</h1>
@@ -59,7 +68,7 @@
 
     private void redirect()
     {
-        navManager.NavigateTo("/SampleData");
+        navManager.NavigateTo("/Pages/SampleData");
     }
 
     private void inputtest()
@@ -72,7 +81,7 @@
         navManager.NavigateTo("/Pages/InputTwo");
     }
 
-    private void inputThree()
+    private void KorrGpri()
     {
         navManager.NavigateTo("/Pages/KorrGpri");
     }
@@ -87,14 +96,13 @@
         navManager.NavigateTo("/Pages/TableOne");
     }
 
-    private void QuickGridOne()
+    private void tabletwo()
     {
-        navManager.NavigateTo("/Pages/QuickGridOne");
+        navManager.NavigateTo("/Pages/tabletwo");
     }
-
 }
 
-@* @code{ "/Pages/InputThree" /Pages/QuickGridOne
+@* @code{ "/Pages/InputThree" /Pages/productgrid
     private List<GruzGdModel> gruzes { get; set; }
 
     protected async override Task OnInitializedAsync()

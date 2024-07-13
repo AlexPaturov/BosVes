@@ -110,11 +110,12 @@
     private string inNvag = string.Empty;
     private string inGruz = string.Empty;
     private List<GpriModel> listVags = null;
+    
     PaginationState pagination = new PaginationState { ItemsPerPage = 10 };
 
     private GpriModel vagon = new GpriModel();
 
-    private async void GetByDtVr() // @onclick=ShowDtVr
+    private async void GetByDtVr()
     {
         listVags = (List<GpriModel>)await gpridata.GetByDtVr(inDt.ToString("yyyy-MM-dd"), inVr.ToString("HH:mm:ss"), "10");
     }

@@ -1,0 +1,429 @@
+﻿@page "/Pages/tabletwo"
+@using Microsoft.AspNetCore.Components.QuickGrid
+@using BosVesUI.Shared.Components
+@inject GpriData gpridata
+@inject NavigationManager navManager
+
+<div class="container border border-dark">
+    <h5>container tabletwo</h5>
+
+    @* Поля ввода для фильтров *@
+    <div class="row">
+
+        @* 1 *@
+        <div class="col">
+            <div class="form-group row">
+                <label for="DT" class="col col-form-label">Дата взвешивания</label>
+                <div class="col">
+                    <InputDate Type="InputDateType.Date" @bind-Value="@inDt" id="idDT" class="form-control" />
+                    @* <ValidationMessage For="@(() => inDt)" /> *@
+                </div>
+            </div>
+        </div>
+
+        @* 2 *@
+        <div class="col">
+            <div class="form-group row">
+                <label for="VR" class="col col-form-label">Время взвешивания</label>
+                <div class="col">
+                    <InputDate Type="InputDateType.Time" @bind-Value:format="hh:mm:ss" @bind-Value="@inVr" id="VR" step="1" class="form-control" />
+                    @* <ValidationMessage For="@(() => inVr)" /> *@
+                </div>
+            </div>
+        </div>
+
+        @* 3 *@
+        <div class="col">
+            <div class="form-group row">
+                <label for="NVAG" class="col col-form-label">Номер вагона</label>
+                <div class="col">
+                    <InputText @bind-Value="@inNvag" id="NVAG" class="form-control" />
+                    @* <ValidationMessage For="@(() => inNvag)" /> *@
+                </div>
+            </div>
+        </div>
+
+        <button class="btn btn-primary" @onclick="GetByDtVr">Save input in db</button>
+    </div>
+
+    @* Таблица начало *@
+    @if (listVags == null)
+    {
+        <p>Loading . . . </p>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <div style="width:fit-content">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            @foreach (var vp in GridCaptionHelper.GpriGridChapters.Values)
+                            {
+                                <th> @vp </th>
+                            }
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in listVags)
+                        {
+                            <tr @onclick="() => OnRowClick(item.ID)" class="@GetRowClass(item.ID)">
+                                <td> @item.DT.ToShortDateString() </td>
+                                <td> @item.VR.ToString(@"hh\:mm\:ss") </td>
+                                <td> @item.NVAG </td>
+                                <td> @item.NDOK </td>
+                                <td> @item.GRUZ </td>
+                                <td> @item.BRUTTO </td>
+                                <td> @item.TAR_BRS </td>
+                                <td> @item.TAR_DOK </td>
+                                <td> @item.NETTO </td>
+                                <td> @item.NET_DOK </td>
+                                <td> @item.MUSOR </td>
+                                <td> @item.CEX </td>
+                                <td> @item.TARIF </td>
+                                <td> @item.POTR </td>
+                                <td> @item.PLAT </td>
+                                <td> @item.SKOR </td>
+                                <td> @item.VESY </td>
+                                <td> @item.TN </td>
+                                <td> @item.NPP </td>
+                                <td> @item.V13 </td>
+                                <td> @item.V24 </td>
+                                <td> @item.V12 </td>
+                                <td> @item.V34 </td>
+                                <td> @item.PP </td>
+                                <td> @item.PR </td>
+                                <td> @item.DELTA </td>
+                                <td> @item.N_TEPLOVOZ </td>
+                                <td> @item.POGRESHNOST </td>
+                                <td> @item.REJVZVESH </td>
+                                <td> @item.ID </td>
+                                <td> @item.PLATFORMS_TARA </td>
+                                <td> @item.PLATFORMS_BRUTTO </td>
+                                <td> @item.ID_PLATFORMS </td>
+                                <td> @item.SHABLON </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    }
+    <h6>selected row: @selRowID </h6>
+    @* Таблица окончание *@
+
+    @* Блок полей для корректировки - начало *@
+    <div class="row border border-dark">
+        <EditForm Model="vagon" OnValidSubmit="HandleValidSubmit">
+            <DataAnnotationsValidator />
+            <div class="row">
+                <h3>Блок полей для корректировки</h3>
+                @* первый блок начало *@
+                <div class="col-md-3" style="background-color: antiquewhite">
+
+                    @* 1 *@
+                    <div class="col">
+                        <div class="form-group row">
+                            <label for="DT" class="col col-form-label">Дата взвешивания</label>
+                            <div class="col">
+                                <InputDate Type="InputDateType.Date" @bind-Value="@vagon.DT" id="idDT" class="form-control" />
+                                <ValidationMessage For="@(() => vagon.DT)" />
+                            </div>
+                        </div>
+                    </div>
+
+                    @* 2 *@
+                    <div class="col">
+                        <div class="form-group row">
+                            <label for="VR" class="col col-form-label">Время взвешивания</label>
+                            <div class="col">
+                                <InputTime @bind-Value="vagon.VR" id="VR" step="1" class="form-control" />
+                                <ValidationMessage For="@(() => vagon.VR)" />
+                            </div>
+                        </div>
+                    </div>
+
+                    @* 3 *@
+                    <div class="col">
+                        <div class="form-group row">
+                            <label for="NVAG" class="col col-form-label">Номер вагона</label>
+                            <div class="col">
+                                <InputText @bind-Value="@vagon.NVAG" id="NVAG" class="form-control" />
+                                <ValidationMessage For="@(() => vagon.NVAG)" />
+                            </div>
+                        </div>
+                    </div>
+
+                    @* 4 *@
+                    <div class="col">
+                        <div class="form-group row">
+                            <label for="NDOK" class="col col-form-label">Номер докум.</label>
+                            <div class="col">
+                                <InputNumber @bind-Value="@vagon.NDOK" id="NDOK" class="form-control" />
+                                <ValidationMessage For="@(() => vagon.NDOK)" />
+                            </div>
+                        </div>
+                    </div>
+
+                    @* 5 *@
+                    <div class="form-group row">
+                        <label for="GRUZ" class="col col-form-label">Груз</label>
+                        <div class="col">
+                            <InputText @bind-Value="@vagon.GRUZ" id="GRUZ" class="form-control" />
+                            <ValidationMessage For="@(() => vagon.GRUZ)" />
+                        </div>
+                    </div>
+
+                </div>
+                @* первый блок окончание *@
+                @* второй блок начало *@
+                <div class="col-md-3" style="background-color: aqua">
+
+                    @* 6 *@
+                    <div class="form-group row">
+                        <label for="BRUTTO" class="col col-form-label">Брутто</label>
+                        <div class="col">
+                            <InputNumber @bind-Value="@vagon.BRUTTO" id="BRUTTO" class="form-control" />
+                            <ValidationMessage For="@(() => vagon.BRUTTO)" />
+                        </div>
+                    </div>
+
+                    @* 7 *@
+                    <div class="form-group row">
+                        <label for="TAR_BRS" class="col col-form-label">Тара брус</label>
+                        <div class="col">
+                            <InputNumber @bind-Value="@vagon.TAR_BRS" id="TAR_BRS" class="form-control" />
+                            <ValidationMessage For="@(() => vagon.TAR_BRS)" />
+                        </div>
+                    </div>
+
+                    @* 8 *@
+                    <div class="form-group row">
+                        <label for="TAR_DOK" class="col col-form-label">Тара докум.</label>
+                        <div class="col">
+                            <InputNumber @bind-Value="@vagon.TAR_DOK" id="TAR_DOK" class="form-control" />
+                            <ValidationMessage For="@(() => vagon.TAR_DOK)" />
+                        </div>
+                    </div>
+
+                    @* 9 *@
+                    <div class="form-group row">
+                        <label for="NETTO" class="col col-form-label">Нетто</label>
+                        <div class="col">
+                            <InputNumber @bind-Value="@vagon.NETTO" id="NETTO" class="form-control" />
+                            <ValidationMessage For="@(() => vagon.NETTO)" />
+                        </div>
+                    </div>
+
+                    @* 10 *@
+                    <div class="form-group row">
+                        <label for="NET_DOK" class="col col-form-label">Нетто докум.</label>
+                        <div class="col">
+                            <InputNumber @bind-Value="@vagon.NET_DOK" id="NET_DOK" class="form-control" />
+                            <ValidationMessage For="@(() => vagon.NET_DOK)" />
+                        </div>
+                    </div>
+
+                </div>
+                @* второй блок окончание *@
+                @* третий блок начало *@
+                <div class="col-md-3" style="background-color: blueviolet">
+
+                    @* 11 *@
+                    <div class="form-group row">
+                        <label for="MUSOR" class="col col-form-label">Мусор</label>
+                        <div class="col">
+                            <InputNumber @bind-Value="@vagon.MUSOR" id="MUSOR" class="form-control" />
+                            <ValidationMessage For="@(() => vagon.MUSOR)" />
+                        </div>
+                    </div>
+
+                    @* 12 *@
+                    <div class="form-group row">
+                        <label for="CEX" class="col col-form-label">Цех</label>
+                        <div class="col">
+                            <InputNumber @bind-Value="@vagon.CEX" id="CEX" class="form-control" />
+                            <ValidationMessage For="@(() => vagon.CEX)" />
+                        </div>
+                    </div>
+
+                    @* 13 *@
+                    <div class="form-group row">
+                        <label for="TARIF" class="col col-form-label">Тариф</label>
+                        <div class="col">
+                            <InputNumber @bind-Value="@vagon.TARIF" id="TARIF" class="form-control" />
+                            <ValidationMessage For="@(() => vagon.TARIF)" />
+                        </div>
+                    </div>
+
+                    @* 14 *@
+                    <div class="form-group row">
+                        <label for="POTR" class="col col-form-label">Потребитель</label>
+                        <div class="col">
+                            <InputText @bind-Value="vagon.POTR" id="POTR" class="form-control" />
+                            <ValidationMessage For="@(() => vagon.POTR)" />
+                        </div>
+                    </div>
+
+                    @* 15 *@
+                    <div class="form-group row">
+                        <label for="PLAT" class="col col-form-label">Плательщик</label>
+                        <div class="col">
+                            <InputText @bind-Value="vagon.PLAT" id="PLAT" class="form-control" />
+                            <ValidationMessage For="@(() => vagon.PLAT)" />
+                        </div>
+                    </div>
+
+                    @* Проверяю номер весов - если 9 - открываю кнопку *@
+                    @if (true)
+                    {
+                        <div>
+                            <button class="btn btn-primary" @onclick="SetBruttoAsTara">Тару как брутто</button>
+                        </div>
+                    }
+
+                </div>
+                @* третий блок окончание *@
+                @* четвёртый блок начало *@
+                <div class="col-md-3" style="background-color: gold">
+
+                    @* 16 *@
+                    <div class="form-group row">
+                        <label for="TN" class="col col-form-label">Таб.ном.</label>
+                        <div class="col">
+                            <InputNumber @bind-Value="vagon.TN" id="TN" class="form-control" />
+                            <ValidationMessage For="@(() => vagon.TN)" />
+                        </div>
+                    </div>
+
+                    @* 17 *@
+                    <div class="form-group row">
+                        <label for="N_TEPLOVOZ" class="col col-form-label">Ном. тепл.</label>
+                        <div class="col">
+                            <InputText @bind-Value="vagon.N_TEPLOVOZ" id="N_TEPLOVOZ" class="form-control" />
+                            <ValidationMessage For="@(() => vagon.N_TEPLOVOZ)" />
+                        </div>
+                    </div>
+
+                    @* 18 *@
+                    <div class="form-group row">
+                        <label for="POGRESHNOST" class="col col-form-label">Погрешность</label>
+                        <div class="col">
+                            <InputNumber @bind-Value="vagon.POGRESHNOST" id="POGRESHNOST" class="form-control" />
+                            <ValidationMessage For="@(() => vagon.POGRESHNOST)" />
+                        </div>
+                    </div>
+
+                    @* 19 *@
+                    <div class="form-group row">
+                        <label for="REJVZVESH" class="col col-form-label">Реж. взвеш.</label>
+                        <div class="col">
+                            <InputText @bind-Value="vagon.REJVZVESH" type="text" id="REJVZVESH" class="form-control" />
+                            <ValidationMessage For="@(() => vagon.REJVZVESH)" />
+                        </div>
+                    </div>
+
+                    <div>
+                        <button class="btn btn-primary" @onclick="UpdVag">Сохранить</button>
+                        <button class="btn btn-primary" @onclick="CleanModel">Очистить</button>
+                    </div>
+
+                </div>
+                @* четвёртый блок окончание *@
+            </div>
+        </EditForm>
+    </div>
+    @* Блок полей для корректировки - окончание *@
+
+    @* подвал - нужно будет оформить  *@
+    <footer class="border border-secondary">
+        <div class="container" style="background-color:darkgray">
+            <h6> footer dark-gray </h6>
+        </div>
+    </footer>
+</div> @* "container *@
+
+@code {
+    private DateTime inDt = DateTime.ParseExact("2024-07-05", "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture);
+    private DateTime inVr = DateTime.ParseExact("10:13:33", "HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
+    private string inNvag = string.Empty;
+    private string inGruz = string.Empty;
+    private int? selectedRowId;                         // временно для отображения ID выбранной ячейки
+    private List<GpriModel> listVags = null;
+    private GpriModel vagon = new GpriModel();
+
+    private bool isSaving = false;
+    private string selRowID = string.Empty;
+
+    protected async override Task OnInitializedAsync()
+    {
+        //vagon.DT = DateTime.ParseExact("2024-07-05", "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture);
+    }
+
+    private async Task GetByDtVr()
+    {
+        listVags = (List<GpriModel>)await gpridata.GetByDtVr(inDt.ToString("yyyy-MM-dd"), inVr.ToString("HH:mm:ss"), "10");
+    }
+
+    #region действия на клике по строке в гриде
+    private void OnRowClick(int? id)
+    {
+        selectedRowId = id;
+        selRowID = selectedRowId.ToString(); // для отладки - отображаю ID записи по которой кликнул
+
+        vagon = listVags.Where(i => i.ID == id).FirstOrDefault();   // Взять все данные из клика по гриду -> переместить в объект,
+    }
+
+    private string GetRowClass(int? id)
+    {
+        return selectedRowId == id ? "selected-row" : "";
+    }
+    #endregion
+
+    private void HandleValidSubmit()
+    {
+        // Handle the valid form submission
+        //if (vagon.ModelState.isValid)
+    }
+
+    #region Подставляю тару как брутто
+    private void SetBruttoAsTara()
+    {
+        <!-- Large modal -->
+        // <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-lg">Large modal</button>
+
+        // <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        //     <div class="modal-dialog modal-lg">
+        //         <div class="modal-content">
+        //             ...
+        //         </div>
+        //     </div>
+        // </div>
+    }
+    #endregion
+    #region Обновляем существующую запись в базе
+    private async Task UpdVag()
+    {
+        if (vagon is not null)
+        {
+            try
+            {
+                await gpridata.UpdVag(vagon);
+                vagon = new GpriModel(); // чистим модель
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());    
+            }
+
+        }
+          // иначе показать всплывающее окошко - нечего сохранять
+    }
+    #endregion
+    #region CleanModel()
+    private void CleanModel()
+    {
+        vagon = new GpriModel();
+    }
+    #endregion
+}

@@ -27,4 +27,9 @@
   <ItemGroup>
     <None Include="Shared\Components\InputTime.razor" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Update="Pages\TableTwo.razor">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+    </Content>
+  </ItemGroup>
 </Project>

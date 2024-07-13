@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Extensions.Options;
 using System.Data;
 
+
 namespace BosVesAppLibrary.DataAccess;
 public class GpriData
 {
@@ -51,7 +52,6 @@ public class GpriData
                                        ",PP " +
                                        ",PR " +
                                        ",DELTA " +
-                                       ",KOD_SAP " +
                                        ",N_TEPLOVOZ " +
                                        ",POGRESHNOST " +
                                        ",REJVZVESH " +
@@ -108,7 +108,7 @@ public class GpriData
       }
    }
 
-   public async Task UpdVag(GpriModel vagon)
+   public async Task UpdVag(GpriModel vagon)                   // в работе
    {
       using (var connection = CreateConnection())
       {
@@ -117,7 +117,6 @@ public class GpriData
                                     ",NVAG = @NVAG " +
                                     ",NDOK = @NDOK " +
                                     ",GRUZ = @GRUZ " +
-                                    ",BRUTTO = @BRUTTO " +
                                     ",TAR_BRS = @TAR_BRS " +
                                     ",TAR_DOK = @TAR_DOK " +
                                     ",NETTO = @NETTO " +
@@ -130,7 +129,6 @@ public class GpriData
                                     ",SKOR = @SKOR " +
                                     ",VESY = @VESY " +
                                     ",TN = @TN " +
-                                    ",NPP = @NPP " +
                                     ",V13 = @V13 " +
                                     ",V24 = @V24 " +
                                     ",V12 = @V12 " +
@@ -138,24 +136,19 @@ public class GpriData
                                     ",PP = @PP " +
                                     ",PR = @PR " +
                                     ",DELTA = @DELTA " +
-                                    ",DATPER = @DATPER " +
-                                    ",DT1 = @DT1 " +   // убрать ? где формируется
-                                    ",VR1 = @VR1 " +   // убрать ? где формируется
-                                    ",KOD_SAP = @KOD_SAP " +
                                     ",N_TEPLOVOZ = @N_TEPLOVOZ " +
-                                    ",VR_PRV = @VR_PRV " +
                                     ",POGRESHNOST = @POGRESHNOST " +
                                     ",REJVZVESH = @REJVZVESH " +
                                     ",PLATFORMS_TARA = @PLATFORMS_TARA " +
                                     ",PLATFORMS_BRUTTO = @PLATFORMS_BRUTTO " +
                                     ",ID_PLATFORMS = @ID_PLATFORMS " +
-                                    "SHABLON = @SHABLON " +
+                                    ",SHABLON = @SHABLON " + // сделать триггер на базе
                      "where id = @ID";   
          await connection.ExecuteAsync(query, vagon);
       }
    }
 
-   public async Task<IEnumerable<GpriModel>> GetByDtVr(string pDt, string pVr, string vikno) // в работе
+   public async Task<IEnumerable<GpriModel>> GetByDtVr(string pDt, string pVr, string vikno) // прооверен
    {
       using (var connection = CreateConnection())
       {
@@ -186,15 +179,14 @@ public class GpriData
                            ",PP " +                //
                            ",PR " +                //
                            ",DELTA " +             //
-                           ",KOD_SAP " +           //
                            ",N_TEPLOVOZ " +        //
-                           ",VR_PRV " +            //
                            ",POGRESHNOST " +       //
                            ",REJVZVESH " +         //
                            ",ID " +                //
                            ",PLATFORMS_TARA " +    //
                            ",PLATFORMS_BRUTTO " +  //
                            ",ID_PLATFORMS " +      //
+                           //",SHABLON " +      //
                      "FROM gpri " +                //
                      "where DT = @DT " +           //
                      "and VR = @VR " +             //
@@ -236,9 +228,7 @@ public class GpriData
                               ",PP " +
                               ",PR " +
                               ",DELTA " +
-                              ",KOD_SAP " +
                               ",N_TEPLOVOZ " +
-                              ",VR_PRV " +
                               ",POGRESHNOST " +
                               ",REJVZVESH " +
                               ",ID " +

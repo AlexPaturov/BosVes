@@ -29,7 +29,6 @@ public static class GridCaptionHelper
       {"PP", "PP"},
       {"PR", "PR"},
       {"DELTA", "DELTA"},
-      {"KOD_SAP", "Код сап"},
       {"N_TEPLOVOZ", "Ном. теплов."},
       {"POGRESHNOST", "Погрешность"},
       {"REJVZVESH", "Реж. взвеш."},

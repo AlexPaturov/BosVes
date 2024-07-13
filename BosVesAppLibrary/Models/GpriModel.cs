@@ -1,6 +1,4 @@
-﻿using System;
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 // Ж.Д. приход
 
@@ -46,9 +44,9 @@ namespace BosVesAppLibrary.Models
       [RegularExpression(@"^(0|-?\d{0,5}(\.\d{0,2})?)$", ErrorMessage = "Ошибка MUSOR")]
       public double? MUSOR { get; set; }              // процент замусоренности
 
-      [Required(ErrorMessage = "The integer value is required.")]
+      //[Required(ErrorMessage = "The integer value is required.")]
       [Range(0, 999, ErrorMessage = "Please enter a valid non-negative integer.")]
-      public Int16? CEX { get; set; }                  // цех получатель
+      public Int16? CEX { get; set; } = null;               // цех получатель
 
       [RegularExpression(@"^(0|-?\d{0,12}(\.\d{0,4})?)$", ErrorMessage = "Ошибка TARIF")]
       public double? TARIF { get; set; }              // тариф из документа уждт
@@ -62,14 +60,12 @@ namespace BosVesAppLibrary.Models
       [RegularExpression(@"^(0|-?\d{0,4}(\.\d{0,1})?)$", ErrorMessage = "Ошибка SKOR")]
       public double? SKOR { get; set; }               // скорость
 
-      [Required(ErrorMessage = "Введите целое число")]
       [Range(0, 99, ErrorMessage = "Диапазон ввода от 1 до 99")]
       public Int16? VESY { get; set; }                 // номер весов
 
       [Range(0, int.MaxValue, ErrorMessage = "Введите корректный номер")]
       public int? TN { get; set; }                     // табельный номер последнего сохранявшего изменения
 
-      [Required(ErrorMessage = "Введите целое число")]
       [Range(0, 100, ErrorMessage = "Диапазон ввода от 1 до 100")]
       public Int16? NPP { get; set; }                  // номер по порядку в составе
 
@@ -93,9 +89,6 @@ namespace BosVesAppLibrary.Models
 
       [RegularExpression(@"^(0|-?\d{0,7}(\.\d{0,1})?)$", ErrorMessage = "Ошибка DELTA")]
       public double? DELTA { get; set; }              // дельта
-
-      [StringLength(20, ErrorMessage = "Максимальная длина 20 символов")]
-      public string KOD_SAP { get; set; }
 
       [StringLength(30, ErrorMessage = "Максимальная длина 30 символов")]
       public string N_TEPLOVOZ { get; set; }          // номер тепловоза
