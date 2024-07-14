@@ -1,5 +1,6 @@
 ﻿@page "/Pages/tabletwo"
 @using BosVesUI.Shared.Components
+@using NetcodeHub.Packages.Components.Modal
 @inject GpriData gpridata
 @inject NavigationManager navManager
 
@@ -277,7 +278,7 @@
                     @if (true)
                     {
                         <div>
-                            <button class="btn btn-primary" @onclick="SetBruttoAsTara">Взять брутто как тару</button>
+                            <button class="btn btn-info" @onclick="OpenModal">Взять брутто как тару</button>
                         </div>
                     }
 
@@ -334,6 +335,26 @@
     </div>
     @* Блок полей для корректировки - окончание *@
 
+    @* Модальное окошко "Подстановка брутто как тары" начало *@
+    <Modal Actions="ButtonActions"
+           BootstrapClass="border-success"
+           CustomStyle="width:500px"
+           @bind-Open="IsOpen">
+
+        <ContentContent>
+           <p>data</p>
+        </ContentContent>
+
+        <ButtonTemplate>
+            <div class="d-flex justify-content-center align-content-center">
+                <button class="btn btn-success btn-sm" value="ok" style="margin-right:5px">Okay</button>
+                <button class="btn btn-danger btn-sm" value="cancel">Cancel</button>
+            </div>
+        </ButtonTemplate>
+
+    </Modal>
+    @* Модальное окошко "Подстановка брутто как тары" окончание *@
+
     @* подвал - нужно будет оформить  *@
     <footer class="border border-secondary">
         <div class="container" style="background-color:darkgray">
@@ -350,9 +371,14 @@
     private int? selectedRowId;                         // временно для отображения ID выбранной ячейки
     private List<GpriModel> listVags = null;
     private GpriModel vagon = new GpriModel();
-
     private bool isSaving = false;
     private string selRowID = string.Empty;
+    #region работа с модальным окном
+    public bool IsOpen { get; set; }
+    public string? SelectedAction { get; set; }
+    public bool Confirm { get; set; }
+    Confirmation? confirmation;
+    #endregion
 
     protected async override Task OnInitializedAsync()
     {
@@ -385,11 +411,23 @@
         //if (vagon.ModelState.isValid)
     }
 
-    #region Подставляю тару как брутто
-    private void SetBruttoAsTara()
+    #region Подставляю брутто как тару
+    void ButtonActions(string action)
     {
-
+        SelectedAction = action;
+        if (action == "ok")
+        {
+            Confirm = true;
+            Console.WriteLine(action);
+        }
+        else if (action == "cancel")
+        {
+            Console.WriteLine(action);
+            Confirm = false;    // you can also do something
+        }
     }
+
+    void OpenModal() => IsOpen = true;
     #endregion
     #region Обновляем существующую запись в базе
     private async Task UpdVag()
