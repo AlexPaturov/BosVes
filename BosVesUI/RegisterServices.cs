@@ -7,7 +7,6 @@ public static class RegisterServices
 {
    public static void ConfigureServices(this WebApplicationBuilder builder) 
    {
-      // Add services to the container.
       builder.Services.Configure<RequestLocalizationOptions>(options =>
       {
          var supportedCultures = new[] { "en-US", "ru", "uk" };
@@ -16,6 +15,7 @@ public static class RegisterServices
              .AddSupportedUICultures(supportedCultures);
       });
 
+      // Add services to the container.
       builder.Services.AddRazorPages();
       builder.Services.AddServerSideBlazor();
       builder.Services.AddMemoryCache();
@@ -29,5 +29,6 @@ public static class RegisterServices
       builder.Services.AddSingleton<ShablonData>();         // 
       builder.Services.AddSingleton<TaraPodstanovkaData>(); // 
       builder.Services.AddSingleton<VikVagData>();          // 
+      builder.Services.AddSingleton<BruttoAsTaraData>();    // 
    }
 }

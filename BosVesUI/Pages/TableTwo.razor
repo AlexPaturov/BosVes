@@ -1,5 +1,4 @@
 ﻿@page "/Pages/tabletwo"
-@using Microsoft.AspNetCore.Components.QuickGrid
 @using BosVesUI.Shared.Components
 @inject GpriData gpridata
 @inject NavigationManager navManager
@@ -278,7 +277,7 @@
                     @if (true)
                     {
                         <div>
-                            <button class="btn btn-primary" @onclick="SetBruttoAsTara">Тару как брутто</button>
+                            <button class="btn btn-primary" @onclick="SetBruttoAsTara">Взять брутто как тару</button>
                         </div>
                     }
 
@@ -389,16 +388,7 @@
     #region Подставляю тару как брутто
     private void SetBruttoAsTara()
     {
-        <!-- Large modal -->
-        // <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-lg">Large modal</button>
 
-        // <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-        //     <div class="modal-dialog modal-lg">
-        //         <div class="modal-content">
-        //             ...
-        //         </div>
-        //     </div>
-        // </div>
     }
     #endregion
     #region Обновляем существующую запись в базе
