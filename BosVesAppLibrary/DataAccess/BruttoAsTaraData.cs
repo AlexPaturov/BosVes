@@ -22,40 +22,35 @@ public class BruttoAsTaraData
    }
 
    // не переделывал согласно условию
-   public async Task<IEnumerable<BruttoAsTaraModel>> GetByDtVrNvag(string pDt, string pVr, string nvag, string vikno)
+   public async Task<IEnumerable<BruttoAsTaraModel>> GetByRangeDtAndNvag(string dtbegin, string dtend, string nvag, string vikno)
    {
       using (var connection = CreateConnection())
       {
-         var query = "SELECT " +
-                              "DT " +
-                              ",VR " +
-                              ",NVAG " +
-                              ",NDOK " +
-                              ",GRUZ " +
-                              ",BRUTTO " +
-                              ",TAR_BRS " +
-                              ",TAR_DOK " +
-                              ",NETTO " +
-                              ",NET_DOK " +
-                              ",CEX " +
-                              ",TARIF " +
-                              ",POTR " +
-                              ",PLAT " +
-                              ",VESY " +
-                              ",TN " +
-                              ",N_TEPLOVOZ " +
-                              ",POGRESHNOST " +
-                              ",REJVZVESH " +
-                              ",ID " +
-                              ",PLATFORMS_TARA " +
-                              ",PLATFORMS_BRUTTO " +
-                              ",ID_PLATFORMS " +
-                      "FROM gpri " +
-                      "where DT betweem @DTBEGIN AND @DTEND " + // переделать на between
-                      "and VESY = @VESY " + // ? нужно оставлять ?
-                      "and NVAG = @NVAG";
+         var query = "SELECT " +                                     //
+                              "DV.DT " +                             //
+                              ", DV.VR " +                           //
+                              ", DV.NVAG " +                         //
+                              ", DV.GRUZ " +                         //
+                              ", DV.BRUTTO " +                       //
+                              ", DV.TAR_BRS " +                      //
+                              ", DV.TAR_DOK " +                      //
+                              ", DV.NETTO " +                        //
+                              ", DV.NET_DOK " +                      //
+                              ", DV.CEX " +                          //
+                              ", DV.POTR " +                         //
+                              ", DV.VESY " +                         //
+                              ", DV.TN " +                           //
+                              ", DV.NPP " +                          //
+                              ", DV.ID " +                           //
+                              ", KC.NAIM " +                         //
+                      "FROM GPRI DV " +                              //
+                      "LEFT JOIN KCEX_GD KC on DV.CEX = KC.CEX " +   //
+                      "WHERE DT BETWEEN @DTBEGIN AND @DTEND " +      //
+                      "AND NVAG = @NVAG " +                          //
+                      "AND (DV.BRUTTO > 0) " +                       //
+                      "ORDER BY DV.DT, DV.VR, DV.NPP";               //
 
-         var parameters = new { DT = pDt, VR = pVr, NVAG = nvag, VESY = vikno };
+         var parameters = new { DTBEGIN = dtbegin, DTEND = dtend, NVAG = nvag };
          return await connection.QueryAsync<BruttoAsTaraModel>(query, parameters);
       }
    }
