@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BosVesAppLibrary.Models
 {
-   public class BruttoAsTaraModel
+   public class BruttoAsTaraModel : ICloneable
    {
 
       [DataType(DataType.Date)]
@@ -44,9 +44,6 @@ namespace BosVesAppLibrary.Models
       [StringLength(30, ErrorMessage = "Максимальная длина 30 символов")]
       public string POTR { get; set; }                // потребитель
 
-      [StringLength(30, ErrorMessage = "Максимальная длина 30 символов")]
-      public string PLAT { get; set; }                // плательщик
-
       [Range(0, 99, ErrorMessage = "Диапазон ввода от 1 до 99")]
       public Int16? VESY { get; set; }                 // номер весов
 
@@ -56,26 +53,15 @@ namespace BosVesAppLibrary.Models
       [Range(0, 100, ErrorMessage = "Диапазон ввода от 1 до 100")]
       public Int16? NPP { get; set; }                  // номер по порядку в составе
 
-      [StringLength(30, ErrorMessage = "Максимальная длина 30 символов")]
-      public string N_TEPLOVOZ { get; set; }          // номер тепловоза
-                                                   
-      [RegularExpression(@"^(0|-?\d{0,6}(\.\d{0,2})?)$", ErrorMessage = "Ошибка POGRESHNOST")]
-      public int? POGRESHNOST { get; set; }            // погрешность взвешивания
-
-      [StringLength(11, ErrorMessage = "Максимальная длина 11 символов")]
-      public string REJVZVESH { get; set; }              // режим взвешивания
-
       [Range(0, int.MaxValue, ErrorMessage = "Ошибка ID")]
       public int? ID { get; }                          // уникальный идентификатор записи
 
-      [StringLength(8, ErrorMessage = "Максимальная длина 8 символов")]
-      public string PLATFORMS_TARA { get; set; }      // комбинация включённых платформ при взвешивании
+      [StringLength(15, ErrorMessage = "Максимальная длина 15 символов")]
+      public string NAIM { get; set; }                // наименование цеха
 
-      [StringLength(8, ErrorMessage = "Максимальная длина 8 символов")]
-      public string PLATFORMS_BRUTTO { get; set; }    // комбинация включённых платформ при взвешивании
-
-      [Range(0, int.MaxValue, ErrorMessage = "Ошибка подстановки ID ")]
-      public int? ID_PLATFORMS { get; set; }          // id записи, которая была взята для подставления тары
-
+      public object Clone()
+      {
+         return MemberwiseClone();
+      }
    }
 }

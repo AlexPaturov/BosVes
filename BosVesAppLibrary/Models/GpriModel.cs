@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BosVesAppLibrary.Models
 {
-   public class GpriModel
+   public class GpriModel : ICloneable
    {
 
       [DataType(DataType.Date)]
@@ -115,5 +115,10 @@ namespace BosVesAppLibrary.Models
       [StringLength(3)]
       [Unicode(false)]
       public string SHABLON { get; set; }            // был ли взят шаблон 
+
+      public object Clone()
+      {
+         return MemberwiseClone();
+      }
    }
 }

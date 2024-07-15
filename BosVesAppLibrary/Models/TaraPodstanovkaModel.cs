@@ -2,7 +2,7 @@
 
 namespace BosVesAppLibrary.Models
 {
-    public class TaraPodstanovkaModel
+    public class TaraPodstanovkaModel : ICloneable
     {
         public DateTime DT { get; set; }                // дата взвешивания состава
         public DateTime VR { get; set; }                // время взвешивания состава
@@ -12,6 +12,10 @@ namespace BosVesAppLibrary.Models
         public decimal NETTO { get; set; }              // нетто фактическое
         public Int16 VESY { get; set; }                 // номер весов
         public int ID { get; }                          // уникальный идентификатор записи
-                                                        //  
+
+      public object Clone()
+      {
+         return MemberwiseClone();
+      } 
    }
 }

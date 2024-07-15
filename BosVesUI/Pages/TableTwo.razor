@@ -2,6 +2,7 @@
 @using BosVesUI.Shared.Components
 @using NetcodeHub.Packages.Components.Modal
 @inject GpriData gpridata
+@inject BruttoAsTaraData bruttoAsTara
 @inject NavigationManager navManager
 
 <div class="container border border-dark">
@@ -325,7 +326,7 @@
 
                     <div>
                         <button class="btn btn-primary" @onclick="UpdVag">Сохранить</button>
-                        <button class="btn btn-primary" @onclick="CleanModel">Очистить</button>
+                        <button class="btn btn-primary" @onclick="CleanModels">Очистить</button>
                     </div>
 
                 </div>
@@ -337,25 +338,90 @@
 
     @* Модальное окошко "Подстановка брутто как тары" начало *@
     <Modal Actions="ButtonActions"
-           BootstrapClass="border-success"
-           CustomStyle="width:500px"
+           BootstrapClass="border-dark"
+           CustomStyle="width:600px"
            @bind-Open="IsOpen">
 
         <ContentContent>
-           <p>data</p>
+            <div class="row">
+                @* Блок для фильтрации по дате. Номер вагона изменять нельзя. Начало. *@
+                <div class="col">
+                    <div class="form-group row">
+                        <label for="DTBEGIN" class="col col-form-label">Дата начало</label>
+                        <div class="col">
+                            <InputDate Type="InputDateType.Date" @bind-Value="@inDTBEGIN" id="idDTBEGIN" class="form-control" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col">
+                    <div class="form-group row">
+                        <label for="DTEND" class="col col-form-label">Дата окончания</label>
+                        <div class="col">
+                            <InputDate Type="InputDateType.Date" @bind-Value="@inDTEND" id="idDTEND" class="form-control" />
+                        </div>
+                    </div>
+                </div>
+
+                <button type="button" class="btn btn-secondary" @onclick="GetBruttoAsTaraList">Показать</button>
+                @*  Блок для фильтрации по дате. Номер вагона изменять нельзя. Окончание. *@
+            </div>
+
+            @* Таблица - начало *@
+            <div class="table-responsive">
+                <div style="width:fit-content">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                @foreach (var vp in GridCaptionHelper.BruttoAsTaraChapters.Values)
+                                {
+                                    <th> @vp </th>
+                                }
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (listBruttoAsTara is not null)
+                            {
+                                @foreach (var item in listBruttoAsTara)
+                                {
+                                    <tr @onclick="() => OnRowGetBruttoAsTaraClick(item.ID)" class="@GetRowClassBruttoAsTara(item.ID)">
+                                        <td> @item.DT.ToShortDateString() </td>
+                                        <td> @item.VR.ToString(@"hh\:mm\:ss") </td>
+                                        <td> @item.NVAG </td>
+                                        <td> @item.GRUZ </td>
+                                        <td> @item.BRUTTO </td>
+                                        <td> @item.TAR_BRS </td>
+                                        <td> @item.TAR_DOK </td>
+                                        <td> @item.NETTO </td>
+                                        <td> @item.NET_DOK </td>
+                                        <td> @item.CEX </td>
+                                        <td> @item.POTR </td>
+                                        <td> @item.VESY </td>
+                                        <td> @item.TN </td>
+                                        <td> @item.NPP </td>
+                                        <td> @item.ID </td>
+                                        <td> @item.NAIM </td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            @* Таблица - окончание *@
         </ContentContent>
 
         <ButtonTemplate>
             <div class="d-flex justify-content-center align-content-center">
-                <button class="btn btn-success btn-sm" value="ok" style="margin-right:5px">Okay</button>
-                <button class="btn btn-danger btn-sm" value="cancel">Cancel</button>
+                <button class="btn btn-success btn-sm" value="ok" style="margin-right:5px">Взять вес</button>
+                <button class="btn btn-danger btn-sm" value="cancel">Отмена</button>
             </div>
         </ButtonTemplate>
 
     </Modal>
     @* Модальное окошко "Подстановка брутто как тары" окончание *@
 
-    @* подвал - нужно будет оформить  *@
+    @* подвал - нужно будет оформить *@
     <footer class="border border-secondary">
         <div class="container" style="background-color:darkgray">
             <h6> footer dark-gray </h6>
@@ -368,40 +434,58 @@
     private DateTime inVr = DateTime.ParseExact("10:13:33", "HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
     private string inNvag = string.Empty;
     private string inGruz = string.Empty;
-    private int? selectedRowId;                         // временно для отображения ID выбранной ячейки
+    private DateTime inDTBEGIN = DateTime.Today.AddDays(-30);               // Для модального окошка "Брутто как тара".
+    private DateTime inDTEND = DateTime.Today;                              // Для модального окошка "Брутто как тара".
+    private int? selectedRowId;                                             // Временно для отображения ID выбранной ячейки.
     private List<GpriModel> listVags = null;
     private GpriModel vagon = new GpriModel();
     private bool isSaving = false;
     private string selRowID = string.Empty;
+
     #region работа с модальным окном
     public bool IsOpen { get; set; }
     public string? SelectedAction { get; set; }
     public bool Confirm { get; set; }
     Confirmation? confirmation;
+    private int? selectedRowIdBruttoAsTara = 0;
+    private List<BruttoAsTaraModel> listBruttoAsTara = null;                // Для заполнения таблицы в модальном окне "Брутто как тара".
+    private BruttoAsTaraModel bruttoAsTaraOne = new BruttoAsTaraModel();    // Для получения выбранной в модальном окне строки.
     #endregion
 
     protected async override Task OnInitializedAsync()
     {
         //vagon.DT = DateTime.ParseExact("2024-07-05", "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture);
     }
-
+    #region GetByDtVr()
     private async Task GetByDtVr()
     {
         listVags = (List<GpriModel>)await gpridata.GetByDtVr(inDt.ToString("yyyy-MM-dd"), inVr.ToString("HH:mm:ss"), "10");
     }
-
+    #endregion
     #region действия на клике по строке в гриде
     private void OnRowClick(int? id)
     {
+        CleanModels();                                                                      // Чистим поля при переходе
         selectedRowId = id;
-        selRowID = selectedRowId.ToString(); // для отладки - отображаю ID записи по которой кликнул
-
-        vagon = listVags.Where(i => i.ID == id).FirstOrDefault();   // Взять все данные из клика по гриду -> переместить в объект,
+        selRowID = selectedRowId.ToString();                                                // Для отладки - отображаю ID записи по которой кликнул.
+        vagon = (GpriModel)(listVags.Where(i => i.ID == id).FirstOrDefault()).Clone();      // Взять все данные из клика по гриду -> переместить в объект.
     }
 
     private string GetRowClass(int? id)
     {
         return selectedRowId == id ? "selected-row" : "";
+    }
+    #endregion
+    #region Клик по строке в гриде модального окна Подстановки брутто как тары
+    private string GetRowClassBruttoAsTara(int? id)
+    {
+        return selectedRowIdBruttoAsTara == id ? "selected-row" : "";
+    }
+
+    private void OnRowGetBruttoAsTaraClick(int? id)
+    {
+        
+        selectedRowIdBruttoAsTara = id;
     }
     #endregion
 
@@ -411,23 +495,45 @@
         //if (vagon.ModelState.isValid)
     }
 
-    #region Подставляю брутто как тару
+    #region Подставляю брутто как тару - возвращаю результат
     void ButtonActions(string action)
     {
         SelectedAction = action;
         if (action == "ok")
         {
-            Confirm = true;
-            Console.WriteLine(action);
+            Confirm = true; //
+            if (selectedRowIdBruttoAsTara > 0)
+            {
+                bruttoAsTaraOne = (BruttoAsTaraModel)(listBruttoAsTara.Where(i => i.ID == selectedRowIdBruttoAsTara).FirstOrDefault()).Clone();
+                if ((vagon is not null) && (bruttoAsTaraOne is not null) && (vagon.BRUTTO > bruttoAsTaraOne.BRUTTO))// Присвоить, брутто под тару, пересчитать нетто
+                {
+                    vagon.TAR_BRS = bruttoAsTaraOne.BRUTTO;
+                    vagon.NETTO = vagon.BRUTTO - vagon.TAR_BRS;
+                }
+                bruttoAsTaraOne = new BruttoAsTaraModel();                      // стираем данные в объекте
+                selectedRowIdBruttoAsTara = 0;
+            }
         }
         else if (action == "cancel")
         {
-            Console.WriteLine(action);
+            bruttoAsTaraOne = new BruttoAsTaraModel();
+            selectedRowIdBruttoAsTara = 0;
             Confirm = false;    // you can also do something
         }
     }
-
-    void OpenModal() => IsOpen = true;
+    #endregion
+    #region OpenModal()
+    private async Task OpenModal()
+    {
+        IsOpen = true;
+        await GetBruttoAsTaraList();
+    }
+    #endregion
+    #region Выборка для подстановки брутто как тары
+    private async Task GetBruttoAsTaraList()
+    {
+        listBruttoAsTara = (List<BruttoAsTaraModel>) await bruttoAsTara.GetByRangeDtAndNvag(inDTBEGIN.ToString("yyyy-MM-dd"), inDTEND.ToString("yyyy-MM-dd"), vagon.NVAG, "10");
+    }
     #endregion
     #region Обновляем существующую запись в базе
     private async Task UpdVag()
@@ -438,20 +544,25 @@
             {
                 await gpridata.UpdVag(vagon);
                 vagon = new GpriModel(); // чистим модель
+                await GetByDtVr();
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.ToString());    
+                Console.WriteLine(ex.ToString());
+                // переделать на запись в файл
             }
 
         }
-          // иначе показать всплывающее окошко - нечего сохранять
+        // иначе показать всплывающее окошко - нечего сохранять
     }
     #endregion
     #region CleanModel()
-    private void CleanModel()
+    private void CleanModels()
     {
         vagon = new GpriModel();
+        bruttoAsTaraOne = new BruttoAsTaraModel();                      // стираем данные в объекте
+        selectedRowIdBruttoAsTara = 0;
+        selectedRowId = 0;
     }
     #endregion
 }

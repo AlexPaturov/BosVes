@@ -1,7 +1,7 @@
 ﻿// Шаблон - заготовка для вагона из прихода получаемая от станции примыкания
 namespace BosVesAppLibrary.Models
 {
-    public class ShablonModel
+    public class ShablonModel : ICloneable
     {
         public DateTime DT { get; set; }                // дата взвешивания состава
         public DateTime VR { get; set; }                // время взвешивания состава
@@ -25,5 +25,9 @@ namespace BosVesAppLibrary.Models
         public DateTime DATPAM { get; set; }            // дата время памятки по прибытию
         public int ID { get; }                          // уникальный идентификатор записи
 
-    }
+      public object Clone()
+      {
+         return MemberwiseClone();
+      }
+   }
 }

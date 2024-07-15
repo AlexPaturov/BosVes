@@ -27,22 +27,22 @@ public class BruttoAsTaraData
       using (var connection = CreateConnection())
       {
          var query = "SELECT " +                                     //
-                              "DV.DT " +                             //
-                              ", DV.VR " +                           //
-                              ", DV.NVAG " +                         //
-                              ", DV.GRUZ " +                         //
-                              ", DV.BRUTTO " +                       //
-                              ", DV.TAR_BRS " +                      //
-                              ", DV.TAR_DOK " +                      //
-                              ", DV.NETTO " +                        //
-                              ", DV.NET_DOK " +                      //
-                              ", DV.CEX " +                          //
-                              ", DV.POTR " +                         //
-                              ", DV.VESY " +                         //
-                              ", DV.TN " +                           //
-                              ", DV.NPP " +                          //
-                              ", DV.ID " +                           //
-                              ", KC.NAIM " +                         //
+                              "DV.DT AS DT" +                        //
+                              ", DV.VR AS VR" +                      //
+                              ", DV.NVAG AS NVAG" +                  //
+                              ", DV.GRUZ AS GRUZ" +                  //
+                              ", DV.BRUTTO AS BRUTTO" +              //
+                              ", DV.TAR_BRS AS TAR_BRS" +            //
+                              ", DV.TAR_DOK AS TAR_DOK" +            //
+                              ", DV.NETTO AS NETTO" +                //
+                              ", DV.NET_DOK AS NET_DOK" +            //
+                              ", DV.CEX AS CEX" +                    //
+                              ", DV.POTR AS POTR" +                  //
+                              ", DV.VESY AS VESY" +                  //
+                              ", DV.TN AS TN" +                      //
+                              ", DV.NPP AS NPP" +                    //
+                              ", DV.ID AS ID" +                      //
+                              ", KC.NAIM AS NAIM " +                 //
                       "FROM GPRI DV " +                              //
                       "LEFT JOIN KCEX_GD KC on DV.CEX = KC.CEX " +   //
                       "WHERE DT BETWEEN @DTBEGIN AND @DTEND " +      //

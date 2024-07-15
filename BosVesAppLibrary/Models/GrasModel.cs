@@ -1,7 +1,7 @@
 ﻿// Ж.Д. расход
 namespace BosVesAppLibrary.Models
 {
-    public class GrasModel
+    public class GrasModel : ICloneable
     {
         public DateTime DT { get; set; }                // дата взвешивания состава
         public DateTime VR { get; set; }                // время взвешивания состава
@@ -40,5 +40,10 @@ namespace BosVesAppLibrary.Models
         public string PLATFORMS_BRUTTO { get; set; }    // комбинация включённых платформ при взвешивании
         public int ID { get; }                          // уникальный идентификатор записи
         public int ID_PLATFORMS { get; set; }           // id записи, которая была взята для подставления тары
-    }
+
+      public object Clone()
+      {
+         return MemberwiseClone();
+      }
+   }
 }

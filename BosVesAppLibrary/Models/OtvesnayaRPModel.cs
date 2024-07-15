@@ -1,7 +1,7 @@
 ﻿// Отвесная общая для ж.д прихода и расхода
 namespace BosVesAppLibrary.Models
 {
-    public class OtvesnayaRPModel
+    public class OtvesnayaRPModel : ICloneable
     {
         public DateTime DT { get; set; }                // дата взвешивания состава
         public DateTime VR { get; set; }                // время взвешивания состава
@@ -26,5 +26,9 @@ namespace BosVesAppLibrary.Models
         public int REJVZVESH { get; set; }              // режим взвешивания
         public int ID { get; }                          // уникальный идентификатор записи
 
-    }
+      public object Clone()
+      {
+         return MemberwiseClone();
+      }
+   }
 }

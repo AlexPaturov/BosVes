@@ -1,7 +1,7 @@
 ﻿// Вагоны из централизованной системы весоизмерения
 namespace BosVesAppLibrary.Models
 {
-    public class VikVagModel
+    public class VikVagModel : ICloneable
     {
         public int id { get; set; }                         // Идентификатор вагона
         public string vikno { get; set; }                   // Номер весов
@@ -37,5 +37,10 @@ namespace BosVesAppLibrary.Models
         public string prim { get; set; }                    // Примечания
         public int securos_vag_id { get; set; }             // 
         public int securos_vag_nvag { get; set; }           // 
-    }
+
+      public object Clone()
+      {
+         return MemberwiseClone();
+      }
+   }
 }
