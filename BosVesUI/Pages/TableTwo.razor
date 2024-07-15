@@ -50,7 +50,20 @@
     @* Таблица начало *@
     @if (listVags == null)
     {
-        <p>Loading . . . </p>
+        <div class="table-responsive">
+            <div style="width:fit-content">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            @foreach (var vp in GridCaptionHelper.GpriGridChapters.Values)
+                            {
+                                <th> @vp </th>
+                            }
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
     }
     else
     {
@@ -118,7 +131,6 @@
         <EditForm Model="vagon" OnValidSubmit="HandleValidSubmit">
             <DataAnnotationsValidator />
             <div class="row">
-                <h3>Блок полей для корректировки</h3>
                 @* первый блок начало *@
                 <div class="col-md-3" style="background-color: antiquewhite">
 
@@ -225,6 +237,10 @@
                         </div>
                     </div>
 
+                    <div class="col text-end">
+                        <button class="btn btn-primary" @onclick="UpdVag">Взять тару</button>
+                    </div>
+
                 </div>
                 @* второй блок окончание *@
                 @* третий блок начало *@
@@ -278,7 +294,7 @@
                     @* Проверяю номер весов - если 9 - открываю кнопку *@
                     @if (true)
                     {
-                        <div>
+                        <div class="col text-end">
                             <button class="btn btn-info" @onclick="OpenModal">Взять брутто как тару</button>
                         </div>
                     }
@@ -324,7 +340,7 @@
                         </div>
                     </div>
 
-                    <div>
+                    <div class="col text-end">
                         <button class="btn btn-primary" @onclick="UpdVag">Сохранить</button>
                         <button class="btn btn-primary" @onclick="CleanModels">Очистить</button>
                     </div>
@@ -340,7 +356,7 @@
     <Modal Actions="ButtonActions"
            BootstrapClass="border-dark"
            CustomStyle="width:600px"
-           @bind-Open="IsOpen">
+           @bind-Open="IsOpenBrAsTar">
 
         <ContentContent>
             <div class="row">
@@ -422,12 +438,13 @@
     @* Модальное окошко "Подстановка брутто как тары" окончание *@
 
     @* подвал - нужно будет оформить *@
-    <footer class="border border-secondary">
+@*     <footer class="border border-secondary">
         <div class="container" style="background-color:darkgray">
             <h6> footer dark-gray </h6>
         </div>
-    </footer>
-</div> @* "container *@
+    </footer> *@
+</div> 
+@* "container *@
 
 @code {
     private DateTime inDt = DateTime.ParseExact("2024-07-05", "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture);
@@ -442,27 +459,45 @@
     private bool isSaving = false;
     private string selRowID = string.Empty;
 
-    #region работа с модальным окном
-    public bool IsOpen { get; set; }
-    public string? SelectedAction { get; set; }
-    public bool Confirm { get; set; }
-    Confirmation? confirmation;
-    private int? selectedRowIdBruttoAsTara = 0;
-    private List<BruttoAsTaraModel> listBruttoAsTara = null;                // Для заполнения таблицы в модальном окне "Брутто как тара".
-    private BruttoAsTaraModel bruttoAsTaraOne = new BruttoAsTaraModel();    // Для получения выбранной в модальном окне строки.
-    #endregion
-
     protected async override Task OnInitializedAsync()
     {
         //vagon.DT = DateTime.ParseExact("2024-07-05", "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture);
     }
+    private void HandleValidSubmit()
+    {
+        // Handle the valid form submission
+        //if (vagon.ModelState.isValid)
+    }
+
+    #region Переменные для модального окноа Взять тару
+    public bool IsOpenTara { get; set; }
+    public string? SelectedActionTara { get; set; }
+    public bool ConfirmTara { get; set; }
+    Confirmation? confirmationTara;
+    private int? selectedRowIdTara = 0;
+    private List<GpriModel> listTara = null;                // Для заполнения таблицы в модальном окне "Брутто как тара".
+    private GpriModel taraOne = new GpriModel();    // Для получения выбранной в модальном окне строки.
+    #endregion
+
+
+
+
+    #region Переменные для модального окноа Брутто как тара
+    public bool IsOpenBrAsTar { get; set; }
+    public string? SelectedActionBrAsTar { get; set; }
+    public bool ConfirmBrAsTar { get; set; }
+    Confirmation? confirmationBrAsTar;
+    private int? selectedRowIdBruttoAsTara = 0;
+    private List<BruttoAsTaraModel> listBruttoAsTara = null;                // Для заполнения таблицы в модальном окне "Брутто как тара".
+    private BruttoAsTaraModel bruttoAsTaraOne = new BruttoAsTaraModel();    // Для получения выбранной в модальном окне строки.
+    #endregion
     #region GetByDtVr()
     private async Task GetByDtVr()
     {
         listVags = (List<GpriModel>)await gpridata.GetByDtVr(inDt.ToString("yyyy-MM-dd"), inVr.ToString("HH:mm:ss"), "10");
     }
     #endregion
-    #region действия на клике по строке в гриде
+    #region действия на клике по строке в гриде просмотра вагонов
     private void OnRowClick(int? id)
     {
         CleanModels();                                                                      // Чистим поля при переходе
@@ -488,20 +523,13 @@
         selectedRowIdBruttoAsTara = id;
     }
     #endregion
-
-    private void HandleValidSubmit()
-    {
-        // Handle the valid form submission
-        //if (vagon.ModelState.isValid)
-    }
-
     #region Подставляю брутто как тару - возвращаю результат
     void ButtonActions(string action)
     {
-        SelectedAction = action;
+        SelectedActionBrAsTar = action;
         if (action == "ok")
         {
-            Confirm = true; //
+            ConfirmBrAsTar = true; //
             if (selectedRowIdBruttoAsTara > 0)
             {
                 bruttoAsTaraOne = (BruttoAsTaraModel)(listBruttoAsTara.Where(i => i.ID == selectedRowIdBruttoAsTara).FirstOrDefault()).Clone();
@@ -518,14 +546,16 @@
         {
             bruttoAsTaraOne = new BruttoAsTaraModel();
             selectedRowIdBruttoAsTara = 0;
-            Confirm = false;    // you can also do something
+            ConfirmBrAsTar = false;    // you can also do something
+            inDTBEGIN = DateTime.Today.AddDays(-30);               // Для модального окошка "Брутто как тара".
+            inDTEND = DateTime.Today;
         }
     }
     #endregion
     #region OpenModal()
     private async Task OpenModal()
     {
-        IsOpen = true;
+        IsOpenBrAsTar = true;
         await GetBruttoAsTaraList();
     }
     #endregion
