@@ -238,7 +238,7 @@
                     </div>
 
                     <div class="col text-end">
-                        <button class="btn btn-primary" @onclick="UpdVag">Взять тару</button>
+                        <button class="btn btn-primary" @onclick="OpenModalGetTara">Взять тару</button>
                     </div>
 
                 </div>
@@ -295,7 +295,7 @@
                     @if (true)
                     {
                         <div class="col text-end">
-                            <button class="btn btn-info" @onclick="OpenModal">Взять брутто как тару</button>
+                            <button class="btn btn-info" @onclick="OpenModalGetBruttoAsTara">Взять брутто как тару</button>
                         </div>
                     }
 
@@ -353,7 +353,7 @@
     @* Блок полей для корректировки - окончание *@
 
     @* Модальное окошко "Подстановка брутто как тары" начало *@
-    <Modal Actions="ButtonActions"
+    <Modal Actions="ButtonGetBruttoAsTaraActions"
            BootstrapClass="border-dark"
            CustomStyle="width:600px"
            @bind-Open="IsOpenBrAsTar">
@@ -437,6 +437,93 @@
     </Modal>
     @* Модальное окошко "Подстановка брутто как тары" окончание *@
 
+    @* Модальное окошко "Подстановка тары" начало *@
+    <Modal Actions="ButtonGetTaraActions"
+           BootstrapClass="border-dark"
+           CustomStyle="width:600px"
+           @bind-Open="IsOpenTara">
+
+        <ContentContent>
+            <div class="row">
+                @* Блок для фильтрации по дате. Номер вагона изменять нельзя. Начало. *@
+                <div class="col">
+                    <div class="form-group row">
+                        <label for="DTBEGIN" class="col col-form-label">Дата начало</label>
+                        <div class="col">
+                            <InputDate Type="InputDateType.Date" @bind-Value="@inDTBEGIN" id="idDTBEGIN" class="form-control" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col">
+                    <div class="form-group row">
+                        <label for="DTEND" class="col col-form-label">Дата окончания</label>
+                        <div class="col">
+                            <InputDate Type="InputDateType.Date" @bind-Value="@inDTEND" id="idDTEND" class="form-control" />
+                        </div>
+                    </div>
+                </div>
+
+                <button type="button" class="btn btn-secondary" @onclick="GetBruttoAsTaraList">Показать</button>
+                @*  Блок для фильтрации по дате. Номер вагона изменять нельзя. Окончание. *@
+            </div>
+
+            @* Таблица - начало *@
+            <div class="table-responsive">
+                <div style="width:fit-content">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                @foreach (var vp in GridCaptionHelper.BruttoAsTaraChapters.Values)
+                                {
+                                    <th> @vp </th>
+                                }
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (listBruttoAsTara is not null)
+                            {
+                                @foreach (var item in listBruttoAsTara)
+                                {
+                                    <tr @onclick="() => OnRowGetBruttoAsTaraClick(item.ID)" class="@GetRowClassBruttoAsTara(item.ID)">
+                                        <td> @item.DT.ToShortDateString() </td>
+                                        <td> @item.VR.ToString(@"hh\:mm\:ss") </td>
+                                        <td> @item.NVAG </td>
+                                        <td> @item.GRUZ </td>
+                                        <td> @item.BRUTTO </td>
+                                        <td> @item.TAR_BRS </td>
+                                        <td> @item.TAR_DOK </td>
+                                        <td> @item.NETTO </td>
+                                        <td> @item.NET_DOK </td>
+                                        <td> @item.CEX </td>
+                                        <td> @item.POTR </td>
+                                        <td> @item.VESY </td>
+                                        <td> @item.TN </td>
+                                        <td> @item.NPP </td>
+                                        <td> @item.ID </td>
+                                        <td> @item.NAIM </td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            @* Таблица - окончание *@
+        </ContentContent>
+
+        <ButtonTemplate>
+            <div class="d-flex justify-content-center align-content-center">
+                <button class="btn btn-success btn-sm" value="ok" style="margin-right:5px">Взять вес</button>
+                <button class="btn btn-danger btn-sm" value="cancel">Отмена</button>
+            </div>
+        </ButtonTemplate>
+
+    </Modal>
+
+
+    @* Модальное окошко "Подстановка тары" окончание *@
+
     @* подвал - нужно будет оформить *@
 @*     <footer class="border border-secondary">
         <div class="container" style="background-color:darkgray">
@@ -479,8 +566,49 @@
     private GpriModel taraOne = new GpriModel();    // Для получения выбранной в модальном окне строки.
     #endregion
 
+    #region OpenModalGetTara()
+    private async Task OpenModalGetTara()
+    {
+        IsOpenTara = true;
+        await GetTaraList();
+    }
+    #endregion
+    #region
+    private 
+    #endregion
 
 
+    #region ButtonGetTaraActions(string)
+    void ButtonGetTaraActions(string action)
+    {
+        SelectedActionTara = action;
+        if (action == "ok")
+        {
+            ConfirmTara = true; //
+            if (selectedRowIdTara > 0)
+            {
+                bruttoAsTaraOne = (BruttoAsTaraModel)(listBruttoAsTara.Where(i => i.ID == selectedRowIdBruttoAsTara).FirstOrDefault()).Clone();
+                if ((vagon is not null) && (bruttoAsTaraOne is not null) && (vagon.BRUTTO > bruttoAsTaraOne.BRUTTO))// Присвоить, брутто под тару, пересчитать нетто
+                {
+                    vagon.TAR_BRS = bruttoAsTaraOne.BRUTTO;
+                    vagon.NETTO = vagon.BRUTTO - vagon.TAR_BRS;
+                }
+                bruttoAsTaraOne = new BruttoAsTaraModel();                      // стираем данные в объекте
+                selectedRowIdBruttoAsTara = 0;
+            }
+        }
+        else if (action == "cancel")
+        {
+            bruttoAsTaraOne = new BruttoAsTaraModel();
+            selectedRowIdBruttoAsTara = 0;
+            ConfirmTara = false;    // you can also do something
+            inDTBEGIN = DateTime.Today.AddDays(-30);               // Для модального окошка "Брутто как тара".
+            inDTEND = DateTime.Today;
+        }
+    }
+
+
+    #endregion
 
     #region Переменные для модального окноа Брутто как тара
     public bool IsOpenBrAsTar { get; set; }
@@ -523,8 +651,8 @@
         selectedRowIdBruttoAsTara = id;
     }
     #endregion
-    #region Подставляю брутто как тару - возвращаю результат
-    void ButtonActions(string action)
+    #region ButtonGetBruttoAsTaraActions(string)
+    void ButtonGetBruttoAsTaraActions(string action)
     {
         SelectedActionBrAsTar = action;
         if (action == "ok")
@@ -552,14 +680,14 @@
         }
     }
     #endregion
-    #region OpenModal()
-    private async Task OpenModal()
+    #region OpenModalGetBruttoAsTara()
+    private async Task OpenModalGetBruttoAsTara()
     {
         IsOpenBrAsTar = true;
         await GetBruttoAsTaraList();
     }
     #endregion
-    #region Выборка для подстановки брутто как тары
+    #region GetBruttoAsTaraList()
     private async Task GetBruttoAsTaraList()
     {
         listBruttoAsTara = (List<BruttoAsTaraModel>) await bruttoAsTara.GetByRangeDtAndNvag(inDTBEGIN.ToString("yyyy-MM-dd"), inDTEND.ToString("yyyy-MM-dd"), vagon.NVAG, "10");

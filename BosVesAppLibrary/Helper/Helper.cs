@@ -4,8 +4,8 @@ using Microsoft.Extensions.Options;
 
 namespace FormUI
 {
-    public static class Helper
-    {
+   public static class Helper
+   {
       private static BosVesAppSettings _mySettings;
 
       //public static string GetConnFb(IOptions<BosVesAppSettings> mySettings)
@@ -17,5 +17,10 @@ namespace FormUI
       //  {
       //      return ConfigurationManager.ConnectionStrings[name].ConnectionString;
       //  }
-    }
+
+      public static string CorrectStr(string aStr)
+      {
+         return "'" + aStr + "'";
+      }
+   }
 }
