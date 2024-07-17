@@ -1,4 +1,4 @@
-﻿namespace BosVesAppLibrary.Helper;
+﻿namespace BosVesAppLibrary.Helpers;
 public static class GridCaptionHelper
 {
    public static Dictionary<string, string> GpriGridChapters = new Dictionary<string, string> 

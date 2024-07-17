@@ -1,6 +1,5 @@
 ﻿using Dapper;
 using FirebirdSql.Data.FirebirdClient;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Extensions.Options;
 using System.Data;
 

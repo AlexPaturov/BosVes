@@ -2,7 +2,6 @@
 using FirebirdSql.Data.FirebirdClient;
 using Microsoft.Extensions.Options;
 using System.Data;
-using System.Xml.Linq;
 
 namespace BosVesAppLibrary.DataAccess;
 public class GruzGdData : IGruzGdData

@@ -2,8 +2,6 @@
 using FirebirdSql.Data.FirebirdClient;
 using Microsoft.Extensions.Options;
 using System.Data;
-using System.Runtime.ConstrainedExecution;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace BosVesAppLibrary.DataAccess;
 public class KcexGdData
