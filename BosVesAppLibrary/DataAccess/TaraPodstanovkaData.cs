@@ -26,10 +26,9 @@ public class TaraPodstanovkaData
          // Для соблюдения правил СБ по ограничению выборки тары для 2-х весов, реализовано 2 варианта запроса:
          //    1) без ограничений в диапазоне времени;
          //    2) с ограничением диапазона выборки в 21 день если на вагон есть шаблон со станции примыкания. 
-
          string query = string.Empty;
 
-         if (true) // если это 2-е весы и шаблон есть - ограничиваем выборку в 21 день 
+         if (vikno == "2") // если это 2-е весы и шаблон есть - ограничиваем выборку в 21 день 
          {
             query =  "SELECT DT, VR, NVAG, BRUTTO, TAR_BRS, NETTO, GRUZ, VESY, ID " +
                      "FROM (select DT, VR, NVAG, BRUTTO, TAR_BRS, NETTO, GRUZ, VESY, ID " +
@@ -61,15 +60,46 @@ public class TaraPodstanovkaData
                               "DT between @DTBEGIN and @DTEND " +
                      ") RESULTS " + 
                      "order by DT, VR";
-            var parameters = new { DTBEGIN = dtBegin, DTEND = dtEnd, VAGNOM = vagnom };
+
+            var parameters = new { DTBEGIN = DateTime.Today.ToString("yyyy-MM-dd"), DTEND = DateTime.Today.AddDays(-21).ToString("yyyy-MM-dd"), VAGNOM = vagnom };
          }
          else // иначе - без ограничений
          {
-
+            query = "SELECT DT, VR, NVAG, BRUTTO, TAR_BRS, NETTO, GRUZ, VESY, ID " +
+                    "FROM (select DT, VR, NVAG, BRUTTO, TAR_BRS, NETTO, GRUZ, VESY, ID " +
+                       "from GPRI " +
+                          "where (NVAG = @VAGNOM) and " +
+                          "(TAR_BRS is not null) and " +
+                          "(TAR_BRS > 0) and " +
+                          "DT between @DTBEGIN and @DTEND " +
+                       "union " +
+                       "select DT, VR, NVAG, BRUTTO, TAR_BRS, NETTO, GRUZ, VESY, ID " +
+                       "from gras " +
+                       "where (NVAG = @VAGNOM) and " +
+                          "(TAR_BRS is not null) and " +
+                          "(TAR_BRS > 0) and " +
+                          "DT between @DTBEGIN and @DTEND " +
+                       "union " +
+                       "select DT, VR, NVAG, BRUTTO, TAR_BRS, NETTO, GRUZ, 6 as " + Helper.CorrectStr("VESY") + ", ID " +
+                       "from SHDC " +
+                       "where (NVAG = @VAGNOM) and " +
+                             "(TAR_BRS is not null) and " +
+                             "(TAR_BRS > 0) and " +
+                             "DT between @DTBEGIN and @DTEND " +
+                       "union " +
+                       "select DT, VR, NVAG, BRUTTO, TARA as " + Helper.CorrectStr("TAR_BRS") + ", NETTO, GRUZ, NVES as " + Helper.CorrectStr("VESY") + ", ID " +
+                       "from ves16 " +
+                       "where (NVAG = @VAGNOM) and " +
+                             "(TAR_BRS is not null) and " +
+                             "(TAR_BRS > 0) and " +
+                             "DT between @DTBEGIN and @DTEND " +
+                    ") RESULTS " +
+                    "order by DT, VR";
             var parameters = new { DTBEGIN = dtBegin, DTEND = dtEnd, VAGNOM = vagnom };
          }
-         
-         return await connection.QueryAsync<GruzGdModel>(query, parameters);
+
+         //return await connection.QueryAsync<GruzGdModel>(query, parameters);
+         return null;
       }
    }
 
