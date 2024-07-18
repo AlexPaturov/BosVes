@@ -1,9 +1,10 @@
-﻿@page "/Pages/tabletwo"
+﻿@page "/Pages/KorrPrihod"
 @using BosVesUI.Shared.Components
 @using NetcodeHub.Packages.Components.Modal
-@inject GpriData gpridata
-@inject BruttoAsTaraData bruttoAsTara
-@inject NavigationManager navManager
+@inject GpriData gpridata;
+@inject BruttoAsTaraData bruttoAsTara;
+@inject TaraPodstanovkaData taraPodstanovka;
+@inject NavigationManager navManager;
 
 <div class="container border border-dark">
     <h5>container tabletwo</h5>
@@ -379,7 +380,7 @@
                     </div>
                 </div>
 
-                <button type="button" class="btn btn-secondary" @onclick="GetBruttoAsTaraList">Показать</button>
+                <button type="button" class="btn btn-secondary" @onclick="GetBruttoAsTaraClick">Показать</button>
                 @*  Блок для фильтрации по дате. Номер вагона изменять нельзя. Окончание. *@
             </div>
 
@@ -448,23 +449,23 @@
                 @* Блок для фильтрации по дате. Номер вагона изменять нельзя. Начало. *@
                 <div class="col">
                     <div class="form-group row">
-                        <label for="DTBEGIN" class="col col-form-label">Дата начало</label>
+                        <label for="idDTBEGINtara" class="col col-form-label">Дата начало</label>
                         <div class="col">
-                            <InputDate Type="InputDateType.Date" @bind-Value="@inDTBEGIN" id="idDTBEGIN" class="form-control" />
+                            <InputDate Type="InputDateType.Date" @bind-Value="@inDTBEGINtara" id="idDTBEGINtara" class="form-control" />
                         </div>
                     </div>
                 </div>
 
                 <div class="col">
                     <div class="form-group row">
-                        <label for="DTEND" class="col col-form-label">Дата окончания</label>
+                        <label for="idDTENDtara" class="col col-form-label">Дата окончания</label>
                         <div class="col">
-                            <InputDate Type="InputDateType.Date" @bind-Value="@inDTEND" id="idDTEND" class="form-control" />
+                            <InputDate Type="InputDateType.Date" @bind-Value="@inDTENDtara" id="idDTENDtara" class="form-control" />
                         </div>
                     </div>
                 </div>
 
-                <button type="button" class="btn btn-secondary" @onclick="GetBruttoAsTaraList">Показать</button>
+                <button type="button" class="btn btn-secondary" @onclick="GetTaraClick">Показать</button>
                 @*  Блок для фильтрации по дате. Номер вагона изменять нельзя. Окончание. *@
             </div>
 
@@ -474,34 +475,27 @@
                     <table class="table table-bordered">
                         <thead>
                             <tr>
-                                @foreach (var vp in GridCaptionHelper.BruttoAsTaraChapters.Values)
+                                @foreach (var vp in GridCaptionHelper.TaraChapters.Values)
                                 {
                                     <th> @vp </th>
                                 }
                             </tr>
                         </thead>
                         <tbody>
-                            @if (listBruttoAsTara is not null)
+                            @if (listTara is not null)
                             {
-                                @foreach (var item in listBruttoAsTara)
+                                @foreach (var item in listTara) // 
                                 {
-                                    <tr @onclick="() => OnRowGetBruttoAsTaraClick(item.ID)" class="@GetRowClassBruttoAsTara(item.ID)">
+                                    <tr @onclick="() => OnRowGetTaraClick(item.ID)" class="@GetRowClassTara(item.ID)">
                                         <td> @item.DT.ToShortDateString() </td>
                                         <td> @item.VR.ToString(@"hh\:mm\:ss") </td>
                                         <td> @item.NVAG </td>
-                                        <td> @item.GRUZ </td>
                                         <td> @item.BRUTTO </td>
                                         <td> @item.TAR_BRS </td>
-                                        <td> @item.TAR_DOK </td>
                                         <td> @item.NETTO </td>
-                                        <td> @item.NET_DOK </td>
-                                        <td> @item.CEX </td>
-                                        <td> @item.POTR </td>
+                                        <td> @item.GRUZ </td>
                                         <td> @item.VESY </td>
-                                        <td> @item.TN </td>
-                                        <td> @item.NPP </td>
                                         <td> @item.ID </td>
-                                        <td> @item.NAIM </td>
                                     </tr>
                                 }
                             }
@@ -534,51 +528,94 @@
 @* "container *@
 
 @code {
+    #region Переменные формы
     private DateTime inDt = DateTime.ParseExact("2024-07-05", "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture);
     private DateTime inVr = DateTime.ParseExact("10:13:33", "HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
     private string inNvag = string.Empty;
     private string inGruz = string.Empty;
-    private DateTime inDTBEGIN = DateTime.Today.AddDays(-30);               // Для модального окошка "Брутто как тара".
-    private DateTime inDTEND = DateTime.Today;                              // Для модального окошка "Брутто как тара".
     private int? selectedRowId;                                             // Временно для отображения ID выбранной ячейки.
     private List<GpriModel> listVags = null;
     private GpriModel vagon = new GpriModel();
     private bool isSaving = false;
     private string selRowID = string.Empty;
-
+    #endregion
+    #region Переменные для модального окноа Брутто как тара
+    private DateTime inDTBEGIN = DateTime.Today.AddDays(-30);               
+    private DateTime inDTEND = DateTime.Today;                             
+    private bool IsOpenBrAsTar { get; set; }
+    private string? SelectedActionBrAsTar { get; set; }
+    private bool ConfirmBrAsTar { get; set; }
+    private Confirmation? confirmationBrAsTar;
+    private int? selectedRowIdBruttoAsTara = 0;
+    private List<BruttoAsTaraModel> listBruttoAsTara = null;                // Для заполнения таблицы в модальном окне "Брутто как тара".
+    private BruttoAsTaraModel bruttoAsTaraOne = new BruttoAsTaraModel();    // Для получения выбранной в модальном окне строки.
+    #endregion
+    #region Переменные для модального окноа Взять тару
+    private DateTime inDTBEGINtara = DateTime.Today.AddDays(-30);
+    private DateTime inDTENDtara = DateTime.Today;
+    private bool IsOpenTara { get; set; }
+    private string? SelectedActionTara { get; set; }
+    private bool ConfirmTara { get; set; }
+    private Confirmation? confirmationTara;
+    private int? selectedRowIdTara = 0;
+    private List<TaraPodstanovkaModel> listTara = null;                // Для заполнения таблицы в модальном окне "Брутто как тара".
+    private TaraPodstanovkaModel taraOne = new TaraPodstanovkaModel();    // Для получения выбранной в модальном окне строки.
+    #endregion
+    
+    #region For what ?
     protected async override Task OnInitializedAsync()
     {
         //vagon.DT = DateTime.ParseExact("2024-07-05", "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture);
     }
+    #endregion
+    #region  For what ?
     private void HandleValidSubmit()
     {
         // Handle the valid form submission
         //if (vagon.ModelState.isValid)
     }
-
-    #region Переменные для модального окноа Взять тару
-    public bool IsOpenTara { get; set; }
-    public string? SelectedActionTara { get; set; }
-    public bool ConfirmTara { get; set; }
-    Confirmation? confirmationTara;
-    private int? selectedRowIdTara = 0;
-    private List<GpriModel> listTara = null;                // Для заполнения таблицы в модальном окне "Брутто как тара".
-    private GpriModel taraOne = new GpriModel();    // Для получения выбранной в модальном окне строки.
     #endregion
 
     #region OpenModalGetTara()
     private async Task OpenModalGetTara()
     {
         IsOpenTara = true;
-        //await GetTaraList();
+        await GetTaraClick();
     }
     #endregion
-    #region
-    private 
+    #region GetTaraClick()
+    private async Task GetTaraClick()
+    {
+        if ((selectedRowId is not null) && (selectedRowId > 0)) // если клик по строке был и есть выбранный вагон
+        {   // На открытии окна - забирать данные с условием для 2-х и есть шаблон -> 1, иначе -> 2
+            if ((vagon is not null) && (vagon.VESY != null) && (vagon.VESY == 2) && (!string.IsNullOrEmpty(vagon.SHABLON)) && (vagon.SHABLON.ToLower() == "yes")) // приводить к нижнему регистру
+            {
+                listTara = (List<TaraPodstanovkaModel>)await taraPodstanovka.GetTwentyOneDays(
+                    (listVags.Where(i => i.ID == selectedRowId).FirstOrDefault()).NVAG
+                ); // получил список вагонов для выборки подстановки тары с ограничением в 21 день
+            }
+            else
+            {
+                listTara = (List<TaraPodstanovkaModel>)await taraPodstanovka.GetFromYear(
+                    inDTBEGINtara, inDTENDtara, (listVags.Where(i => i.ID == selectedRowId).FirstOrDefault()).NVAG
+                ); // получил список вагонов для выборки подстановки тары -> ограничение 1 год
+            }
+        }
+    }
     #endregion
-
-
-    #region ButtonGetTaraActions(string)
+    #region GetRowClassTara()
+    private string GetRowClassTara(int? id)
+    {
+        return selectedRowIdTara == id ? "selected-row" : "";
+    }
+    #endregion
+    #region OnRowGetTaraClick()
+    private void OnRowGetTaraClick(int? id)
+    {
+        selectedRowIdTara = id;
+    }
+    #endregion
+    #region ButtonGetTaraActions()
     void ButtonGetTaraActions(string action)
     {
         SelectedActionTara = action;
@@ -587,38 +624,30 @@
             ConfirmTara = true; //
             if (selectedRowIdTara > 0)
             {
-                bruttoAsTaraOne = (BruttoAsTaraModel)(listBruttoAsTara.Where(i => i.ID == selectedRowIdBruttoAsTara).FirstOrDefault()).Clone();
-                if ((vagon is not null) && (bruttoAsTaraOne is not null) && (vagon.BRUTTO > bruttoAsTaraOne.BRUTTO))// Присвоить, брутто под тару, пересчитать нетто
+                taraOne = (TaraPodstanovkaModel)(listTara.Where(i => i.ID == selectedRowIdTara).FirstOrDefault()).Clone();
+                if ((vagon is not null) && (taraOne is not null) && (vagon.BRUTTO > taraOne.TAR_BRS))// Присвоить, брутто под тару, пересчитать нетто
                 {
-                    vagon.TAR_BRS = bruttoAsTaraOne.BRUTTO;
+                    vagon.TAR_BRS = taraOne.TAR_BRS;
                     vagon.NETTO = vagon.BRUTTO - vagon.TAR_BRS;
                 }
-                bruttoAsTaraOne = new BruttoAsTaraModel();                      // стираем данные в объекте
-                selectedRowIdBruttoAsTara = 0;
+
+                taraOne = new TaraPodstanovkaModel();                      // стираем данные в объекте
+                selectedRowIdTara = 0;
             }
         }
         else if (action == "cancel")
         {
-            bruttoAsTaraOne = new BruttoAsTaraModel();
-            selectedRowIdBruttoAsTara = 0;
+            taraOne = new TaraPodstanovkaModel();                      // стираем данные в объекте
+            selectedRowIdTara = 0;
             ConfirmTara = false;    // you can also do something
-            inDTBEGIN = DateTime.Today.AddDays(-30);               // Для модального окошка "Брутто как тара".
-            inDTEND = DateTime.Today;
+            inDTBEGINtara = DateTime.Today.AddDays(-30);              // Для модального окошка "Брутто как тара".
+            inDTENDtara = DateTime.Today;
         }
     }
 
 
     #endregion
 
-    #region Переменные для модального окноа Брутто как тара
-    public bool IsOpenBrAsTar { get; set; }
-    public string? SelectedActionBrAsTar { get; set; }
-    public bool ConfirmBrAsTar { get; set; }
-    Confirmation? confirmationBrAsTar;
-    private int? selectedRowIdBruttoAsTara = 0;
-    private List<BruttoAsTaraModel> listBruttoAsTara = null;                // Для заполнения таблицы в модальном окне "Брутто как тара".
-    private BruttoAsTaraModel bruttoAsTaraOne = new BruttoAsTaraModel();    // Для получения выбранной в модальном окне строки.
-    #endregion
     #region GetByDtVr()
     private async Task GetByDtVr()
     {
@@ -639,15 +668,15 @@
         return selectedRowId == id ? "selected-row" : "";
     }
     #endregion
-    #region Клик по строке в гриде модального окна Подстановки брутто как тары
+    #region GetRowClassBruttoAsTara()
     private string GetRowClassBruttoAsTara(int? id)
     {
         return selectedRowIdBruttoAsTara == id ? "selected-row" : "";
     }
-
+    #endregion
+    #region OnRowGetBruttoAsTaraClick()
     private void OnRowGetBruttoAsTaraClick(int? id)
     {
-        
         selectedRowIdBruttoAsTara = id;
     }
     #endregion
@@ -684,16 +713,16 @@
     private async Task OpenModalGetBruttoAsTara()
     {
         IsOpenBrAsTar = true;
-        await GetBruttoAsTaraList();
+        await GetBruttoAsTaraClick();
     }
     #endregion
-    #region GetBruttoAsTaraList()
-    private async Task GetBruttoAsTaraList()
+    #region GetBruttoAsTaraClick()
+    private async Task GetBruttoAsTaraClick()
     {
         listBruttoAsTara = (List<BruttoAsTaraModel>) await bruttoAsTara.GetByRangeDtAndNvag(inDTBEGIN.ToString("yyyy-MM-dd"), inDTEND.ToString("yyyy-MM-dd"), vagon.NVAG, "10");
     }
     #endregion
-    #region Обновляем существующую запись в базе
+    #region UpdVag
     private async Task UpdVag()
     {
         if (vagon is not null)

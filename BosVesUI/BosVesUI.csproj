@@ -30,7 +30,7 @@
     <None Include="Shared\Components\InputTime.razor" />
   </ItemGroup>
   <ItemGroup>
-    <Content Update="Pages\TableTwo.razor">
+    <Content Update="Pages\KorrPrihod.razor">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
     </Content>
   </ItemGroup>

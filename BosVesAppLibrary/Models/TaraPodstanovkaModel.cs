@@ -19,13 +19,13 @@ namespace BosVesAppLibrary.Models
       public string NVAG { get; set; }                // номер вагона
 
       [RegularExpression(@"^(0|-?\d{0,6}(\.\d{0,2})?)$", ErrorMessage = "Ошибка BRUTTO")]
-      public decimal BRUTTO { get; set; }             // вес брутто
+      public double BRUTTO { get; set; }             // вес брутто
 
       [RegularExpression(@"^(0|-?\d{0,6}(\.\d{0,2})?)$", ErrorMessage = "Ошибка TAR_BRS")]
-      public decimal TAR_BRS { get; set; }            // тара фактическая
+      public double TAR_BRS { get; set; }            // тара фактическая
 
       [RegularExpression(@"^(0|-?\d{0,6}(\.\d{0,2})?)$", ErrorMessage = "Ошибка NETTO")]
-      public decimal NETTO { get; set; }              // нетто фактическое
+      public double NETTO { get; set; }              // нетто фактическое
 
       [StringLength(20, ErrorMessage = "Максимальная длина 20 символов")]
       public string GRUZ { get; set; }                // наименование груза

@@ -2,7 +2,7 @@
 using FirebirdSql.Data.FirebirdClient;
 using Microsoft.Extensions.Options;
 using System.Data;
-using static System.Runtime.InteropServices.JavaScript.JSType;
+using System.Reflection.PortableExecutable;
 
 namespace BosVesAppLibrary.DataAccess;
 public class TaraPodstanovkaData
@@ -19,99 +19,46 @@ public class TaraPodstanovkaData
       return new FbConnection(_connectionString);
    }
 
-   public async Task<IEnumerable<GruzGdModel>> GetAll(DateTime dtBegin, DateTime dtEnd, string vagnom, string vikno) // не проверен
+   // Выборка для 2-х весов, если был шаблон - ограничиваем диапазоном 21 день.
+   public async Task<IEnumerable<TaraPodstanovkaModel>> GetTwentyOneDays(string vagnom) // не проверен
    {
-      using (var connection = CreateConnection()) // не сделел запрос как в целевых по (нужны все 6-ть таблиц)
+      using (var connection = CreateConnection()) // Не сделел запрос как в рабочих весовых программах (нужны все 6-ть таблиц + agl32)
       {
-         // Для соблюдения правил СБ по ограничению выборки тары для 2-х весов, реализовано 2 варианта запроса:
-         //    1) без ограничений в диапазоне времени;
-         //    2) с ограничением диапазона выборки в 21 день если на вагон есть шаблон со станции примыкания. 
-         string query = string.Empty;
+         var query = "";
 
-         if (vikno == "2") // если это 2-е весы и шаблон есть - ограничиваем выборку в 21 день 
-         {
-            query =  "SELECT DT, VR, NVAG, BRUTTO, TAR_BRS, NETTO, GRUZ, VESY, ID " +
-                     "FROM (select DT, VR, NVAG, BRUTTO, TAR_BRS, NETTO, GRUZ, VESY, ID " +
-                        "from GPRI " +
-                           "where (NVAG = @VAGNOM) and " +
-                           "(TAR_BRS is not null) and " +
-                           "(TAR_BRS > 0) and " +
-                           "DT between @DTBEGIN and @DTEND " +
-                        "union " +
-                        "select DT, VR, NVAG, BRUTTO, TAR_BRS, NETTO, GRUZ, VESY, ID " +
-                        "from gras " +
-                        "where (NVAG = @VAGNOM) and " +
-                           "(TAR_BRS is not null) and " +
-                           "(TAR_BRS > 0) and " +
-                           "DT between @DTBEGIN and @DTEND " +
-                        "union " +
-                        "select DT, VR, NVAG, BRUTTO, TAR_BRS, NETTO, GRUZ, 6 as " + Helper.CorrectStr("VESY")  +", ID " +
-                        "from SHDC "+
-                        "where (NVAG = @VAGNOM) and " +
-                              "(TAR_BRS is not null) and " +
-                              "(TAR_BRS > 0) and " +
-                              "DT between @DTBEGIN and @DTEND " +
-                        "union " +
-                        "select DT, VR, NVAG, BRUTTO, TARA as " + Helper.CorrectStr("TAR_BRS")+ ", NETTO, GRUZ, NVES as " + Helper.CorrectStr("VESY") + ", ID " +
-                        "from ves16 " +
-                        "where (NVAG = @VAGNOM) and " +
-                              "(TAR_BRS is not null) and " +
-                              "(TAR_BRS > 0) and " +
-                              "DT between @DTBEGIN and @DTEND " +
-                     ") RESULTS " + 
-                     "order by DT, VR";
-
-            var parameters = new { DTBEGIN = DateTime.Today.ToString("yyyy-MM-dd"), DTEND = DateTime.Today.AddDays(-21).ToString("yyyy-MM-dd"), VAGNOM = vagnom };
-         }
-         else // иначе - без ограничений
-         {
-            query = "SELECT DT, VR, NVAG, BRUTTO, TAR_BRS, NETTO, GRUZ, VESY, ID " +
-                    "FROM (select DT, VR, NVAG, BRUTTO, TAR_BRS, NETTO, GRUZ, VESY, ID " +
-                       "from GPRI " +
-                          "where (NVAG = @VAGNOM) and " +
-                          "(TAR_BRS is not null) and " +
-                          "(TAR_BRS > 0) and " +
-                          "DT between @DTBEGIN and @DTEND " +
-                       "union " +
-                       "select DT, VR, NVAG, BRUTTO, TAR_BRS, NETTO, GRUZ, VESY, ID " +
-                       "from gras " +
-                       "where (NVAG = @VAGNOM) and " +
-                          "(TAR_BRS is not null) and " +
-                          "(TAR_BRS > 0) and " +
-                          "DT between @DTBEGIN and @DTEND " +
-                       "union " +
-                       "select DT, VR, NVAG, BRUTTO, TAR_BRS, NETTO, GRUZ, 6 as " + Helper.CorrectStr("VESY") + ", ID " +
-                       "from SHDC " +
-                       "where (NVAG = @VAGNOM) and " +
-                             "(TAR_BRS is not null) and " +
-                             "(TAR_BRS > 0) and " +
-                             "DT between @DTBEGIN and @DTEND " +
-                       "union " +
-                       "select DT, VR, NVAG, BRUTTO, TARA as " + Helper.CorrectStr("TAR_BRS") + ", NETTO, GRUZ, NVES as " + Helper.CorrectStr("VESY") + ", ID " +
-                       "from ves16 " +
-                       "where (NVAG = @VAGNOM) and " +
-                             "(TAR_BRS is not null) and " +
-                             "(TAR_BRS > 0) and " +
-                             "DT between @DTBEGIN and @DTEND " +
-                    ") RESULTS " +
-                    "order by DT, VR";
-            var parameters = new { DTBEGIN = dtBegin, DTEND = dtEnd, VAGNOM = vagnom };
-         }
-
-         //return await connection.QueryAsync<GruzGdModel>(query, parameters);
-         return null;
+         var parameters = new { DTBEGIN = DateTime.Today.ToString("yyyy-MM-dd"), DTEND = DateTime.Today.AddDays(-21).ToString("yyyy-MM-dd"), VAGNOM = vagnom };
+         return await connection.QueryAsync<TaraPodstanovkaModel>(query, parameters);
       }
    }
 
-   // В зависимости от номера весов будут меняться правила для выборки списка вагонов
-   // подходящих под ограничивающие условия для данных весов.
-   private string GetQuery(DateTime begin, DateTime end, string vagnom, string vikno) 
+   // Для остальных весов - выборка без ограничений.
+   public async Task<IEnumerable<TaraPodstanovkaModel>> GetFromYear(DateTime dtBegin, DateTime dtEnd, string vagnom) // не проверен
    {
-      return "";
-   }
+      //if (dtBegin <  DateTime.Today.AddDays(365)) //  Сделать проверку на - (не больше года назад).
+      //{ 
+      //}
 
-   private string GetParameters(DateTime begin, DateTime end, string vagnom, string vikno)
-   {
-      return "";
+      using (var connection = CreateConnection()) // не сделел запрос как в целевых по (нужны все 6-ть таблиц)
+      {
+
+         //var sql = "select * from GET_TARA (@IN_NVAG, @IN_DTBEGIN, @IN_DTEND);";
+         //var values = new { IN_NVAG = vagnom, IN_DTBEGIN = dtBegin.ToString("yyyy-MM-dd"), IN_DTEND = dtEnd.ToString("yyyy-MM-dd") };
+         //var results = await connection.q<IEnumerable<TaraPodstanovkaModel>>(sql, values);
+         //return results;
+
+         //Set up DynamicParameters object to pass parameters  
+         DynamicParameters parameters = new DynamicParameters();
+         parameters.Add("IN_NVAG", vagnom);
+         parameters.Add("IN_DTBEGIN", dtBegin);
+         parameters.Add("IN_DTEND", dtEnd);
+
+         //Execute stored procedure and map the returned result to a Customer object  
+         var results = connection.QueryMultiple("GET_TARA", parameters, commandType: CommandType.StoredProcedure);
+         var userdetails = results.Read<TaraPodstanovkaModel>().ToList(); // instead of dynamic, you can use your objects
+
+         return userdetails;
+         //var salarydetails = reader.Read<dynamic>().ToList();
+      }
    }
 }
+

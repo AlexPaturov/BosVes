@@ -99,6 +99,20 @@ public static class GridCaptionHelper
       {"NAIM", "Имя цеха"}       // Поменять? Одинаковые с CEX
    };
 
+   // Для формы подстановки брутто как тары.
+   public static Dictionary<string, string> TaraChapters = new Dictionary<string, string>
+   {
+      {"DT", "Дата взв."},       //
+      {"VR", "Время взв."},      //
+      {"NVAG", "Ном. вагона"},   //
+      {"BRUTTO", "Брутто"},      //
+      {"TAR_BRS", "Тара брс."},  // 
+      {"NETTO", "Нетто"},        //
+      {"GRUZ", "Груз"},          //
+      {"VESY", "Весы"},          //
+      {"ID", "id"},              //
+   };
+
 
 
 
