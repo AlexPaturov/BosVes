@@ -1,7 +1,17 @@
 ﻿@page "/Pages/WeighterScope/Otvesnaya/AvtoOtvesnaya"
+@inject NavigationManager navManager
 
 <h3>"/Pages/WeighterScope/Otvesnaya/AvtoOtvesnaya"</h3>
 
 @code {
 
+
+
+
+    #region ClosePage()
+    private void ClosePage()
+    {
+        navManager.NavigateTo("/");
+    }
+    #endregion
 }

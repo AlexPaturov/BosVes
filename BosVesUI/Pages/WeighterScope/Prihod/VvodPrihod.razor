@@ -1,7 +1,15 @@
 ﻿@page "/Pages/WeighterScope/Prihod/VvodPrihod"
+@inject NavigationManager navManager
 
 <h1>/Pages/WeighterScope/Prihod/VvodPrihod</h1>
 
 @code {
 
+
+    #region ClosePage()
+    private void ClosePage()
+    {
+        navManager.NavigateTo("/");
+    }
+    #endregion
 }

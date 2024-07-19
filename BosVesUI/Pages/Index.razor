@@ -16,7 +16,7 @@
                 {
                     @foreach (var number in MenuItems.GetMenuAvtoSub())
                     {
-                        <div class="sub-menu-one">
+                        <div class="sub-menu-one" @onclick="(() => OnWeightScopeClick(number.Value))">
                             <span class="span-wordwrap" style="overflow-x: auto;">
                                 @number.Key
                             </span>
@@ -34,7 +34,7 @@
                 {
                     @foreach (var number in MenuItems.GetMenuChugunSub())
                     {
-                        <div class="sub-menu-one">
+                        <div class="sub-menu-one" @onclick="(() => OnWeightScopeClick(number.Value))">
                             <span class="span-wordwrap" style="overflow-x: auto;">
                                 @number.Key
                             </span>
@@ -52,7 +52,7 @@
                 {
                     @foreach (var number in MenuItems.GetMenuPrihodSub())
                     {
-                        <div class="sub-menu-one">
+                        <div class="sub-menu-one" @onclick="(() => OnWeightScopeClick(number.Value))">
                             <span class="span-wordwrap" style="overflow-x: auto;">
                                 @number.Key
                             </span>
@@ -71,7 +71,7 @@
                 {
                     @foreach (var number in MenuItems.GetMenuRashodSub())
                     {
-                        <div class="sub-menu-one">
+                        <div class="sub-menu-one" @onclick="(() => OnWeightScopeClick(number.Value))">
                             <span class="span-wordwrap" style="overflow-x: auto;">
                                 @number.Key
                             </span>
@@ -90,7 +90,7 @@
                 {
                     @foreach (var number in MenuItems.GetMenuVesySixSub())
                     {
-                        <div class="sub-menu-one">
+                        <div class="sub-menu-one" @onclick="(() => OnWeightScopeClick(number.Value))">
                             <span class="span-wordwrap" style="overflow-x: auto;">
                                 @number.Key
                             </span>
@@ -108,7 +108,7 @@
                 {
                     @foreach (var number in MenuItems.GetMenuKorrectirovkiSub())
                     {
-                        <div class="sub-menu-one">
+                        <div class="sub-menu-one" @onclick="(() => OnWeightScopeClick(number.Value))">
                             <span class="span-wordwrap" style="overflow-x: auto;">
                                 @number.Key
                             </span>
@@ -255,7 +255,7 @@
                 {
                     @foreach (var number in MenuItems.GetMenuAvtoSub())
                     {
-                        <div class="sub-menu-one">
+                        <div class="sub-menu-one" @onclick="(() => OnWeightScopeClick(number.Value))">
                             <span class="span-wordwrap" style="overflow-x: auto;">
                                 @number.Key
                             </span>
@@ -273,7 +273,7 @@
                 {
                     @foreach (var number in MenuItems.GetMenuChugunSub())
                     {
-                        <div class="sub-menu-one">
+                        <div class="sub-menu-one" @onclick="(() => OnWeightScopeClick(number.Value))">
                             <span class="span-wordwrap" style="overflow-x: auto;">
                                 @number.Key
                             </span>
@@ -291,7 +291,7 @@
                 {
                     @foreach (var number in MenuItems.GetMenuPrihodSub())
                     {
-                        <div class="sub-menu-one">
+                        <div class="sub-menu-one" @onclick="(() => OnWeightScopeClick(number.Value))">
                             <span class="span-wordwrap" style="overflow-x: auto;">
                                 @number.Key
                             </span>
@@ -310,7 +310,7 @@
                 {
                     @foreach (var number in MenuItems.GetMenuRashodSub())
                     {
-                        <div class="sub-menu-one">
+                        <div class="sub-menu-one" @onclick="(() => OnWeightScopeClick(number.Value))">
                             <span class="span-wordwrap" style="overflow-x: auto;">
                                 @number.Key
                             </span>
@@ -329,7 +329,7 @@
                 {
                     @foreach (var number in MenuItems.GetMenuVesySixSub())
                     {
-                        <div class="sub-menu-one">
+                        <div class="sub-menu-one" @onclick="(() => OnWeightScopeClick(number.Value))">
                             <span class="span-wordwrap" style="overflow-x: auto;">
                                 @number.Key
                             </span>
@@ -347,7 +347,7 @@
                 {
                     @foreach (var number in MenuItems.GetMenuKorrectirovkiSub())
                     {
-                        <div class="sub-menu-one">
+                        <div class="sub-menu-one" @onclick="(() => OnWeightScopeClick(number.Value))">
                             <span class="span-wordwrap" style="overflow-x: auto;">
                                 @number.Key
                             </span>
@@ -380,41 +380,12 @@
     private bool showVesySix = false;
     private bool showKorrectirovka = false;
     #endregion
+
     #region
-    private void OnWeightClick(string brunch)
+    private void OnWeightScopeClick(string brunch)
     {
-        string param = string.Empty;
-
-        switch (brunch)
-        {
-            case MenuItems.redirectToAvto:
-                param = "/"; // странички на которые я буду перенаправлять запросы
-                break;
-
-            case MenuItems.redirectToPrihod:
-                param = "/"; // странички на которые я буду перенаправлять запросы
-                break;
-
-            case MenuItems.redirectToRashod:
-                param = "/"; // странички на которые я буду перенаправлять запросы
-                break;
-
-            case MenuItems.redirectToChugun:
-                param = "/"; // странички на которые я буду перенаправлять запросы
-                break;
-
-            case MenuItems.redirectToBoss:
-                param = "/"; // странички на которые я буду перенаправлять запросы
-                break;
-
-            default:
-                param = "/";
-                return;
-        }
-        // navManager.NavigateTo(param); // перенаправляется на желаемую страницу
-        navManager.NavigateTo($"/Details/{"65d0997c4b4b895e10236d35"}"); // отправляемся на стр. Details.razor
+        navManager.NavigateTo(brunch); 
     }
-
     #endregion
 
 }

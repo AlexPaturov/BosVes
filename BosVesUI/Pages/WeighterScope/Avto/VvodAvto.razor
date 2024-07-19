@@ -1,7 +1,16 @@
 ﻿@page "/Pages/WeighterScope/Avto/VvodAvto"
+@inject NavigationManager navManager
+
 
 <h3>VvodAvto</h3>
 
 @code {
 
+
+    #region ClosePage()
+    private void ClosePage()
+    {
+        navManager.NavigateTo("/");
+    }
+    #endregion
 }

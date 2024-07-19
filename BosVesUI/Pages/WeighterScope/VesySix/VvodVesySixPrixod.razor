@@ -1,7 +1,16 @@
 ﻿@page "/Pages/WeighterScope/VesySix/VvodVesySixPrixod"
+@inject NavigationManager navManager
+
 
 <h3>"/Pages/WeighterScope/VesySix/VvodVesySixPrixod"</h3>
 
 @code {
 
+
+    #region ClosePage()
+    private void ClosePage()
+    {
+        navManager.NavigateTo("/");
+    }
+    #endregion
 }

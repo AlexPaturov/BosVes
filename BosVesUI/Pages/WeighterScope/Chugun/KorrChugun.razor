@@ -1,7 +1,16 @@
 ﻿@page "/Pages/WeighterScope/Chugun/KorrChugun"
+@inject NavigationManager navManager
+
 
 <h3>"/Pages/WeighterScope/Chugun/KorrChugun"</h3>
 
 @code {
 
+
+    #region ClosePage()
+    private void ClosePage()
+    {
+        navManager.NavigateTo("/");
+    }
+    #endregion
 }

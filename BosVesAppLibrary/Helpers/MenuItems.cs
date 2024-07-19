@@ -29,7 +29,6 @@ public static class MenuItems
    public const string redirectToBoss = "Boss";
    #endregion
 
-   // 
    static MenuItems()
    {
       #region railWeightSub fulling
@@ -174,7 +173,6 @@ public static class MenuItems
       return railWeightByTimeSub;
    }
 
-   // 
    public static Dictionary<string, string> GetMenuRashodSub()
    {
       return menuRashod;
