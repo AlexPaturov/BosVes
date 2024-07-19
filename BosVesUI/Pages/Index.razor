@@ -1,121 +1,392 @@
 ﻿@page "/"
-@inject GruzGdData gruzgddata
+@inject AuthenticationStateProvider authProvider
 @inject NavigationManager navManager
 
-<PageTitle>BosVes</PageTitle>
-<div>
+<h1 class="page-heading text-uppercase mb-4">Web Bos Wes</h1>
 
-    <button class="btn btn-primary" @onclick=redirect>Go to SampleData</button>
-    @* <br/>
-    <button class="btn btn-primary" @onclick=inputtest>Input many</button>
-    <br/>
-    <button class="btn btn-primary" @onclick=inputTwo>inputTwo</button>
-    <br/> *@
-
-    <br />
-    <button class="btn btn-primary" @onclick=KorrGpri>KorrGpri</button>
-    @*  <br/>
-    <button class="btn btn-primary" @onclick=inputAdaptive>inputAdaptive</button>*@
-
-    <br />
-    <button class="btn btn-primary" @onclick=tableOne>tableOne</button>
-
-    @* <br />
-    <button class="btn btn-primary" @onclick=QuickGridOne>QuickGridOne</button>*@
-
-@*     <br />
-    <button class="btn btn-primary" @onclick=tableone>tableone</button> *@
-
-    <br />
-    <button class="btn btn-primary" @onclick=KorrPrihod>KorrPrihod</button>
-</div>
-
-<h1 class="page-heading text-uppercase mb-4">New Bos Ves</h1>
-
+@* первое уменьшение в размерах меню весовщиков - начало *@
 <div class="row">
-    <div class="col text-center">
-        <h2>Show All</h2>
 
-        @if (gruzes == null)
+    <div class="col-12 d-block d-md-none">
+        @if (true) // проверка прав
         {
-            <p><em>Loading...</em></p>
-        }
-        else
-        {
-            <div>
-                @foreach (var gruz in gruzes)
+            <div class="weightscope" @onclick="(() => showAvto = !showAvto)">
+                <span class="text-uppercase fw-bold">Автовесы</span>
+                @if (showAvto)
                 {
-                    <div>
-                        <span>Gruz: @gruz.GRUZIK</span>
-                        <span>kod_sap: @gruz.KOD_SAP</span>
-                        <span>NAME_OZM: @gruz.NAME_OZM</span>
-                        <span>NAME_SAP: @gruz.NAME_SAP</span>
-                    </div>
+                    @foreach (var number in MenuItems.GetMenuAvtoSub())
+                    {
+                        <div class="sub-menu-one">
+                            <span class="span-wordwrap" style="overflow-x: auto;">
+                                @number.Key
+                            </span>
+                        </div>
+                    }
+                }
+            </div>
+        }
 
+        @if (true) // проверка прав
+        {
+            <div class="weightscope" @onclick="(() => showChugun = !showChugun)">
+                <span class="text-uppercase fw-bold">Чугун Ж/Д</span>
+                @if (showChugun)
+                {
+                    @foreach (var number in MenuItems.GetMenuChugunSub())
+                    {
+                        <div class="sub-menu-one">
+                            <span class="span-wordwrap" style="overflow-x: auto;">
+                                @number.Key
+                            </span>
+                        </div>
+                    }
+                }
+            </div>
+        }
+
+        @if (true) // проверка прав
+        {
+            <div class="weightscope" @onclick="(() => showPrihod = !showPrihod)">
+                <span class="text-uppercase fw-bold">Приход</span>
+                @if (showPrihod)
+                {
+                    @foreach (var number in MenuItems.GetMenuPrihodSub())
+                    {
+                        <div class="sub-menu-one">
+                            <span class="span-wordwrap" style="overflow-x: auto;">
+                                @number.Key
+                            </span>
+                        </div>
+                    }
+                }
+            </div>
+        }
+
+        @if (true) // проверка прав
+        {
+            <div class="weightscope" @onclick="(() => showRashod = !showRashod)">
+                <span class="text-uppercase fw-bold">Расход</span>
+
+                @if (showRashod)
+                {
+                    @foreach (var number in MenuItems.GetMenuRashodSub())
+                    {
+                        <div class="sub-menu-one">
+                            <span class="span-wordwrap" style="overflow-x: auto;">
+                                @number.Key
+                            </span>
+                        </div>
+                    }
+                }
+
+            </div>
+        }
+
+        @if (true) // проверка прав
+        {
+            <div class="weightscope" @onclick="(() => showKorrectirovka = !showKorrectirovka)">
+                <span class="text-uppercase fw-bold">Корректировки Ж/Д взвешиваний</span>
+                @if (showKorrectirovka)
+                {
+                    @foreach (var number in MenuItems.GetMenuKorrectirovkiSub())
+                    {
+                        <div class="sub-menu-one">
+                            <span class="span-wordwrap" style="overflow-x: auto;">
+                                @number.Key
+                            </span>
+                        </div>
+                    }
                 }
             </div>
         }
     </div>
+
+</div>
+@* первое уменьшение в размерах меню весовщиков - окончание *@
+
+@* Общее меню до уменьшения до ниже средних размеров *@
+<div class="row">
+    
+    @* Основное меню web bos wes - начало *@
+    <div class="col-md-8 col-xl-9">
+
+        <div class="menu-entry">
+
+            <div class="menu-entry-text">
+
+                <div class="main-menu" id="idRailweight" @onclick="(() => showRailweight = !showRailweight)">
+                    <span class="span-wordwrap text-uppercase fw-bold" style="overflow-x: auto;">Ж/Д весы</span>
+                    @if (showRailweight)
+                    {
+                        @foreach (var number in MenuItems.GetRailWeightSub())
+                        {
+                            <div class="sub-menu-one">
+                                <span class="span-wordwrap" style="overflow-x: auto;">
+                                    @number.Key
+                                </span>
+                            </div>
+                        }
+                    }
+                </div>
+
+                <div class="main-menu" id="idAvtoWeight" @onclick="(() => showAvtoWeight = !showAvtoWeight)">
+                    <span class="span-wordwrap text-uppercase fw-bold" style="overflow-x: auto;">Авто</span>
+                    @if (showAvtoWeight)
+                    {
+                        @foreach (var number in MenuItems.GetAvtoWeightSub())
+                        {
+                            <div class="sub-menu-one">
+                                <span class="span-wordwrap" style="overflow-x: auto;">
+                                    @number.Key
+                                </span>
+                            </div>
+                        }
+                    }
+                </div>
+
+                <div class="main-menu" id="idAgglomerate" @onclick="(() => showAgglomerate = !showAgglomerate)">
+                    <span class="span-wordwrap text-uppercase fw-bold" style="overflow-x: auto;">Агломерат</span>
+                    @if (showAgglomerate)
+                    {
+                        @foreach (var number in MenuItems.GetAgglomerateSub())
+                        {
+                            <div class="sub-menu-one">
+                                <span class="span-wordwrap" style="overflow-x: auto;">
+                                    @number.Key
+                                </span>
+                            </div>
+                        }
+                    }
+                </div>
+
+                <div class="main-menu" id="idCastIron" @onclick="(() => showCastIron = !showCastIron)">
+                    <span class="span-wordwrap text-uppercase fw-bold" style="overflow-x: auto;">Чугун</span>
+                    @if (showCastIron)
+                    {
+                        @foreach (var number in MenuItems.GetCastIronSub())
+                        {
+                            <div class="sub-menu-one">
+                                <span class="span-wordwrap" style="overflow-x: auto;">
+                                    @number.Key
+                                </span>
+                            </div>
+                        }
+                    }
+                </div>
+
+                <div class="main-menu" id="idScrapRental" @onclick="(() => showScrapRental = !showScrapRental)">
+                    <span class="span-wordwrap text-uppercase fw-bold" style="overflow-x: auto;">Прокат</span>
+                    @if (showScrapRental)
+                    {
+                        @foreach (var number in MenuItems.GetScrapRentalSub())
+                        {
+                            <div class="sub-menu-one">
+                                <span class="span-wordwrap" style="overflow-x: auto;">
+                                    @number.Key
+                                </span>
+                            </div>
+                        }
+                    }
+                </div>
+
+                <div class="main-menu" id="idDrossl" @onclick="(() => showDrossl = !showDrossl)">
+                    <span class="span-wordwrap text-uppercase fw-bold" style="overflow-x: auto;">Шлак</span>
+                    @if (showDrossl)
+                    {
+                        @foreach (var number in MenuItems.GetDrosslSub())
+                        {
+                            <div class="sub-menu-one">
+                                <span class="span-wordwrap" style="overflow-x: auto;">
+                                    @number.Key
+                                </span>
+                            </div>
+                        }
+                    }
+                </div>
+
+                <div class="main-menu" id="idRailWeightByTime" @onclick="(() => showRailWeightByTime = !showRailWeightByTime)">
+                    <span class="span-wordwrap text-uppercase fw-bold" style="overflow-x: auto;">Ж/Д весы по времени состава</span>
+                    @if (showRailWeightByTime)
+                    {
+                        @foreach (var number in MenuItems.GetRailWeightByTimeSub())
+                        {
+                            <div class="sub-menu-one">
+                                <span class="span-wordwrap" style="overflow-x: auto;">
+                                    @number.Key
+                                </span>
+                            </div>
+                        }
+                    }
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+    @* Основное меню web bos wes - окончание *@
+    
+    @* категории нужно сделать разграничение прав для весовщика и пользователя *@
+    <div class="col-md-4 col-xl-3 d-none d-md-block">
+
+        @if (true) // проверка прав
+        {
+            <div class="weightscope" @onclick="(() => showAvto = !showAvto)">
+                <span class="text-uppercase fw-bold">Автовесы</span>
+                @if (showAvto)
+                {
+                    @foreach (var number in MenuItems.GetMenuAvtoSub())
+                    {
+                        <div class="sub-menu-one">
+                            <span class="span-wordwrap" style="overflow-x: auto;">
+                                @number.Key
+                            </span>
+                        </div>
+                    }
+                }
+            </div>
+        }
+
+        @if (true) // проверка прав
+        {
+            <div class="weightscope" @onclick="(() => showChugun = !showChugun)">
+                <span class="text-uppercase fw-bold">Чугун Ж/Д</span>
+                @if (showChugun)
+                {
+                    @foreach (var number in MenuItems.GetMenuChugunSub())
+                    {
+                        <div class="sub-menu-one">
+                            <span class="span-wordwrap" style="overflow-x: auto;">
+                                @number.Key
+                            </span>
+                        </div>
+                    }
+                }
+            </div>
+        }
+
+        @if (true) // проверка прав
+        {
+            <div class="weightscope" @onclick="(() => showPrihod = !showPrihod)">
+                <span class="text-uppercase fw-bold">Приход</span>
+                @if (showPrihod)
+                {
+                    @foreach (var number in MenuItems.GetMenuPrihodSub())
+                    {
+                        <div class="sub-menu-one">
+                            <span class="span-wordwrap" style="overflow-x: auto;">
+                                @number.Key
+                            </span>
+                        </div>
+                    }
+                }
+            </div>
+        }
+
+        @if (true) // проверка прав
+        {
+            <div class="weightscope" @onclick="(() => showRashod = !showRashod)">
+                <span class="text-uppercase fw-bold">Расход</span>
+
+                @if (showRashod)
+                {
+                    @foreach (var number in MenuItems.GetMenuRashodSub())
+                    {
+                        <div class="sub-menu-one">
+                            <span class="span-wordwrap" style="overflow-x: auto;">
+                                @number.Key
+                            </span>
+                        </div>
+                    }
+                }
+
+            </div>
+        }
+
+        @if (true) // проверка прав
+        {
+            <div class="weightscope" @onclick="(() => showKorrectirovka = !showKorrectirovka)">
+                <span class="text-uppercase fw-bold">Корректировки Ж/Д взвешиваний</span>
+                @if (showKorrectirovka)
+                {
+                    @foreach (var number in MenuItems.GetMenuKorrectirovkiSub())
+                    {
+                        <div class="sub-menu-one">
+                            <span class="span-wordwrap" style="overflow-x: auto;">
+                                @number.Key
+                            </span>
+                        </div>
+                    }
+                }
+            </div>
+        }
+
+    </div>
+
 </div>
 
 @code {
-    private List<GruzGdModel> gruzes { get; set; }
+    #region состояние главного меню - развёрнуто или нет
+    private bool showRailweight = false;
+    private bool showAvtoWeight = false;
+    private bool showAgglomerate = false;
+    private bool showCastIron = false;
+    private bool showScrapRental = false;
+    private bool showDrossl = false;
+    private bool showRailWeightByTime = false;
+    #endregion
 
-    protected override async Task OnInitializedAsync()
+    #region состояние меню весовщиков - развёрнуто или нет
+    private bool showAvto = false;
+    private bool showChugun = false;
+    private bool showPrihod = false;
+    private bool showRashod = false;
+    private bool showKorrectirovka = false;
+    #endregion
+    #region
+    private void OnWeightClick(string brunch)
     {
-        gruzes = (List<GruzGdModel>)await gruzgddata.GetAll();
+        string param = string.Empty;
+
+        switch (brunch)
+        {
+            case MenuItems.redirectToAvto:
+                param = "/"; // странички на которые я буду перенаправлять запросы
+                break;
+
+            case MenuItems.redirectToPrihod:
+                param = "/"; // странички на которые я буду перенаправлять запросы
+                break;
+
+            case MenuItems.redirectToRashod:
+                param = "/"; // странички на которые я буду перенаправлять запросы
+                break;
+
+            case MenuItems.redirectToChugun:
+                param = "/"; // странички на которые я буду перенаправлять запросы
+                break;
+
+            case MenuItems.redirectToBoss:
+                param = "/"; // странички на которые я буду перенаправлять запросы
+                break;
+
+            default:
+                param = "/";
+                return;
+        }
+        // navManager.NavigateTo(param); // перенаправляется на желаемую страницу
+        navManager.NavigateTo($"/Details/{"65d0997c4b4b895e10236d35"}"); // отправляемся на стр. Details.razor
     }
 
-    private void redirect()
-    {
-        navManager.NavigateTo("/Pages/SampleData");
-    }
+    #endregion
 
-    private void inputtest()
-    {
-        navManager.NavigateTo("/Pages/InputMany");
-    }
-
-    private void inputTwo()
-    {
-        navManager.NavigateTo("/Pages/InputTwo");
-    }
-
-    private void KorrGpri()
-    {
-        navManager.NavigateTo("/Pages/KorrGpri");
-    }
-
-    private void inputAdaptive()
-    {
-        navManager.NavigateTo("/Pages/InputAdaptive");
-    }
-
-    private void tableOne()
-    {
-        navManager.NavigateTo("/Pages/TableOne");
-    }
-
-    private void KorrPrihod()
-    {
-        navManager.NavigateTo("/Pages/KorrPrihod");
-    }
 }
 
-@* @code{ "/Pages/InputThree" /Pages/productgrid
-    private List<GruzGdModel> gruzes { get; set; }
 
-    protected async override Task OnInitializedAsync()
-    {
-        gruzes = new List<GruzGdModel>()
-        {
-            new GruzGdModel()
-            { GRUZIK = "gr1", KOD_SAP = "9", NAME_OZM="0", NAME_SAP="zzz" },
 
-            new GruzGdModel()
-            { GRUZIK = "Lom stalnoy", KOD_SAP = "03409340", NAME_OZM="0", NAME_SAP="uwyweh" }
 
-        };
 
-    }
-} *@
+
+
+
+

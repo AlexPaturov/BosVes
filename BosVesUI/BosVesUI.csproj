@@ -3,6 +3,7 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>36a2323d-317b-456f-897c-10f265e9bd3c</UserSecretsId>
+    <PackageIcon></PackageIcon>
   </PropertyGroup>
   <ItemGroup>
     <Content Remove="Components\InputTime.razor" />
@@ -11,7 +12,7 @@
   <ItemGroup>
     <Folder Include="Components\" />
     <Folder Include="Models\" />
-    <Folder Include="wwwroot\images\" />
+    <Folder Include="Pages\WeighterScope\Korrectirovki\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="NetcodeHub.Packages.Components.Modal" Version="1.0.0" />
@@ -30,7 +31,7 @@
     <None Include="Shared\Components\InputTime.razor" />
   </ItemGroup>
   <ItemGroup>
-    <Content Update="Pages\KorrPrihod.razor">
+    <Content Update="Pages\WeighterScope\Prihod\KorrPrihod.razor">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
     </Content>
   </ItemGroup>

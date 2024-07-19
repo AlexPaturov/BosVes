@@ -1,4 +1,4 @@
-﻿@page "/Pages/KorrPrihod"
+﻿@page "/Pages/WeighterScope/Prihod/KorrPrihod"
 @using BosVesUI.Shared.Components
 @using NetcodeHub.Packages.Components.Modal
 @inject GpriData gpridata;
@@ -730,8 +730,8 @@
             try
             {
                 await gpridata.UpdVag(vagon);
-                vagon = new GpriModel(); // чистим модель
-                await GetByDtVr();
+                vagon = new GpriModel();    // чистим модель
+                await GetByDtVr();          // обновляем данные на странице
             }
             catch (Exception ex)
             {
