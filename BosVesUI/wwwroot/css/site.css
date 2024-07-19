@@ -245,6 +245,11 @@ th {
 
 /* не проверял окончание 1 */
 
+.close-button-section {
+    display: flex;
+    justify-content: flex-end;
+}
+
 /* не проверял начало 3 */
 .btn:focus,
 .form-control:focus {
