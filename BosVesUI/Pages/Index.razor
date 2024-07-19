@@ -84,6 +84,24 @@
 
         @if (true) // проверка прав
         {
+            <div class="weightscope" @onclick="(() => showVesySix = !showVesySix)">
+                <span class="text-uppercase fw-bold">Весы 6</span>
+                @if (showVesySix)
+                {
+                    @foreach (var number in MenuItems.GetMenuVesySixSub())
+                    {
+                        <div class="sub-menu-one">
+                            <span class="span-wordwrap" style="overflow-x: auto;">
+                                @number.Key
+                            </span>
+                        </div>
+                    }
+                }
+            </div>
+        }
+
+        @if (true) // проверка прав
+        {
             <div class="weightscope" @onclick="(() => showKorrectirovka = !showKorrectirovka)">
                 <span class="text-uppercase fw-bold">Корректировки Ж/Д взвешиваний</span>
                 @if (showKorrectirovka)
@@ -305,6 +323,24 @@
 
         @if (true) // проверка прав
         {
+            <div class="weightscope" @onclick="(() => showVesySix = !showVesySix)">
+                <span class="text-uppercase fw-bold">Весы 6</span>
+                @if (showVesySix)
+                {
+                    @foreach (var number in MenuItems.GetMenuVesySixSub())
+                    {
+                        <div class="sub-menu-one">
+                            <span class="span-wordwrap" style="overflow-x: auto;">
+                                @number.Key
+                            </span>
+                        </div>
+                    }
+                }
+            </div>
+        }
+
+        @if (true) // проверка прав
+        {
             <div class="weightscope" @onclick="(() => showKorrectirovka = !showKorrectirovka)">
                 <span class="text-uppercase fw-bold">Корректировки Ж/Д взвешиваний</span>
                 @if (showKorrectirovka)
@@ -341,6 +377,7 @@
     private bool showChugun = false;
     private bool showPrihod = false;
     private bool showRashod = false;
+    private bool showVesySix = false;
     private bool showKorrectirovka = false;
     #endregion
     #region

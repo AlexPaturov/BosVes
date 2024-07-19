@@ -195,14 +195,14 @@ public static class MenuItems
       return menuChugun;
    }
 
+   public static Dictionary<string, string> GetMenuVesySixSub()
+   {
+      return menuVesySix;
+   }
+
    public static Dictionary<string, string> GetMenuKorrectirovkiSub()
    {
       return menuKorrectirovki;
    }
-
-
-
-
-
 
 }
