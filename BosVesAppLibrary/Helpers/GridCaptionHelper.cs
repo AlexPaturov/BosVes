@@ -38,7 +38,6 @@ public static class GridCaptionHelper
       {"SHABLON", "Шаблон"}
    };
 
-   // скопированы из прихода
    public static Dictionary<string, string> GrasGridChapters = new Dictionary<string, string>
    {
       {"DT", "Дата взв."},
@@ -67,15 +66,11 @@ public static class GridCaptionHelper
       {"PP", "PP"},
       {"PR", "PR"},
       {"DELTA", "DELTA"},
-      {"KOD_SAP", "Код сап"},
       {"N_TEPLOVOZ", "Ном. теплов."},
       {"POGRESHNOST", "Погрешность"},
       {"REJVZVESH", "Реж. взвеш."},
-      {"PLATFORMS_TARA", "Платф. тара"},
-      {"PLATFORMS_BRUTTO", "Платф. брутто"},
-      {"ID_PLATFORMS", "Платф. подст."},
-      {"SHABLON", "Шаблон"}
-
+      {"ID", "id"},                          // после отладки - скрыть
+      {"ID_PLATFORMS", "Платф. подст."}
    };
 
    // Для формы подстановки брутто как тары.
