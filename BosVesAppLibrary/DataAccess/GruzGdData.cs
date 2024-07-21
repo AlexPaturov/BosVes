@@ -27,15 +27,15 @@ public class GruzGdData : IGruzGdData
       }
    }
 
-   public async Task UpdGruz(GruzGdModel gruz)                                      // проверено - не использовать пока не будет уникального идентификатора записи
-   {
-      using (var connection = CreateConnection())
-      {
-         var query = "update gruz_gd set GRUZIK = @GRUZIK " +
-                                        "where KOD_SAP = @KOD_SAP";                 // код сап не везде есть 
-         await connection.ExecuteAsync(query, gruz);
-      }
-   }
+   //public async Task UpdGruz(GruzGdModel gruz)                                      // проверено - не использовать пока не будет уникального идентификатора записи
+   //{
+   //   using (var connection = CreateConnection())
+   //   {
+   //      var query = "update gruz_gd set GRUZIK = @GRUZIK " +
+   //                                     "where KOD_SAP = @KOD_SAP";                 // код сап не везде есть 
+   //      await connection.ExecuteAsync(query, gruz);
+   //   }
+   //}
 
    public async Task<IEnumerable<GruzGdModel>> GetNameByPartName(string pName)       // проверено
    {
