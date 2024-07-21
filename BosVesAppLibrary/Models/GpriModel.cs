@@ -44,7 +44,6 @@ namespace BosVesAppLibrary.Models
       [RegularExpression(@"^(0|-?\d{0,5}(\.\d{0,2})?)$", ErrorMessage = "Ошибка MUSOR")]
       public double? MUSOR { get; set; }              // процент замусоренности
 
-      //[Required(ErrorMessage = "The integer value is required.")]
       [Range(0, 999, ErrorMessage = "Please enter a valid non-negative integer.")]
       public Int16? CEX { get; set; } = null;               // цех получатель
 
@@ -66,7 +65,7 @@ namespace BosVesAppLibrary.Models
       [Range(0, int.MaxValue, ErrorMessage = "Введите корректный номер")]
       public int? TN { get; set; }                     // табельный номер последнего сохранявшего изменения
 
-      [Range(0, 100, ErrorMessage = "Диапазон ввода от 1 до 100")]
+      [Range(0, Int16.MaxValue, ErrorMessage = "NPP out of range")]
       public Int16? NPP { get; set; }                  // номер по порядку в составе
 
       [RegularExpression(@"^(0|-?\d{0,6}(\.\d{0,2})?)$", ErrorMessage = "Ошибка V13")]
@@ -92,7 +91,9 @@ namespace BosVesAppLibrary.Models
 
       [StringLength(30, ErrorMessage = "Максимальная длина 30 символов")]
       public string N_TEPLOVOZ { get; set; }          // номер тепловоза
-                                                   
+
+      //public DateTime VR_PRV { get; set; }            // время взввешивания каждого вагона (добавить на интеграции с ЦВИК)
+
       [RegularExpression(@"^(0|-?\d{0,6}(\.\d{0,2})?)$", ErrorMessage = "Ошибка POGRESHNOST")]
       public int? POGRESHNOST { get; set; }            // погрешность взвешивания
 
