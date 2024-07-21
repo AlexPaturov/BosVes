@@ -1,21 +1,601 @@
 ﻿@page "/Pages/WeighterScope/Rashod/KorrRashod"
+@using BosVesUI.Shared.Components
+@using NetcodeHub.Packages.Components.Modal
+@inject GrasData grasdata;
+@inject TaraPodstanovkaData taraPodstanovka;
 @inject NavigationManager navManager
 
 <h3>"/Pages/WeighterScope/Rashod/KorrRashod"</h3>
 
 <div class="row justify-content-center create-form">
-    <div class="col-xl-8 col-lg-10 form-layout">
+    <div class="col-md-12 col-xl-12 form-layout">
         <div class="close-button-section">
             <button class="btn btn-close" @onclick="ClosePage"></button>
         </div>
 
+        @* Поля ввода для фильтров - начало *@
+        <div class="row">
+
+            @* 1 *@
+            <div class="col">
+                <div class="form-group row">
+                    <label for="DT" class="col col-form-label">Дата взвешивания</label>
+                    <div class="col">
+                        <InputDate Type="InputDateType.Date" @bind-Value="@inDt" id="idDT" class="form-control" />
+                        @* <ValidationMessage For="@(() => inDt)" /> *@
+                    </div>
+                </div>
+            </div>
+
+            @* 2 *@
+            <div class="col">
+                <div class="form-group row">
+                    <label for="VR" class="col col-form-label">Время взвешивания</label>
+                    <div class="col">
+                        <InputDate Type="InputDateType.Time" @bind-Value:format="hh:mm:ss" @bind-Value="@inVr" id="VR" step="1" class="form-control" />
+                        @* <ValidationMessage For="@(() => inVr)" /> *@
+                    </div>
+                </div>
+            </div>
+
+            @* 3 *@
+            <div class="col">
+                <div class="form-group row">
+                    <label for="NVAG" class="col col-form-label">Номер вагона</label>
+                    <div class="col">
+                        <InputText @bind-Value="@inNvag" id="NVAG" class="form-control" />
+                        @* <ValidationMessage For="@(() => inNvag)" /> *@
+                    </div>
+                </div>
+            </div>
+
+            <button class="btn btn-primary" @onclick="GetByDtVr">Get list vagons</button>
+        </div>
+        @* Поля ввода для фильтров - окончание *@
+
+        @* Таблица начало *@
+        @if (listVags == null)
+        {
+            <div class="table-responsive">
+                @* <div style="width:fit-content"> *@
+                <div style="width:1000px">  
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                @foreach (var vp in GridCaptionHelper.GrasGridChapters.Values)
+                                {
+                                    <th> @vp </th>
+                                }
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="table-responsive">
+                @* <div style="width:fit-content"> *@
+                <div style="width:1000px">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                @foreach (var vp in GridCaptionHelper.GrasGridChapters.Values)
+                                {
+                                    <th> @vp </th>
+                                }
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in listVags)
+                            {
+                                <tr @onclick="() => OnRowClick(item.ID)" class="@GetRowClass(item.ID)">
+                                    <td> @item.DT.ToShortDateString() </td>
+                                    <td> @item.VR.ToString(@"hh\:mm\:ss") </td>
+                                    <td> @item.NVAG </td>
+                                    <td> @item.NDOK </td>
+                                    <td> @item.GRUZ </td>
+                                    <td> @item.BRUTTO </td>
+                                    <td> @item.TAR_BRS </td>
+                                    <td> @item.TAR_DOK </td>
+                                    <td> @item.NETTO </td>
+                                    <td> @item.NET_DOK </td>
+                                    <td> @item.MUSOR </td>
+                                    <td> @item.CEX </td>
+                                    <td> @item.TARIF </td>
+                                    <td> @item.POTR </td>
+                                    <td> @item.PLAT </td>
+                                    <td> @item.SKOR </td>
+                                    <td> @item.VESY </td>
+                                    <td> @item.TN </td>
+                                    <td> @item.NPP </td>
+                                    <td> @item.V13 </td>
+                                    <td> @item.V24 </td>
+                                    <td> @item.V12 </td>
+                                    <td> @item.V34 </td>
+                                    <td> @item.PP </td>
+                                    <td> @item.PR </td>
+                                    <td> @item.DELTA </td>
+                                    <td> @item.N_TEPLOVOZ </td>
+                                    <td> @item.POGRESHNOST </td>
+                                    <td> @item.REJVZVESH </td>
+                                    <td> @item.ID </td>
+                                    <td> @item.PLATFORMS_BRUTTO </td>
+                                    <td> @item.ID_PLATFORMS </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        }
+        <h6>selected row: @selRowID </h6>
+        @* Таблица окончание *@
+
+        @* Блок полей для корректировки - начало *@
+        <div class="row border border-dark">
+            <EditForm Model="vagon" OnValidSubmit="HandleValidSubmit">
+                <DataAnnotationsValidator />
+                <div class="row">
+                    @* первый блок начало *@
+                    <div class="col-md-3" style="background-color: antiquewhite">
+
+                        @* 1 *@
+                        <div class="col">
+                            <div class="form-group row">
+                                <label for="DT" class="col col-form-label">Дата взвешивания</label>
+                                <div class="col">
+                                    <InputDate Type="InputDateType.Date" @bind-Value="@vagon.DT" id="idDT" class="form-control" />
+                                    <ValidationMessage For="@(() => vagon.DT)" />
+                                </div>
+                            </div>
+                        </div>
+
+                        @* 2 *@
+                        <div class="col">
+                            <div class="form-group row">
+                                <label for="VR" class="col col-form-label">Время взвешивания</label>
+                                <div class="col">
+                                    <InputTime @bind-Value="vagon.VR" id="VR" step="1" class="form-control" />
+                                    <ValidationMessage For="@(() => vagon.VR)" />
+                                </div>
+                            </div>
+                        </div>
+
+                        @* 3 *@
+                        <div class="col">
+                            <div class="form-group row">
+                                <label for="NVAG" class="col col-form-label">Номер вагона</label>
+                                <div class="col">
+                                    <InputText @bind-Value="@vagon.NVAG" id="NVAG" class="form-control" />
+                                    <ValidationMessage For="@(() => vagon.NVAG)" />
+                                </div>
+                            </div>
+                        </div>
+
+                        @* 4 *@
+                        <div class="col">
+                            <div class="form-group row">
+                                <label for="NDOK" class="col col-form-label">Номер докум.</label>
+                                <div class="col">
+                                    <InputNumber @bind-Value="@vagon.NDOK" id="NDOK" class="form-control" />
+                                    <ValidationMessage For="@(() => vagon.NDOK)" />
+                                </div>
+                            </div>
+                        </div>
+
+                        @* 5 *@
+                        <div class="form-group row">
+                            <label for="GRUZ" class="col col-form-label">Груз</label>
+                            <div class="col">
+                                <InputText @bind-Value="@vagon.GRUZ" id="GRUZ" class="form-control" />
+                                <ValidationMessage For="@(() => vagon.GRUZ)" />
+                            </div>
+                        </div>
+
+                    </div>
+                    @* первый блок окончание *@
+                    @* второй блок начало *@
+                    <div class="col-md-3" style="background-color: aqua">
+
+                        @* 6 *@
+                        <div class="form-group row">
+                            <label for="BRUTTO" class="col col-form-label">Брутто</label>
+                            <div class="col">
+                                <InputNumber @bind-Value="@vagon.BRUTTO" id="BRUTTO" class="form-control" />
+                                <ValidationMessage For="@(() => vagon.BRUTTO)" />
+                            </div>
+                        </div>
+
+                        @* 7 *@
+                        <div class="form-group row">
+                            <label for="TAR_BRS" class="col col-form-label">Тара брус</label>
+                            <div class="col">
+                                <InputNumber @bind-Value="@vagon.TAR_BRS" id="TAR_BRS" class="form-control" />
+                                <ValidationMessage For="@(() => vagon.TAR_BRS)" />
+                            </div>
+                        </div>
+
+                        @* 8 *@
+                        <div class="form-group row">
+                            <label for="TAR_DOK" class="col col-form-label">Тара докум.</label>
+                            <div class="col">
+                                <InputNumber @bind-Value="@vagon.TAR_DOK" id="TAR_DOK" class="form-control" />
+                                <ValidationMessage For="@(() => vagon.TAR_DOK)" />
+                            </div>
+                        </div>
+
+                        @* 9 *@
+                        <div class="form-group row">
+                            <label for="NETTO" class="col col-form-label">Нетто</label>
+                            <div class="col">
+                                <InputNumber @bind-Value="@vagon.NETTO" id="NETTO" class="form-control" />
+                                <ValidationMessage For="@(() => vagon.NETTO)" />
+                            </div>
+                        </div>
+
+                        @* 10 *@
+                        <div class="form-group row">
+                            <label for="NET_DOK" class="col col-form-label">Нетто докум.</label>
+                            <div class="col">
+                                <InputNumber @bind-Value="@vagon.NET_DOK" id="NET_DOK" class="form-control" />
+                                <ValidationMessage For="@(() => vagon.NET_DOK)" />
+                            </div>
+                        </div>
+
+                        <div class="col text-end">
+                            <button class="btn btn-primary" @onclick="OpenModalGetTara">Взять тару</button>
+                        </div>
+
+                    </div>
+                    @* второй блок окончание *@
+                    @* третий блок начало *@
+                    <div class="col-md-3" style="background-color: blueviolet">
+
+                        @* 11 *@
+                        <div class="form-group row">
+                            <label for="MUSOR" class="col col-form-label">Мусор</label>
+                            <div class="col">
+                                <InputNumber @bind-Value="@vagon.MUSOR" id="MUSOR" class="form-control" />
+                                <ValidationMessage For="@(() => vagon.MUSOR)" />
+                            </div>
+                        </div>
+
+                        @* 12 *@
+                        <div class="form-group row">
+                            <label for="CEX" class="col col-form-label">Цех</label>
+                            <div class="col">
+                                <InputNumber @bind-Value="@vagon.CEX" id="CEX" class="form-control" />
+                                <ValidationMessage For="@(() => vagon.CEX)" />
+                            </div>
+                        </div>
+
+                        @* 13 *@
+                        <div class="form-group row">
+                            <label for="TARIF" class="col col-form-label">Тариф</label>
+                            <div class="col">
+                                <InputNumber @bind-Value="@vagon.TARIF" id="TARIF" class="form-control" />
+                                <ValidationMessage For="@(() => vagon.TARIF)" />
+                            </div>
+                        </div>
+
+                        @* 14 *@
+                        <div class="form-group row">
+                            <label for="POTR" class="col col-form-label">Потребитель</label>
+                            <div class="col">
+                                <InputText @bind-Value="vagon.POTR" id="POTR" class="form-control" />
+                                <ValidationMessage For="@(() => vagon.POTR)" />
+                            </div>
+                        </div>
+
+                        @* 15 *@
+                        <div class="form-group row">
+                            <label for="PLAT" class="col col-form-label">Плательщик</label>
+                            <div class="col">
+                                <InputText @bind-Value="vagon.PLAT" id="PLAT" class="form-control" />
+                                <ValidationMessage For="@(() => vagon.PLAT)" />
+                            </div>
+                        </div>
+
+                    </div>
+                    @* третий блок окончание *@
+                    @* четвёртый блок начало *@
+                    <div class="col-md-3" style="background-color: gold">
+
+                        @* 16 *@
+                        <div class="form-group row">
+                            <label for="TN" class="col col-form-label">Таб.ном.</label>
+                            <div class="col">
+                                <InputNumber @bind-Value="vagon.TN" id="TN" class="form-control" />
+                                <ValidationMessage For="@(() => vagon.TN)" />
+                            </div>
+                        </div>
+
+                        @* 17 *@
+                        <div class="form-group row">
+                            <label for="N_TEPLOVOZ" class="col col-form-label">Ном. тепл.</label>
+                            <div class="col">
+                                <InputText @bind-Value="vagon.N_TEPLOVOZ" id="N_TEPLOVOZ" class="form-control" />
+                                <ValidationMessage For="@(() => vagon.N_TEPLOVOZ)" />
+                            </div>
+                        </div>
+
+                        @* 18 *@
+                        <div class="form-group row">
+                            <label for="POGRESHNOST" class="col col-form-label">Погрешность</label>
+                            <div class="col">
+                                <InputNumber @bind-Value="vagon.POGRESHNOST" id="POGRESHNOST" class="form-control" />
+                                <ValidationMessage For="@(() => vagon.POGRESHNOST)" />
+                            </div>
+                        </div>
+
+                        @* 19 *@
+                        <div class="form-group row">
+                            <label for="REJVZVESH" class="col col-form-label">Реж. взвеш.</label>
+                            <div class="col">
+                                <InputText @bind-Value="vagon.REJVZVESH" type="text" id="REJVZVESH" class="form-control" />
+                                <ValidationMessage For="@(() => vagon.REJVZVESH)" />
+                            </div>
+                        </div>
+
+                        <div class="col text-end">
+                            <button class="btn btn-primary" @onclick="UpdVag">Сохранить</button>
+                            <button class="btn btn-primary" @onclick="CleanModels">Очистить</button>
+                        </div>
+
+                    </div>
+                    @* четвёртый блок окончание *@
+                </div>
+            </EditForm>
+        </div>
+        @* Блок полей для корректировки - окончание *@
+
+        @* Модальное окошко "Подстановка тары" начало *@
+        <Modal Actions="ButtonGetTaraActions"
+               BootstrapClass="border-dark"
+               CustomStyle="width:600px"
+               @bind-Open="IsOpenTara">
+
+            <ContentContent>
+                <div class="row">
+                    @* Блок для фильтрации по дате. Номер вагона изменять нельзя. Начало. *@
+                    <div class="col">
+                        <div class="form-group row">
+                            <label for="idDTBEGINtara" class="col col-form-label">Дата начало</label>
+                            <div class="col">
+                                <InputDate Type="InputDateType.Date" @bind-Value="@inDTBEGINtara" id="idDTBEGINtara" class="form-control" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col">
+                        <div class="form-group row">
+                            <label for="idDTENDtara" class="col col-form-label">Дата окончания</label>
+                            <div class="col">
+                                <InputDate Type="InputDateType.Date" @bind-Value="@inDTENDtara" id="idDTENDtara" class="form-control" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="button" class="btn btn-secondary" @onclick="GetTaraClick">Показать</button>
+                    @*  Блок для фильтрации по дате. Номер вагона изменять нельзя. Окончание. *@
+                </div>
+
+                @* Таблица - начало *@
+                <div class="table-responsive">
+                    <div style="width:fit-content">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    @foreach (var vp in GridCaptionHelper.TaraChapters.Values)
+                                    {
+                                        <th> @vp </th>
+                                    }
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (listTara is not null)
+                                {
+                                    @foreach (var item in listTara) //
+                                    {
+                                        <tr @onclick="() => OnRowGetTaraClick(item.ID)" class="@GetRowClassTara(item.ID)">
+                                            <td> @item.DT.ToShortDateString() </td>
+                                            <td> @item.VR.ToString(@"hh\:mm\:ss") </td>
+                                            <td> @item.NVAG </td>
+                                            <td> @item.BRUTTO </td>
+                                            <td> @item.TAR_BRS </td>
+                                            <td> @item.NETTO </td>
+                                            <td> @item.GRUZ </td>
+                                            <td> @item.VESY </td>
+                                            <td> @item.ID </td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                @* Таблица - окончание *@
+            </ContentContent>
+
+            <ButtonTemplate>
+                <div class="d-flex justify-content-center align-content-center">
+                    <button class="btn btn-success btn-sm" value="ok" style="margin-right:5px">Взять вес</button>
+                    <button class="btn btn-danger btn-sm" value="cancel">Отмена</button>
+                </div>
+            </ButtonTemplate>
+
+        </Modal>
+        @* Модальное окошко "Подстановка тары" окончание *@
 
 
     </div>
 </div>
 
 @code {
+    #region Переменные формы
+    private DateTime inDt = DateTime.ParseExact("2024-07-05", "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture);
+    private DateTime inVr = DateTime.ParseExact("10:13:33", "HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
+    private string inNvag = string.Empty;
 
+    private List<GrasModel> listVags = null;
+    private GrasModel vagon = new GrasModel();
+
+    private int? selectedRowId;                                             // Временно для отображения ID выбранной ячейки.
+    private bool isSaving = false;
+    private string selRowID = string.Empty;
+    #endregion
+
+    #region Переменные для модального окноа Взять тару
+    private DateTime inDTBEGINtara = DateTime.Today.AddDays(-30);
+    private DateTime inDTENDtara = DateTime.Today;
+    private bool IsOpenTara { get; set; }
+    private string? SelectedActionTara { get; set; }
+    private bool ConfirmTara { get; set; }
+    private Confirmation? confirmationTara;
+    private int? selectedRowIdTara = 0;
+    private List<TaraPodstanovkaModel> listTara = null;                // Для заполнения таблицы в модальном окне "Брутто как тара".
+    private TaraPodstanovkaModel taraOne = new TaraPodstanovkaModel();    // Для получения выбранной в модальном окне строки.
+    #endregion
+
+    #region  For what ?
+    private void HandleValidSubmit()
+    {
+        // Handle the valid form submission
+        //if (vagon.ModelState.isValid)
+    }
+    #endregion
+
+
+
+
+
+
+
+
+    #region GetByDtVr()
+    private async Task GetByDtVr()
+    {
+        listVags = (List<GrasModel>)await grasdata.GetByDtVr(inDt.ToString("yyyy-MM-dd"), inVr.ToString("HH:mm:ss"));
+    }
+    #endregion
+
+
+
+    #region действия на клике по строке в гриде просмотра вагонов
+    private void OnRowClick(int? id)
+    {
+        CleanModels();                                                                      // Чистим поля при переходе
+        selectedRowId = id;
+        selRowID = selectedRowId.ToString();                                                // Для отладки - отображаю ID записи по которой кликнул.
+        vagon = (GrasModel)(listVags.Where(i => i.ID == id).FirstOrDefault()).Clone();      // Взять все данные из клика по гриду -> переместить в объект.
+    }
+
+    private string GetRowClass(int? id)
+    {
+        return selectedRowId == id ? "selected-row" : "";
+    }
+    #endregion
+
+
+    #region UpdVag
+    private async Task UpdVag()
+    {
+        if (vagon is not null)
+        {
+            try
+            {
+                await grasdata.UpdVag(vagon);
+                vagon = new GrasModel();    // чистим модель
+                await GetByDtVr();          // обновляем данные на странице
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                // переделать на запись в файл
+            }
+
+        }
+        // иначе показать всплывающее окошко - нечего сохранять
+    }
+    #endregion
+
+
+    #region OpenModalGetTara()
+    private async Task OpenModalGetTara()
+    {
+        IsOpenTara = true;
+        await GetTaraClick();
+    }
+    #endregion
+    #region GetTaraClick()
+    private async Task GetTaraClick()
+    {
+        if ((selectedRowId is not null) && (selectedRowId > 0)) // если клик по строке был и есть выбранный вагон
+        {
+            if ((vagon is not null) && (!string.IsNullOrEmpty(vagon.NVAG))) // приводить к нижнему регистру
+            {
+                listTara = (List<TaraPodstanovkaModel>)await taraPodstanovka.GetFromYear(
+                    inDTBEGINtara, inDTENDtara, (listVags.Where(i => i.ID == selectedRowId).FirstOrDefault()).NVAG
+                ); // получил список вагонов для выборки подстановки тары -> ограничение 1 год
+            }
+        }
+        else
+        {
+        // записать в лог, что произошла херня    
+        }
+    }
+    #endregion
+    #region ButtonGetTaraActions()
+    void ButtonGetTaraActions(string action)
+    {
+        SelectedActionTara = action;
+        if (action == "ok")
+        {
+            ConfirmTara = true; //
+            if (selectedRowIdTara > 0)
+            {
+                taraOne = (TaraPodstanovkaModel)(listTara.Where(i => i.ID == selectedRowIdTara).FirstOrDefault()).Clone();
+                if ((vagon is not null) && (taraOne is not null) && (vagon.BRUTTO > taraOne.TAR_BRS))// Присвоить, брутто под тару, пересчитать нетто
+                {
+                    vagon.TAR_BRS = taraOne.TAR_BRS;
+                    vagon.NETTO = vagon.BRUTTO - vagon.TAR_BRS;
+                }
+
+                taraOne = new TaraPodstanovkaModel();                      // стираем данные в объекте
+                selectedRowIdTara = 0;
+            }
+        }
+        else if (action == "cancel")
+        {
+            taraOne = new TaraPodstanovkaModel();                      // стираем данные в объекте
+            selectedRowIdTara = 0;
+            ConfirmTara = false;    // you can also do something
+            inDTBEGINtara = DateTime.Today.AddDays(-30);              // Для модального окошка "Брутто как тара".
+            inDTENDtara = DateTime.Today;
+        }
+    }
+    #endregion
+    #region GetRowClassTara()
+    private string GetRowClassTara(int? id)
+    {
+        return selectedRowIdTara == id ? "selected-row" : "";
+    }
+    #endregion
+    #region OnRowGetTaraClick()
+    private void OnRowGetTaraClick(int? id)
+    {
+        selectedRowIdTara = id;
+    }
+    #endregion
+
+    #region CleanModel()
+    private void CleanModels()
+    {
+        vagon = new GrasModel();
+        selectedRowId = 0;
+    }
+    #endregion
 
     #region ClosePage()
     private void ClosePage()
