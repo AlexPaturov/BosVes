@@ -8,12 +8,12 @@
 
 @* <div class="container border border-dark"> *@
 <div class="row justify-content-center create-form">
-    <div class="col-xl-8 col-lg-10 form-layout">
+    <div class="col-md-12 col-xl-12 form-layout">
         <div class="close-button-section">
             <button class="btn btn-close" @onclick="ClosePage"></button>
         </div>
 
-        @* Поля ввода для фильтров *@
+        @* Поля ввода для фильтров - начало *@
         <div class="row">
 
             @* 1 *@
@@ -51,12 +51,14 @@
 
             <button class="btn btn-primary" @onclick="GetByDtVr">Save input in db</button>
         </div>
+        @* Поля ввода для фильтров - окончание *@
 
         @* Таблица начало *@
         @if (listVags == null)
         {
             <div class="table-responsive">
-                <div style="width:fit-content">
+                @* <div style="width:fit-content"> *@
+                <div style="width:1000px">
                     <table class="table table-bordered">
                         <thead>
                             <tr>
@@ -73,7 +75,8 @@
         else
         {
             <div class="table-responsive">
-                <div style="width:fit-content">
+                @* <div style="width:fit-content"> *@
+                <div style="width:1000px">
                     <table class="table table-bordered">
                         <thead>
                             <tr>
@@ -518,8 +521,6 @@
             </ButtonTemplate>
 
         </Modal>
-
-
         @* Модальное окошко "Подстановка тары" окончание *@
 
         @* подвал - нужно будет оформить *@
@@ -538,10 +539,10 @@
     private DateTime inDt = DateTime.ParseExact("2024-07-05", "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture);
     private DateTime inVr = DateTime.ParseExact("10:13:33", "HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
     private string inNvag = string.Empty;
-    private string inGruz = string.Empty;
-    private int? selectedRowId;                                             // Временно для отображения ID выбранной ячейки.
+    // private string inGruz = string.Empty;
     private List<GpriModel> listVags = null;
     private GpriModel vagon = new GpriModel();
+    private int? selectedRowId;                                             // Временно для отображения ID выбранной ячейки.
     private bool isSaving = false;
     private string selRowID = string.Empty;
     #endregion
