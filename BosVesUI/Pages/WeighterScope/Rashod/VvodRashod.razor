@@ -4,16 +4,26 @@
 
 
 
-<input @ref="inputElement" placeholder="Press F1 inside this input" class="form-control" />
+<h3>F1 Key Press Event Example with InputNumber</h3>
+
+<InputNumber @ref="inputNumberRef" @bind-Value="inputValue" placeholder="Press F1 inside this input" class="form-control" />
+<input @ref="inputElement" type="hidden" />  <!-- Hidden input to use as reference -->
 
 @code {
+    private InputNumber<int>? inputNumberRef;
     private ElementReference inputElement;
+    private int inputValue;
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
         {
-            await JS.InvokeVoidAsync("blazorKeyPress.addF1KeyListener", inputElement, DotNetObjectReference.Create(this));
+            // Set the input element reference to the underlying HTML element of the InputNumber component
+            if (inputNumberRef?.Element.HasValue ?? false)
+            {
+                inputElement = inputNumberRef.Element.Value;
+                await JS.InvokeVoidAsync("blazorKeyPress.addF1KeyListener", inputElement, DotNetObjectReference.Create(this));
+            }
         }
     }
 
@@ -28,43 +38,3 @@
 
 
 
-@* 
-<h3>"/Pages/WeighterScope/Rashod/VvodRashod"</h3>
-<div class="row justify-content-center create-form">
-    <div class="col-md-12 col-xl-12 form-layout">
-        <div class="close-button-section">
-            <button class="btn btn-close" @onclick="ClosePage"></button>
-        </div>
-
-        <div class="input-group mb-3">
-            <div class="input-group-prepend">
-                <div class="input-group-text">
-                    <input type="checkbox" aria-label="Checkbox for following text input">
-                </div>
-            </div>
-            <input type="text" class="form-control" aria-label="Text input with checkbox">
-        </div>
-
-        <div class="input-group">
-            <div class="input-group-prepend">
-                <div class="input-group-text">
-                    <input type="radio" aria-label="Radio button for following text input">
-                </div>
-            </div>
-            <input type="text" class="form-control" aria-label="Text input with radio button">
-        </div>
-
-    </div>
-</div>
-
-@code {
-
-
-    #region ClosePage()
-    private void ClosePage()
-    {
-        navManager.NavigateTo("/");
-    }
-    #endregion
-}
- *@
