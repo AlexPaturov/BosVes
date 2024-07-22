@@ -12,3 +12,4 @@ window.getWindowSize = () => {
         height: window.innerHeight
     };
 };
+
