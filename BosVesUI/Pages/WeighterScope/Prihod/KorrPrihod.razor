@@ -1,6 +1,7 @@
 ﻿@page "/Pages/WeighterScope/Prihod/KorrPrihod"
 @using BosVesUI.Shared.Components
 @using NetcodeHub.Packages.Components.Modal
+@inject IJSRuntime JS;
 @inject GpriData gpridata;
 @inject BruttoAsTaraData bruttoAsTara;
 @inject TaraPodstanovkaData taraPodstanovka;
@@ -263,12 +264,19 @@
                             </div>
                         </div>
 
-                        @* 12 *@
+                        @* 12 выставить размеры компонента на форме *@
                         <div class="form-group row">
                             <label for="CEX" class="col col-form-label">Цех</label>
                             <div class="col">
-                                <InputNumber @bind-Value="@vagon.CEX" id="CEX" class="form-control" />
-                                <ValidationMessage For="@(() => vagon.CEX)" />
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text">
+                                            <input type="checkbox" checked="@isCheckedCexList" @oninput="GetListCex" />
+                                        </div>
+                                    </div>
+                                    <InputNumber @bind-Value="@vagon.CEX" id="CEX" class="form-control" />
+                                    <ValidationMessage For="@(() => vagon.CEX)" />
+                                </div>
                             </div>
                         </div>
 
@@ -523,12 +531,76 @@
         </Modal>
         @* Модальное окошко "Подстановка тары" окончание *@
 
-        @* подвал - нужно будет оформить *@
-        @*     <footer class="border border-secondary">
-        <div class="container" style="background-color:darkgray">
-        <h6> footer dark-gray </h6>
-        </div>
-        </footer> *@
+        @* Модальное окошко "Взять цех" начало *@
+        <Modal Actions="ButtonGetCexActions"
+               BootstrapClass="border-dark"
+               CustomStyle="width:600px"
+               @bind-Open="IsOpenGetCex">
+
+            <ContentContent>
+                <div class="row">
+                    @* Блок для поиска по имени/номеру. Начало. *@
+                    <div class="col">
+                        <div class="form-group row">
+                            <label for="DTBEGIN" class="col col-form-label">Дата начало</label>
+                            <div class="col">
+                                <InputDate Type="InputDateType.Date" @bind-Value="@inDTBEGIN" id="idDTBEGIN" class="form-control" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col">
+                        <div class="form-group row">
+                            <label for="DTEND" class="col col-form-label">Дата окончания</label>
+                            <div class="col">
+                                <InputDate Type="InputDateType.Date" @bind-Value="@inDTEND" id="idDTEND" class="form-control" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="button" class="btn btn-secondary" @onclick="GetCexClick">Показать</button>
+                    @*  Блок для поиска по имени/номеру. Окончание. *@
+                </div>
+
+                @* Таблица - начало *@
+                <div class="table-responsive">
+                    <div style="width:fit-content">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    @foreach (var vp in GridCaptionHelper.CexChapters.Values)
+                                    {
+                                        <th> @vp </th>
+                                    }
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (listBruttoAsTara is not null)
+                                {
+                                    @foreach (var item in listBruttoAsTara)
+                                    {
+                                        <tr @onclick="() => OnRowGetCexClick(item.CEX)" class="@GetRowClassCex(item.CEX)">
+                                            <td> @item.CEX </td>
+                                            <td> @item.NAIM </td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                @* Таблица - окончание *@
+            </ContentContent>
+
+            <ButtonTemplate>
+                <div class="d-flex justify-content-center align-content-center">
+                    <button class="btn btn-success btn-sm" value="ok" style="margin-right:5px">Взять цех</button>
+                    <button class="btn btn-danger btn-sm" value="cancel">Отмена</button>
+                </div>
+            </ButtonTemplate>
+
+        </Modal>
+        @* Модальное окошко "Взять цех" окончание *@
 
     </div>
 </div>
@@ -545,6 +617,10 @@
     private int? selectedRowId;                                             // Временно для отображения ID выбранной ячейки.
     private bool isSaving = false;
     private string selRowID = string.Empty;
+
+
+    private bool isChecked = false; // for checkbox - temp
+
     #endregion
     #region Переменные для модального окноа Брутто как тара
     private DateTime inDTBEGIN = DateTime.Today.AddDays(-30);
@@ -569,6 +645,44 @@
     private TaraPodstanovkaModel taraOne = new TaraPodstanovkaModel();    // Для получения выбранной в модальном окне строки.
     #endregion
 
+    #region работаем с модальным окном взять цех
+    private bool IsOpenGetCex { get; set; }
+    private int? selectedRowCex = 0;
+
+
+
+
+
+
+
+
+
+
+    private void OpenModalGetCex()
+    {
+        IsOpenGetCex = true;
+    }
+
+    private void ButtonGetCexActions()
+    {
+
+
+    }
+
+    // ищу цех по части  названия или по коду
+    private void GetCexClick()
+    {
+
+    }
+
+    #endregion
+    #region GetRowClassCex()
+    private string GetRowClassCex(short? cex)
+    {
+        return selectedRowCex == cex ? "selected-row" : "";
+    }
+    #endregion
+
     #region For what ?
     protected async override Task OnInitializedAsync()
     {
@@ -582,7 +696,6 @@
         //if (vagon.ModelState.isValid)
     }
     #endregion
-
     #region OpenModalGetTara()
     private async Task OpenModalGetTara()
     {
@@ -616,6 +729,9 @@
         return selectedRowIdTara == id ? "selected-row" : "";
     }
     #endregion
+
+
+
     #region OnRowGetTaraClick()
     private void OnRowGetTaraClick(int? id)
     {
@@ -654,7 +770,6 @@
 
 
     #endregion
-
     #region GetByDtVr()
     private async Task GetByDtVr()
     {
@@ -687,6 +802,13 @@
         selectedRowIdBruttoAsTara = id;
     }
     #endregion
+    #region OnRowGetCexClick()
+    private void OnRowGetCexClick(int? id)
+    {
+        selectedRowIdBruttoAsTara = id;
+    }
+    #endregion
+
     #region ButtonGetBruttoAsTaraActions(string)
     void ButtonGetBruttoAsTaraActions(string action)
     {
@@ -750,6 +872,37 @@
         // иначе показать всплывающее окошко - нечего сохранять
     }
     #endregion
+
+    #region Показываю справочник цехов
+
+    [Parameter]
+    public bool IsCheckedCexList { get; set; } = false;
+
+
+    private bool isCheckedCexList;// Internal field holding checkbox state
+
+    // updates the internal value whwenever the component is updated
+    // You may not want that??
+    protected override void OnParametersSet()
+    {
+        isCheckedCexList = this.IsCheckedCexList;
+    }
+
+    private void GetListCex(ChangeEventArgs e)
+    {
+        if (e != null)
+        {
+            bool res = (bool) e.Value;
+            if (res)
+            {
+                OpenModalGetCex();
+            }
+        }
+    }
+  
+
+    #endregion
+
     #region CleanModel()
     private void CleanModels()
     {
@@ -759,7 +912,6 @@
         selectedRowId = 0;
     }
     #endregion
-
     #region ClosePage()
     private void ClosePage()
     {

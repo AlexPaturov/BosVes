@@ -108,6 +108,13 @@ public static class GridCaptionHelper
       {"ID", "id"},              //
    };
 
+   // Для формы подстановки брутто как тары.
+   public static Dictionary<string, string> CexChapters = new Dictionary<string, string>
+   {
+      {"CEX", "Номер цеха"},       //
+      {"NAIM", "Наименование цеха"},      //
+     
+   };
 
 
 
