@@ -1,6 +1,10 @@
 ﻿@inherits InputBase<TimeSpan>
 
-<input type="time" @bind-value="formattedTime" @bind-value:event="oninput" class="form-control" />
+<input type="time"
+       @bind-value="formattedTime"
+       @bind-value:event="oninput"
+       step="1"
+       class="form-control" />
 
 @code {
 
