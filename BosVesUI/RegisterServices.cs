@@ -30,5 +30,6 @@ public static class RegisterServices
       builder.Services.AddSingleton<TaraPodstanovkaData>(); // 
       builder.Services.AddSingleton<VikVagData>();          // 
       builder.Services.AddSingleton<BruttoAsTaraData>();    // 
+
    }
 }
