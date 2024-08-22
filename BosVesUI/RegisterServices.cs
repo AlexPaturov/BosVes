@@ -9,7 +9,6 @@ public static class RegisterServices
 {
    public static void ConfigureServices(this WebApplicationBuilder builder) 
    {
-     
       builder.Services.Configure<RequestLocalizationOptions>(options =>
       {
          var supportedCultures = new[] { "en-US", "ru", "uk" };
@@ -18,29 +17,14 @@ public static class RegisterServices
              .AddSupportedUICultures(supportedCultures);
          
       });
-
-      var configuration = new ConfigurationBuilder()
-     .SetBasePath(Directory.GetCurrentDirectory())
-     .AddJsonFile("appsettings.json", false, true)
-     .Build();
-
-      var host = new WebHostBuilder()
-     .UseConfiguration(configuration)
-     .UseKestrel();
-
-      // NLog: Setup NLog for Dependency injection
+      #region NLog: Setup NLog for Dependency injection
       builder.Logging.ClearProviders();
       builder.Host.UseNLog();
-
-      // Add services to the container.
+      #endregion
       builder.Services.AddRazorPages();
       builder.Services.AddServerSideBlazor();
       builder.Services.AddMemoryCache();
-
-      
-
       builder.Services.Configure<BosVesAppSettings>(builder.Configuration.GetSection("BosVesAppSettings")); // заполняю конфигурационными настройками классс, который планирую использовать во всём приложении
-
       builder.Services.AddSingleton<GpriData>();            // 
       builder.Services.AddSingleton<GrasData>();            // 
       builder.Services.AddSingleton<GruzGdData>();          // 
@@ -50,6 +34,5 @@ public static class RegisterServices
       builder.Services.AddSingleton<TaraPodstanovkaData>(); // 
       builder.Services.AddSingleton<VikVagData>();          // 
       builder.Services.AddSingleton<BruttoAsTaraData>();    // 
-
    }
 }

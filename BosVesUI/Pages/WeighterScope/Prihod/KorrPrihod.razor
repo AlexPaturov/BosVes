@@ -613,16 +613,13 @@
     private DateTime inDt = DateTime.ParseExact("2024-07-05", "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture);
     private DateTime inVr = DateTime.ParseExact("10:13:33", "HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
     private string inNvag = string.Empty;
-    // private string inGruz = string.Empty;
     private List<GpriModel> listVags = null;
     private GpriModel vagon = new GpriModel();
     private int? selectedRowId;                                             // Временно для отображения ID выбранной ячейки.
     private bool isSaving = false;
     private string selRowID = string.Empty;
-
-    Dictionary<int, bool> selectedVagons = new Dictionary<int, bool>();
+    private Dictionary<int, bool> selectedItems = new Dictionary<int, bool>();
     private bool isChecked = false; // for checkbox - temp
-
     #endregion
     #region Переменные для модального окноа Брутто как тара
     private DateTime inDTBEGIN = DateTime.Today.AddDays(-30);
@@ -670,9 +667,6 @@
         return selectedRowCex == cex ? "selected-row" : "";
     }
     #endregion
-
-    // private List<ItemModel> items;
-    private Dictionary<int, bool> selectedItems = new Dictionary<int, bool>();
     #region OnInitializedAsync()
     protected async override Task OnInitializedAsync()
     {
