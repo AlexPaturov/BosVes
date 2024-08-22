@@ -8,14 +8,17 @@ namespace BosVesAppLibrary.DataAccess;
 public class GpriData
 {
    private readonly string _connectionString;
+   private readonly ILogger<GpriData> _logger;
 
-   public GpriData(IOptions<BosVesAppSettings> mySettings)
+   public GpriData(IOptions<BosVesAppSettings> mySettings, ILogger<GpriData> logger)
    {
       _connectionString = mySettings.Value.FbDbConnectionString;
+      _logger = logger;
    }
 
    private IDbConnection CreateConnection()
    {
+      _logger.LogDebug("CreateConnection()");
       return new FbConnection(_connectionString);
    }
 

@@ -2,3 +2,6 @@
 global using BosVesAppLibrary.DataAccess;
 global using Microsoft.EntityFrameworkCore;
 global using BosVesAppLibrary.Helpers;
+global using NLog;
+global using NLog.Web;
+global using Microsoft.Extensions.Logging;

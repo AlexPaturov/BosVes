@@ -16,6 +16,9 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="NetcodeHub.Packages.Components.Modal" Version="1.0.0" />
+    <PackageReference Include="NLog" Version="5.3.3" />
+    <PackageReference Include="NLog.Schema" Version="5.3.3" />
+    <PackageReference Include="NLog.Web.AspNetCore" Version="5.3.12" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BosVesAppLibrary\BosVesAppLibrary.csproj" />

@@ -101,7 +101,7 @@ namespace BosVesAppLibrary.Models
       public string REJVZVESH { get; set; }              // режим взвешивания
 
       [Range(0, int.MaxValue, ErrorMessage = "Ошибка ID")]
-      public int? ID { get; }                          // уникальный идентификатор записи
+      public int ID { get; }                          // уникальный идентификатор записи
 
       [StringLength(8, ErrorMessage = "Максимальная длина 8 символов")]
       public string PLATFORMS_TARA { get; set; }      // комбинация включённых платформ при взвешивании

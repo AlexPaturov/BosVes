@@ -1,30 +1,49 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 
+
+
 namespace BosVesUI
 {
    public class Program
    {
       public static void Main(string[] args)
       {
-         var builder = WebApplication.CreateBuilder(args);
-         builder.ConfigureServices();
+         var logger = LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
+         logger.Debug("init main");
 
-         var app = builder.Build();
-
-         // Configure the HTTP request pipeline.
-         if (!app.Environment.IsDevelopment())
+         try
          {
-            app.UseExceptionHandler("/Error");
-            app.UseHsts();
-         }
+            var builder = WebApplication.CreateBuilder(args);
+            builder.ConfigureServices();
 
-         app.UseHttpsRedirection();
-         app.UseStaticFiles();
-         app.UseRouting();
-         app.MapBlazorHub();
-         app.MapFallbackToPage("/_Host");
-         app.Run();
+            var app = builder.Build();
+
+            // Configure the HTTP request pipeline.
+            if (!app.Environment.IsDevelopment())
+            {
+               app.UseExceptionHandler("/Error");
+               app.UseHsts();
+            }
+
+            app.UseHttpsRedirection();
+            app.UseStaticFiles();
+            app.UseRouting();
+            app.MapBlazorHub();
+            app.MapFallbackToPage("/_Host");
+            app.Run();
+         }
+         catch (Exception exception)
+         {
+            // NLog: catch setup errors
+            logger.Error(exception, "Stopped program because of exception");
+            throw;
+         }
+         finally
+         {
+            // Ensure to flush and stop internal timers/threads before application-exit (Avoid segmentation fault on Linux)
+            LogManager.Shutdown();
+         }
       }
    }
 }

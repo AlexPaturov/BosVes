@@ -91,6 +91,9 @@
                             @foreach (var item in listVags)
                             {
                                 <tr @onclick="() => OnRowClick(item.ID)" class="@GetRowClass(item.ID)">
+                                    <td>
+                                        <input type="checkbox" @bind="selectedItems[item.ID]" />
+                                    </td>
                                     <td> @item.DT.ToShortDateString() </td>
                                     <td> @item.VR.ToString(@"hh\:mm\:ss") </td>
                                     <td> @item.NVAG </td>
@@ -132,7 +135,6 @@
                 </div>
             </div>
         }
-        <h6>selected row: @selRowID </h6>
         @* Таблица окончание *@
 
         @* Блок полей для корректировки - начало *@
@@ -618,7 +620,7 @@
     private bool isSaving = false;
     private string selRowID = string.Empty;
 
-
+    Dictionary<int, bool> selectedVagons = new Dictionary<int, bool>();
     private bool isChecked = false; // for checkbox - temp
 
     #endregion
@@ -644,37 +646,23 @@
     private List<TaraPodstanovkaModel> listTara = null;                // Для заполнения таблицы в модальном окне "Брутто как тара".
     private TaraPodstanovkaModel taraOne = new TaraPodstanovkaModel();    // Для получения выбранной в модальном окне строки.
     #endregion
-
     #region работаем с модальным окном взять цех
     private bool IsOpenGetCex { get; set; }
     private int? selectedRowCex = 0;
-
-
-
-
-
-
-
-
-
 
     private void OpenModalGetCex()
     {
         IsOpenGetCex = true;
     }
-
     private void ButtonGetCexActions()
     {
 
-
     }
-
     // ищу цех по части  названия или по коду
     private void GetCexClick()
     {
 
     }
-
     #endregion
     #region GetRowClassCex()
     private string GetRowClassCex(short? cex)
@@ -683,13 +671,15 @@
     }
     #endregion
 
-    #region For what ?
+    // private List<ItemModel> items;
+    private Dictionary<int, bool> selectedItems = new Dictionary<int, bool>();
+    #region OnInitializedAsync()
     protected async override Task OnInitializedAsync()
     {
-        //vagon.DT = DateTime.ParseExact("2024-07-05", "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture);
+
     }
     #endregion
-    #region  For what ?
+    #region  HandleValidSubmit()
     private void HandleValidSubmit()
     {
         // Handle the valid form submission
@@ -730,8 +720,16 @@
     }
     #endregion
 
-
-
+    #region Работа с чекбоксами таблицы промсмотра
+    private void InitializeSelected(List<GpriModel> listVagons)
+    {
+        // Initialize the dictionary with item IDs
+        foreach (var item in listVags)
+        {
+            selectedItems[item.ID] = false; // Initially set all as unselected
+        }
+    }
+    #endregion
     #region OnRowGetTaraClick()
     private void OnRowGetTaraClick(int? id)
     {
@@ -767,27 +765,29 @@
             inDTENDtara = DateTime.Today;
         }
     }
-
-
     #endregion
     #region GetByDtVr()
     private async Task GetByDtVr()
     {
         listVags = (List<GpriModel>)await gpridata.GetByDtVr(inDt.ToString("yyyy-MM-dd"), inVr.ToString("HH:mm:ss"), "10");
+        InitializeSelected(listVags);
     }
+
     #endregion
+
     #region действия на клике по строке в гриде просмотра вагонов
     private void OnRowClick(int? id)
     {
-        CleanModels();                                                                      // Чистим поля при переходе
-        selectedRowId = id;
-        selRowID = selectedRowId.ToString();                                                // Для отладки - отображаю ID записи по которой кликнул.
-        vagon = (GpriModel)(listVags.Where(i => i.ID == id).FirstOrDefault()).Clone();      // Взять все данные из клика по гриду -> переместить в объект.
+        // CleanModels();                                                                      // Чистим поля при переходе
+        // selectedRowId = id;
+        // selRowID = selectedRowId.ToString();                                                // Для отладки - отображаю ID записи по которой кликнул.
+        // vagon = (GpriModel)(listVags.Where(i => i.ID == id).FirstOrDefault()).Clone();      // Взять все данные из клика по гриду -> переместить в объект.
     }
 
-    private string GetRowClass(int? id)
+    private string GetRowClass(int id)
     {
-        return selectedRowId == id ? "selected-row" : "";
+        // Use TryGetValue to safely access the dictionary
+        return selectedItems.TryGetValue(id, out bool isSelected) && isSelected ? "table-active" : string.Empty; 
     }
     #endregion
     #region GetRowClassBruttoAsTara()
@@ -808,7 +808,6 @@
         selectedRowIdBruttoAsTara = id;
     }
     #endregion
-
     #region ButtonGetBruttoAsTaraActions(string)
     void ButtonGetBruttoAsTaraActions(string action)
     {
@@ -872,7 +871,6 @@
         // иначе показать всплывающее окошко - нечего сохранять
     }
     #endregion
-
     #region Показываю справочник цехов
 
     [Parameter]
@@ -902,7 +900,6 @@
   
 
     #endregion
-
     #region CleanModel()
     private void CleanModels()
     {
@@ -918,4 +915,7 @@
         navManager.NavigateTo("/");
     }
     #endregion
+
+
+
 }
