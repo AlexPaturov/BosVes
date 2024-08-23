@@ -1,9 +1,4 @@
-﻿using BosVesUI.Pages;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
-
-namespace BosVesUI;
+﻿namespace BosVesUI;
 
 public static class RegisterServices
 {
@@ -17,10 +12,7 @@ public static class RegisterServices
              .AddSupportedUICultures(supportedCultures);
          
       });
-      #region NLog: Setup NLog for Dependency injection
-      builder.Logging.ClearProviders();
-      builder.Host.UseNLog();
-      #endregion
+
       builder.Services.AddRazorPages();
       builder.Services.AddServerSideBlazor();
       builder.Services.AddMemoryCache();

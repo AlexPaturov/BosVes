@@ -1,44 +1,39 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
-  <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <UserSecretsId>36a2323d-317b-456f-897c-10f265e9bd3c</UserSecretsId>
-    <PackageIcon></PackageIcon>
-  </PropertyGroup>
-  <ItemGroup>
-    <Content Remove="Components\InputTime.razor" />
-    <Content Remove="Pages\EmployeeDemoComponent2.razor" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Components\" />
-    <Folder Include="Models\" />
-    <Folder Include="Pages\WeighterScope\Korrectirovki\" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="NetcodeHub.Packages.Components.Modal" Version="1.0.0" />
-    <PackageReference Include="NLog" Version="5.3.3" />
-    <PackageReference Include="NLog.Schema" Version="5.3.3" />
-    <PackageReference Include="NLog.Web.AspNetCore" Version="5.3.12" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\BosVesAppLibrary\BosVesAppLibrary.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <UpToDateCheckInput Remove="Components\InputTime.razor" />
-  </ItemGroup>
-  <ItemGroup>
-    <_ContentIncludedByDefault Remove="Components\InputTime.razor" />
-    <_ContentIncludedByDefault Remove="Pages\EmployeeDemoComponent2.razor" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Shared\Components\InputTime.razor" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Update="Pages\WeighterScope\Prihod\KorrPrihod.razor">
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <UpToDateCheckInput Remove="Pages\EmployeeDemoComponent2.razor" />
-  </ItemGroup>
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<UserSecretsId>36a2323d-317b-456f-897c-10f265e9bd3c</UserSecretsId>
+		<PackageIcon></PackageIcon>
+	</PropertyGroup>
+	<ItemGroup>
+		<Content Remove="Components\InputTime.razor" />
+		<Content Remove="Pages\EmployeeDemoComponent2.razor" />
+	</ItemGroup>
+	<ItemGroup>
+		<Folder Include="Components\" />
+		<Folder Include="Models\" />
+		<Folder Include="Pages\WeighterScope\Korrectirovki\" />
+	</ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Microsoft.Data.SqlClient" Version="5.2.1" />
+		<PackageReference Include="NetcodeHub.Packages.Components.Modal" Version="1.0.0" />
+	</ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\BosVesAppLibrary\BosVesAppLibrary.csproj" />
+	</ItemGroup>
+	<ItemGroup>
+		<UpToDateCheckInput Remove="Components\InputTime.razor" />
+	</ItemGroup>
+	<ItemGroup>
+		<_ContentIncludedByDefault Remove="Components\InputTime.razor" />
+		<_ContentIncludedByDefault Remove="Pages\EmployeeDemoComponent2.razor" />
+	</ItemGroup>
+	<ItemGroup>
+		<None Include="Shared\Components\InputTime.razor" />
+	</ItemGroup>
+	<ItemGroup>
+		<Content Update="Pages\WeighterScope\Prihod\KorrPrihod.razor">
+			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+		</Content>
+	</ItemGroup>
 </Project>

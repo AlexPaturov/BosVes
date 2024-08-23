@@ -31,6 +31,7 @@ namespace BosVesUI
             app.UseRouting();
             app.MapBlazorHub();
             app.MapFallbackToPage("/_Host");
+            logger.Info("info main");
             app.Run();
          }
          catch (Exception exception)
