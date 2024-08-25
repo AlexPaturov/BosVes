@@ -11,7 +11,7 @@ namespace BosVesUI
       {
          // Early init of NLog to allow startup and exception logging, before host is built
          var logger = LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
-         logger.Debug("init main");
+         logger.Info("Start program");
 
          try
          {
@@ -32,7 +32,7 @@ namespace BosVesUI
             app.UseRouting();
             app.MapBlazorHub();
             app.MapFallbackToPage("/_Host");
-            logger.Info("info main");
+            //logger.Info("info main");
             app.Run();
          }
          catch (Exception exception)
