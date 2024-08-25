@@ -12,9 +12,16 @@ public static class RegisterServices
              .AddSupportedUICultures(supportedCultures);
          
       });
+      // NLog: Setup NLog for Dependency injection
+      builder.Logging.ClearProviders();
+      builder.Logging.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Trace);
+      builder.Host.UseNLog();
+
 
       builder.Services.AddRazorPages();
       builder.Services.AddServerSideBlazor();
+    
+
       builder.Services.AddMemoryCache();
       builder.Services.Configure<BosVesAppSettings>(builder.Configuration.GetSection("BosVesAppSettings")); // заполняю конфигурационными настройками классс, который планирую использовать во всём приложении
       builder.Services.AddSingleton<GpriData>();            // 

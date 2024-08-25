@@ -2,11 +2,11 @@ namespace BosVesUI.Pages;
 public partial class KorrGpri
 {
    private GpriModel vagon = new GpriModel();
-   private readonly Logger<KorrGpri> _logger;
+   //private readonly ILogger<KorrGpri> _logger;
 
-   private async Task OnInitialize()
+   protected async override Task OnInitializedAsync()
    {
-
+    
    }
 
    private void HandleValidSubmit()
@@ -22,7 +22,7 @@ public partial class KorrGpri
 
    private async void GetByDtVr(string pDt, string pVr, string vikno) // @onclick=ShowDtVr
    {
-      _logger.LogDebug("GetByDtVr");
+      Logger.LogDebug("GetByDtVr");
       await gpridata.GetByDtVr(pDt, pVr, vikno);
    }
 

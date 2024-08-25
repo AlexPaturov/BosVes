@@ -9,6 +9,7 @@ namespace BosVesUI
    {
       public static void Main(string[] args)
       {
+         // Early init of NLog to allow startup and exception logging, before host is built
          var logger = LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
          logger.Debug("init main");
 
@@ -38,7 +39,7 @@ namespace BosVesUI
          {
             // NLog: catch setup errors
             logger.Error(exception, "Stopped program because of exception");
-            throw;
+            //throw;
          }
          finally
          {

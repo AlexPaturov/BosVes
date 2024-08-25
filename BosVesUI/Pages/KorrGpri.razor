@@ -2,9 +2,9 @@
 @using System.Globalization
 @using System.ComponentModel.DataAnnotations
 @using BosVesUI.Shared.Components
-
-@inject GpriData gpridata
-@inject NavigationManager navManager
+@inject ILogger<KorrGpri> Logger;
+@inject GpriData gpridata;
+@inject NavigationManager navManager;
 
 <div class="container" style="background-color:darkgray">
         <EditForm Model="vagon" OnValidSubmit="HandleValidSubmit">
