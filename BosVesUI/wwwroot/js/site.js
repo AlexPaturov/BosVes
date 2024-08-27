@@ -13,3 +13,7 @@ window.getWindowSize = () => {
     };
 };
 
+// для логирования закрытия окна окна 
+window.onbeforeunload = function () {
+    DotNet.invokeMethodAsync('BosVesUI', 'LogWindowClose');
+};

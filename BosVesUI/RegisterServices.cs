@@ -1,4 +1,7 @@
-﻿namespace BosVesUI;
+﻿using BosVesUI.Shared.Components;
+using Microsoft.AspNetCore.Components.Server.Circuits;
+
+namespace BosVesUI;
 
 public static class RegisterServices
 {
@@ -20,7 +23,7 @@ public static class RegisterServices
 
       builder.Services.AddRazorPages();
       builder.Services.AddServerSideBlazor();
-    
+      builder.Services.AddScoped<CircuitHandler, CustomCircuitHandler>();
 
       builder.Services.AddMemoryCache();
       builder.Services.Configure<BosVesAppSettings>(builder.Configuration.GetSection("BosVesAppSettings")); // заполняю конфигурационными настройками классс, который планирую использовать во всём приложении
