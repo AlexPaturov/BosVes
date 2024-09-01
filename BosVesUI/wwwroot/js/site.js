@@ -3,8 +3,6 @@
 
 // Write your Javascript code.
 
-
-
 // размер окна 
 window.getWindowSize = () => {
     return {
@@ -17,3 +15,9 @@ window.getWindowSize = () => {
 window.onbeforeunload = function () {
     DotNet.invokeMethodAsync('BosVesUI', 'LogWindowClose');
 };
+
+function getWindowWidth() {
+    return window.innerWidth;
+}
+
+

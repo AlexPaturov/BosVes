@@ -8,134 +8,188 @@
 @inject TaraPodstanovkaData taraPodstanovka;
 @inject NavigationManager navManager;
 
+
+<span>Window Width: @windowWidth px</span>
 @* <div class="container border border-dark"> *@
 <div class="row justify-content-center create-form">
     <div class="col-md-12 col-xl-12 form-layout">
-        <div class="close-button-section">
+
+        <div class="close-button-section mb-1">
             <button class="btn btn-close" @onclick="ClosePage"></button>
         </div>
 
         @* Поля ввода для фильтров - начало *@
         <div class="row">
 
-            @* 1 *@
-            <div class="col">
-                <div class="form-group row">
-                    <label for="DT" class="col col-form-label">Дата взвешивания</label>
-                    <div class="col">
+            @* 1 тест *@
+            <div class="col-auto mb-2">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">Дата взвешивания</span>
+                    </div>
+                    <div class="col-auto">
                         <InputDate Type="InputDateType.Date" @bind-Value="@inDt" id="idDT" class="form-control" />
-                        @* <ValidationMessage For="@(() => inDt)" /> *@
                     </div>
                 </div>
             </div>
 
-            @* 2 *@
-            <div class="col">
-                <div class="form-group row">
-                    <label for="VR" class="col col-form-label">Время взвешивания</label>
-                    <div class="col">
+            @* 2 тест *@
+            <div class="col-auto mb-2">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">Время взвешивания</span>
+                    </div>
+                    <div class="col-auto">
                         <InputDate Type="InputDateType.Time" @bind-Value:format="hh:mm:ss" @bind-Value="@inVr" id="VR" step="1" class="form-control" />
-                        @* <ValidationMessage For="@(() => inVr)" /> *@
                     </div>
                 </div>
             </div>
 
-            @* 3 *@
-            <div class="col">
-                <div class="form-group row">
-                    <label for="NVAG" class="col col-form-label">Номер вагона</label>
-                    <div class="col">
+            @* 3 тест *@
+            <div class="col-auto mb-2">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">Номер вагона</span>
+                    </div>
+                    <div class="col-auto">
                         <InputText @bind-Value="@inNvag" id="NVAG" class="form-control" />
-                        @* <ValidationMessage For="@(() => inNvag)" /> *@
                     </div>
                 </div>
             </div>
 
-            <button class="btn btn-primary" @onclick="GetByDtVr">Save input in db</button>
-        </div>
-        @* Поля ввода для фильтров - окончание *@
+            <div class="col mb-2">
+                <div class="text-end"> @* кнопка после полей фильтра - закомитить *@
+                    <button type="button" class="btn btn-primary position-relative" @onclick="GetByDtVr">Показать</button>
+                </div> @* кнопка после полей фильтра - закомитить *@
+            </div>
 
-        @* Таблица начало *@
-        @if (listVags == null)
-        {
-            <div class="table-responsive">
-                @* <div style="width:fit-content"> *@
-                <div style="width:1000px">
-                    <table class="table table-bordered">
-                        <thead>
-                            <tr>
-                                @foreach (var vp in GridCaptionHelper.GpriGridChapters.Values)
-                                {
-                                    <th> @vp </th>
-                                }
-                            </tr>
-                        </thead>
-                    </table>
-                </div>
-            </div>
-        }
-        else
-        {
-            <div class="table-responsive">
-                @* <div style="width:fit-content"> *@
-                <div style="width:1000px">
-                    <table class="table table-bordered">
-                        <thead>
-                            <tr>
-                                @foreach (var vp in GridCaptionHelper.GpriGridChapters.Values)
-                                {
-                                    <th> @vp </th>
-                                }
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var item in listVags)
-                            {
-                                <tr @onclick="() => OnRowClick(item.ID)" class="@GetRowClass(item.ID)">
-                                    <td>
-                                        <input type="checkbox" @bind="selectedItems[item.ID]" />
-                                    </td>
-                                    <td> @item.DT.ToShortDateString() </td>
-                                    <td> @item.VR.ToString(@"hh\:mm\:ss") </td>
-                                    <td> @item.NVAG </td>
-                                    <td> @item.NDOK </td>
-                                    <td> @item.GRUZ </td>
-                                    <td> @item.BRUTTO </td>
-                                    <td> @item.TAR_BRS </td>
-                                    <td> @item.TAR_DOK </td>
-                                    <td> @item.NETTO </td>
-                                    <td> @item.NET_DOK </td>
-                                    <td> @item.MUSOR </td>
-                                    <td> @item.CEX </td>
-                                    <td> @item.TARIF </td>
-                                    <td> @item.POTR </td>
-                                    <td> @item.PLAT </td>
-                                    <td> @item.SKOR </td>
-                                    <td> @item.VESY </td>
-                                    <td> @item.TN </td>
-                                    <td> @item.NPP </td>
-                                    <td> @item.V13 </td>
-                                    <td> @item.V24 </td>
-                                    <td> @item.V12 </td>
-                                    <td> @item.V34 </td>
-                                    <td> @item.PP </td>
-                                    <td> @item.PR </td>
-                                    <td> @item.DELTA </td>
-                                    <td> @item.N_TEPLOVOZ </td>
-                                    <td> @item.POGRESHNOST </td>
-                                    <td> @item.REJVZVESH </td>
-                                    <td> @item.ID </td>
-                                    <td> @item.PLATFORMS_TARA </td>
-                                    <td> @item.PLATFORMS_BRUTTO </td>
-                                    <td> @item.ID_PLATFORMS </td>
-                                    <td> @item.SHABLON </td>
+        </div>
+        
+        <div class="row">
+            @* Таблица начало *@
+            @if (listVags == null)
+            {
+                @* <div class="table-responsive"> *@
+                    @* <div style="width:fit-content"> *@
+                    <div style="width:1000px">
+                        @* <table class="table-sm table-bordered"> *@
+                            <table id="MVCGridTable_Grid" class="table table-striped table-bordered">
+                            <thead>
+                                <tr>
+                                    @foreach (var vp in GridCaptionHelper.GpriGridChapters.Values)
+                                    {
+                                        <th> @vp </th>
+                                    }
                                 </tr>
-                            }
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                @for (int i = 0; i < 10; i++)
+                                {
+                                    <tr>
+                                        <td>  </td>
+                                        <td>  </td>
+                                        <td>  </td>
+                                        <td>  </td>
+                                        <td>  </td>
+                                        <td>  </td>
+                                        <td>  </td>
+                                        <td>  </td>
+                                        <td>  </td>
+                                        <td>  </td>
+                                        <td>  </td>
+                                        <td>  </td>
+                                        <td>  </td>
+                                        <td>  </td>
+                                        <td>  </td>
+                                        <td>  </td>
+                                        <td>  </td>
+                                        <td>  </td>
+                                        <td>  </td>
+                                        <td>  </td>
+                                        <td>  </td>
+                                        <td>  </td>
+                                        <td>  </td>
+                                        <td>  </td>
+                                        <td>  </td>
+                                        <td>  </td>
+                                        <td>  </td>
+                                        <td>  </td>
+                                        <td>  </td>
+                                        <td>  </td>
+                                        <td>  </td>
+                                        <td>  </td>
+                                        <td> 0 </td>
+                                       
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                @* </div> *@
+            }
+            else
+            {
+                <div class="table-responsive">
+                    @* <div style="width:fit-content"> *@
+                    <div style="width:1000px">
+                        <table class="table-sm table-bordered">
+                            <thead>
+                                <tr>
+                                    @foreach (var vp in GridCaptionHelper.GpriGridChapters.Values)
+                                    {
+                                        <th> @vp </th>
+                                    }
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in listVags)
+                                {
+                                    <tr @onclick="() => OnRowClick(item.ID)" class="@GetRowClass(item.ID)">
+                                        <td>
+                                            <input type="checkbox" @bind="selectedItems[item.ID]" />
+                                        </td>
+                                        <td> @item.DT.ToShortDateString() </td>
+                                        <td> @item.VR.ToString(@"hh\:mm\:ss") </td>
+                                        <td> @item.NVAG </td>
+                                        <td> @item.NDOK </td>
+                                        <td> @item.GRUZ </td>
+                                        <td> @item.BRUTTO </td>
+                                        <td> @item.TAR_BRS </td>
+                                        <td> @item.TAR_DOK </td>
+                                        <td> @item.NETTO </td>
+                                        <td> @item.NET_DOK </td>
+                                        <td> @item.MUSOR </td>
+                                        <td> @item.CEX </td>
+                                        <td> @item.TARIF </td>
+                                        <td> @item.POTR </td>
+                                        <td> @item.PLAT </td>
+                                        <td> @item.SKOR </td>
+                                        <td> @item.VESY </td>
+                                        <td> @item.TN </td>
+                                        <td> @item.NPP </td>
+                                        <td> @item.V13 </td>
+                                        <td> @item.V24 </td>
+                                        <td> @item.V12 </td>
+                                        <td> @item.V34 </td>
+                                        <td> @item.PP </td>
+                                        <td> @item.PR </td>
+                                        <td> @item.DELTA </td>
+                                        <td> @item.N_TEPLOVOZ </td>
+                                        <td> @item.POGRESHNOST </td>
+                                        <td> @item.REJVZVESH </td>
+                                        <td> @item.ID </td>
+                                        <td> @item.PLATFORMS_TARA </td>
+                                        <td> @item.PLATFORMS_BRUTTO </td>
+                                        <td> @item.ID_PLATFORMS </td>
+                                        <td> @item.SHABLON </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-            </div>
-        }
+            }
+        </div>
         @* Таблица окончание *@
 
         @* Блок полей для корректировки - начало *@
@@ -605,11 +659,37 @@
         </Modal>
         @* Модальное окошко "Взять цех" окончание *@
 
+        <button @onclick="MyButtonClickAsync">click me</button>
+        <button @onclick="StopRefresWindowsSize">StopRefresWindowsSize</button>
+        
     </div>
 </div>
+
+
 @* "container *@
 
 @code {
+    private int windowWidth;
+    private bool startStop { get; set; } = false;
+    private CancellationToken cts = new();
+
+    private async Task MyButtonClickAsync()
+    {
+        if (startStop == false)
+        {
+            while (startStop == false)
+            {
+                windowWidth = await JS.InvokeAsync<int>("getWindowWidth");
+                await Task.Delay(TimeSpan.FromSeconds(2), cts);
+            }
+        }
+    }
+
+    private void StopRefresWindowsSize()
+    {
+        startStop = !startStop;
+    }
+
     #region Переменные формы
     private DateTime inDt = DateTime.ParseExact("2024-07-05", "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture);
     private DateTime inVr = DateTime.ParseExact("10:13:33", "HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
@@ -672,7 +752,20 @@
     #region OnInitializedAsync()
     protected async override Task OnInitializedAsync()
     {
+        // перерисовываю ширину окна броузера - раз в секунду
+        while (startStop == false)
+        {
+            windowWidth = await JS.InvokeAsync<int>("getWindowWidth");
+            StateHasChanged();
+            await Task.Delay(TimeSpan.FromSeconds(1), cts);
+        }
+    }
 
+    [JSInvokable]
+    public void UpdateWindowWidth(int newWidth)
+    {
+        windowWidth = newWidth;
+        StateHasChanged();
     }
     #endregion
     #region  HandleValidSubmit()
@@ -870,15 +963,9 @@
     }
     #endregion
     #region Показываю справочник цехов
-
     [Parameter]
     public bool IsCheckedCexList { get; set; } = false;
-
-
-    private bool isCheckedCexList;// Internal field holding checkbox state
-
-    // updates the internal value whwenever the component is updated
-    // You may not want that??
+    private bool isCheckedCexList;
     protected override void OnParametersSet()
     {
         isCheckedCexList = this.IsCheckedCexList;
@@ -895,8 +982,6 @@
             }
         }
     }
-  
-
     #endregion
     #region CleanModel()
     private void CleanModels()
