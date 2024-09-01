@@ -69,11 +69,10 @@
             @* Таблица начало *@
             @if (listVags == null)
             {
-                @* <div class="table-responsive"> *@
+                <div class="table-responsive">
                     @* <div style="width:fit-content"> *@
                     <div style="width:1000px">
-                        @* <table class="table-sm table-bordered"> *@
-                            <table id="MVCGridTable_Grid" class="table table-striped table-bordered">
+                         <table class="table-sm table-bordered"> 
                             <thead>
                                 <tr>
                                     @foreach (var vp in GridCaptionHelper.GpriGridChapters.Values)
@@ -125,7 +124,7 @@
                             </tbody>
                         </table>
                     </div>
-                @* </div> *@
+                 </div> 
             }
             else
             {
@@ -658,9 +657,6 @@
 
         </Modal>
         @* Модальное окошко "Взять цех" окончание *@
-
-        <button @onclick="MyButtonClickAsync">click me</button>
-        <button @onclick="StopRefresWindowsSize">StopRefresWindowsSize</button>
         
     </div>
 </div>
