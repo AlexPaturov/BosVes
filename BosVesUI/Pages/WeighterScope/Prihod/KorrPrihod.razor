@@ -11,8 +11,8 @@
 
 <span>Window Width: @windowWidth px</span>
 @* <div class="container border border-dark"> *@
-<div class="row justify-content-center create-form">
-    <div class="col-md-12 col-xl-12 form-layout">
+<div class="row justify-content-center">
+    <div class="col-md-10 col-xl-10 form-layout">
 
         <div class="close-button-section mb-1">
             <button class="btn btn-close" @onclick="ClosePage"></button>
@@ -71,13 +71,14 @@
             @* Таблица начало *@
             @if (listVags == null)
             {
-                 <div class="table-fix-head">
-                    <table>
+                <div class="mb-2 form-control">
+                <div class="scrollable-table">
+                    <table class="table">
                         <thead>
                             <tr>
                                 @foreach (var vp in GridCaptionHelper.GpriGridChapters.Values)
                                 {
-                                    <th scope="col"> @vp </th>
+                                    <th> @vp </th>
                                 }
                             </tr>
                         </thead>
@@ -124,13 +125,14 @@
                         </tbody>
                     </table>
                 </div> 
+                </div> 
             }
             else
             {
-                 @* <div class="table-responsive">  *@
+                <div style="width:1000px">  
                     @* <div style="width:fit-content"> *@
-                <div class="table-fix-head">
-                        <table>
+                <div class="scrollable-table">
+                    <table class="table">
                             <thead>
                                 <tr>
                                     @foreach (var vp in GridCaptionHelper.GpriGridChapters.Values)
@@ -143,10 +145,13 @@
                                 @foreach (var item in listVags)
                                 {
                                     <tr @onclick="() => OnRowClick(item.ID)" class="@GetRowClass(item.ID)">
-                                        <td>
+                                      @*   <td>
                                             <input type="checkbox" @bind="selectedItems[item.ID]" />
-                                        </td>
+                                        </td> *@
                                         <td> @item.DT.ToShortDateString() </td>
+                                       @*  <td>
+                                            <span style="width:150px;">@item.DT.ToShortDateString()</span>
+                                        </td> *@
                                         <td> @item.VR.ToString(@"hh\:mm\:ss") </td>
                                         <td> @item.NVAG </td>
                                         <td> @item.NDOK </td>
@@ -185,7 +190,7 @@
                             </tbody>
                         </table>
                     </div>
-                 @* </div>  *@
+                 </div>  
             }
         </div>
         @* Таблица - окончание *@
@@ -254,7 +259,7 @@
                     </div>
                     @* первый блок окончание *@
                     @* второй блок начало *@
-                    <div class="col-md-3" style="background-color: aqua">
+                    <div class="col-md-2" style="background-color: aqua">
 
                         @* 6 *@
                         <div class="form-group row">

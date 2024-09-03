@@ -11,7 +11,7 @@ h1, h2, h3, h4, h5, h6 {
 
 html, body {
     font-family: 'Roboto', sans-serif;
-    font-size: 18px;
+    font-size: 16px;
 }
 
 body {
@@ -30,67 +30,42 @@ h1 {
 
 /* -------------------------------------------------------- */
 
-
-/* Just common table stuff. Really. */
-table {
-    border-collapse: collapse;
-    letter-spacing: 0px;
-    width: 100%;
+.scrollable-table {
+    height: 200px;
+    /*width: stretch;*/
+    overflow-y: auto;
 }
 
-th, td {
-    padding: 2px 2px 2px 8px;
-}
-
-th {
-    background: #39c8ff;
-    text-align: left;
-}
-
-td {
-    text-align: left;
-}
-
-/* For both sticky vertical TH and horizontal TH columns (inside TBODY): */
-.table-fix-head {
-    overflow: auto;
-    height: 300px;
-    width: 2000px;
-}
-
-.table-fix-head thead th {
-    position: sticky;
-    top: 0;
-    z-index: 1;
-}
-
-.table-fix-head tbody th {
-    position: sticky;
-    left: 0;
-}
-
-/*.table-fix-head {
-    overflow: auto;
-    height: 400px;
-    width: stretch;
-}
-
-    .table-fix-head thead th {
-        position: sticky;
-        top: 0;
-        z-index: 1;
+/*    .scrollable-table > .table {
+        width: 100%;
     }*/
 
-/* Borders (if you need them) */
-    .table-fix-head,
-    .table-fix-head td {
-        box-shadow: inset 1px -1px #000;
+.table {
+    border-collapse: collapse;
+    font-size: 14px;
+    /*table-layout: auto;*/
+    /*width: stretch;*/
+}
+
+    .table th {
+        background-color: mediumaquamarine;
+        color: #ffffff;
+        text-align: left;
+        position: sticky;
+        top: 0;
     }
 
-        .table-fix-head th {
-            box-shadow: inset 1px 1px #000, 0 1px #000;
-        }
+    .table th,
+    .table td {
+        padding: 2px 6px;
+        font-weight: normal;
+        /*word-wrap: normal;*/
+    }
 
+
+    .table tbody tr:nth-of-type(even) {
+        background-color: antiquewhite;
+    }
 /* ------------------------------------------------------------ */
 
 .page-heading {
