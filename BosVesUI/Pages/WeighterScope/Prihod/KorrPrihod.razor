@@ -64,74 +64,73 @@
             </div>
 
         </div>
-        
+        @* Поля ввода для фильтров - окончание *@
+
+        @* Таблица - начало *@
         <div class="row">
             @* Таблица начало *@
             @if (listVags == null)
             {
-                <div class="table-responsive">
-                    @* <div style="width:fit-content"> *@
-                    <div style="width:1000px">
-                         <table class="table-sm table-bordered"> 
-                            <thead>
-                                <tr>
-                                    @foreach (var vp in GridCaptionHelper.GpriGridChapters.Values)
-                                    {
-                                        <th> @vp </th>
-                                    }
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @for (int i = 0; i < 10; i++)
+                 <div class="table-fix-head">
+                    <table>
+                        <thead>
+                            <tr>
+                                @foreach (var vp in GridCaptionHelper.GpriGridChapters.Values)
                                 {
-                                    <tr>
-                                        <td>  </td>
-                                        <td>  </td>
-                                        <td>  </td>
-                                        <td>  </td>
-                                        <td>  </td>
-                                        <td>  </td>
-                                        <td>  </td>
-                                        <td>  </td>
-                                        <td>  </td>
-                                        <td>  </td>
-                                        <td>  </td>
-                                        <td>  </td>
-                                        <td>  </td>
-                                        <td>  </td>
-                                        <td>  </td>
-                                        <td>  </td>
-                                        <td>  </td>
-                                        <td>  </td>
-                                        <td>  </td>
-                                        <td>  </td>
-                                        <td>  </td>
-                                        <td>  </td>
-                                        <td>  </td>
-                                        <td>  </td>
-                                        <td>  </td>
-                                        <td>  </td>
-                                        <td>  </td>
-                                        <td>  </td>
-                                        <td>  </td>
-                                        <td>  </td>
-                                        <td>  </td>
-                                        <td>  </td>
-                                        <td> 0 </td>
-                                       
-                                    </tr>
+                                    <th scope="col"> @vp </th>
                                 }
-                            </tbody>
-                        </table>
-                    </div>
-                 </div> 
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for (int i = 0; i < 10; i++)
+                            {
+                                <tr>
+                                    <td>  </td>
+                                    <td>  </td>
+                                    <td>  </td>
+                                    <td>  </td>
+                                    <td>  </td>
+                                    <td>  </td>
+                                    <td>  </td>
+                                    <td>  </td>
+                                    <td>  </td>
+                                    <td>  </td>
+                                    <td>  </td>
+                                    <td>  </td>
+                                    <td>  </td>
+                                    <td>  </td>
+                                    <td>  </td>
+                                    <td>  </td>
+                                    <td>  </td>
+                                    <td>  </td>
+                                    <td>  </td>
+                                    <td>  </td>
+                                    <td>  </td>
+                                    <td>  </td>
+                                    <td>  </td>
+                                    <td>  </td>
+                                    <td>  </td>
+                                    <td>  </td>
+                                    <td>  </td>
+                                    <td>  </td>
+                                    <td>  </td>
+                                    <td>  </td>
+                                    <td>  </td>
+                                    <td>  </td>
+                                    <td> 0 </td>
+
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div> 
             }
             else
             {
-                <div class="table-responsive">
+                 @* <div class="table-responsive">  *@
                     @* <div style="width:fit-content"> *@
-                    <div style="width:1000px">
-                        <table class="table-sm table-bordered">
+                <div class="table-fix-head">
+                        <table>
                             <thead>
                                 <tr>
                                     @foreach (var vp in GridCaptionHelper.GpriGridChapters.Values)
@@ -186,10 +185,10 @@
                             </tbody>
                         </table>
                     </div>
-                </div>
+                 @* </div>  *@
             }
         </div>
-        @* Таблица окончание *@
+        @* Таблица - окончание *@
 
         @* Блок полей для корректировки - начало *@
         <div class="row border border-dark">
@@ -749,12 +748,12 @@
     protected async override Task OnInitializedAsync()
     {
         // перерисовываю ширину окна броузера - раз в секунду
-        while (startStop == false)
-        {
-            windowWidth = await JS.InvokeAsync<int>("getWindowWidth");
-            StateHasChanged();
-            await Task.Delay(TimeSpan.FromSeconds(1), cts);
-        }
+        // while (startStop == false)
+        // {
+        //     windowWidth = await JS.InvokeAsync<int>("getWindowWidth");
+        //     StateHasChanged();
+        //     await Task.Delay(TimeSpan.FromSeconds(1), cts);
+        // }
     }
 
     [JSInvokable]
@@ -865,10 +864,10 @@
     #region действия на клике по строке в гриде просмотра вагонов
     private void OnRowClick(int? id)
     {
-        // CleanModels();                                                                      // Чистим поля при переходе
-        // selectedRowId = id;
-        // selRowID = selectedRowId.ToString();                                                // Для отладки - отображаю ID записи по которой кликнул.
-        // vagon = (GpriModel)(listVags.Where(i => i.ID == id).FirstOrDefault()).Clone();      // Взять все данные из клика по гриду -> переместить в объект.
+        CleanModels();                                                                      // Чистим поля при переходе
+        selectedRowId = id;
+        selRowID = selectedRowId.ToString();                                                // Для отладки - отображаю ID записи по которой кликнул.
+        vagon = (GpriModel)(listVags.Where(i => i.ID == id).FirstOrDefault()).Clone();      // Взять все данные из клика по гриду -> переместить в объект.
     }
 
     private string GetRowClass(int id)

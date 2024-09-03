@@ -28,6 +28,71 @@ h1 {
         outline: none;
     }
 
+/* -------------------------------------------------------- */
+
+
+/* Just common table stuff. Really. */
+table {
+    border-collapse: collapse;
+    letter-spacing: 0px;
+    width: 100%;
+}
+
+th, td {
+    padding: 2px 2px 2px 8px;
+}
+
+th {
+    background: #39c8ff;
+    text-align: left;
+}
+
+td {
+    text-align: left;
+}
+
+/* For both sticky vertical TH and horizontal TH columns (inside TBODY): */
+.table-fix-head {
+    overflow: auto;
+    height: 300px;
+    width: 2000px;
+}
+
+.table-fix-head thead th {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+.table-fix-head tbody th {
+    position: sticky;
+    left: 0;
+}
+
+/*.table-fix-head {
+    overflow: auto;
+    height: 400px;
+    width: stretch;
+}
+
+    .table-fix-head thead th {
+        position: sticky;
+        top: 0;
+        z-index: 1;
+    }*/
+
+/* Borders (if you need them) */
+    .table-fix-head,
+    .table-fix-head td {
+        box-shadow: inset 1px -1px #000;
+    }
+
+        .table-fix-head th {
+            box-shadow: inset 1px 1px #000, 0 1px #000;
+        }
+
+/* ------------------------------------------------------------ */
+
 .page-heading {
     text-align: center;
 }
@@ -109,31 +174,10 @@ a, .btn-link {
     padding: 0px 0px;
 }
 
-.table-responsive {
-    overflow-x: auto;
-    overflow-y: scroll;
-    height: 300px;                   /* Adjust the height as needed */ 
-    white-space: nowrap;
-}
-
 .selected-row {
     background-color: #f2f2f2;       /* Add more styling as needed */
 }
 
-table {
-    text-align: left;
-    position: relative;
-}
-
-th {
-    background: white;
-    position: sticky;
-    top: 0;
-}
-
-/* suggestionApp -> webBosWes */
-
-/* categories -> weightscope begin */
 .weightscope {
     margin: 1rem;
     background-color: #FFFFFF;
@@ -148,7 +192,6 @@ th {
         .weightscope div:hover {
             cursor: pointer;
         }
-/* categories -> weightscope end */
 
 .selected-category {
     font-weight: 700;
@@ -210,9 +253,6 @@ th {
     font-weight: 400;
     font-size: 1.0rem;
 }
-
-/* menu-entry begin */
-
 
 /* не проверял начало 1 */
 .nav-links {
