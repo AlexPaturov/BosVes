@@ -11,7 +11,7 @@ h1, h2, h3, h4, h5, h6 {
 
 html, body {
     font-family: 'Roboto', sans-serif;
-    font-size: 16px;
+    font-size: 14px;
 }
 
 body {
@@ -31,20 +31,21 @@ h1 {
 /* -------------------------------------------------------- */
 
 .scrollable-table {
-    height: 200px;
-    /*width: stretch;*/
+    height: 300px;
+    width: 1450px;
     overflow-y: auto;
 }
 
-/*    .scrollable-table > .table {
+    .scrollable-table > .table {
         width: 100%;
-    }*/
+    }
 
 .table {
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
     border-collapse: collapse;
     font-size: 14px;
     /*table-layout: auto;*/
-    /*width: stretch;*/
+    width: 1450px;
 }
 
     .table th {
@@ -53,18 +54,19 @@ h1 {
         text-align: left;
         position: sticky;
         top: 0;
+        
     }
 
     .table th,
     .table td {
         padding: 2px 6px;
         font-weight: normal;
-        /*word-wrap: normal;*/
+        white-space: nowrap;
     }
 
 
     .table tbody tr:nth-of-type(even) {
-        background-color: antiquewhite;
+        background-color: #f3f3f3;
     }
 /* ------------------------------------------------------------ */
 

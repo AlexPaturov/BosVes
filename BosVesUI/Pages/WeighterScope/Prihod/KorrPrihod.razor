@@ -8,18 +8,16 @@
 @inject TaraPodstanovkaData taraPodstanovka;
 @inject NavigationManager navManager;
 
-
-<span>Window Width: @windowWidth px</span>
 @* <div class="container border border-dark"> *@
 <div class="row justify-content-center">
-    <div class="col-md-10 col-xl-10 form-layout">
+    <div class="col-md-12 col-xl-12 form-layout">
 
         <div class="close-button-section mb-1">
             <button class="btn btn-close" @onclick="ClosePage"></button>
         </div>
 
         @* Поля ввода для фильтров - начало *@
-        <div class="row">
+        <div class="row justify-content-center">
 
             @* 1 тест *@
             <div class="col-auto mb-2">
@@ -57,7 +55,7 @@
                 </div>
             </div>
 
-            <div class="col mb-2">
+            <div class="col-auto mb-2">
                 <div class="text-end"> @* кнопка после полей фильтра - закомитить *@
                     <button type="button" class="btn btn-primary position-relative" @onclick="GetByDtVr">Показать</button>
                 </div> @* кнопка после полей фильтра - закомитить *@
@@ -67,72 +65,69 @@
         @* Поля ввода для фильтров - окончание *@
 
         @* Таблица - начало *@
-        <div class="row">
-            @* Таблица начало *@
-            @if (listVags == null)
-            {
-                <div class="mb-2 form-control">
-                <div class="scrollable-table">
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                @foreach (var vp in GridCaptionHelper.GpriGridChapters.Values)
-                                {
-                                    <th> @vp </th>
-                                }
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @for (int i = 0; i < 10; i++)
-                            {
+        <div class="row mb-1">
+            <div class="col-auto form-control">
+                @* Таблица начало *@
+                @if (listVags == null)
+                {
+                    <div class="scrollable-table">
+                        <table class="table">
+                            <thead>
                                 <tr>
-                                    <td>  </td>
-                                    <td>  </td>
-                                    <td>  </td>
-                                    <td>  </td>
-                                    <td>  </td>
-                                    <td>  </td>
-                                    <td>  </td>
-                                    <td>  </td>
-                                    <td>  </td>
-                                    <td>  </td>
-                                    <td>  </td>
-                                    <td>  </td>
-                                    <td>  </td>
-                                    <td>  </td>
-                                    <td>  </td>
-                                    <td>  </td>
-                                    <td>  </td>
-                                    <td>  </td>
-                                    <td>  </td>
-                                    <td>  </td>
-                                    <td>  </td>
-                                    <td>  </td>
-                                    <td>  </td>
-                                    <td>  </td>
-                                    <td>  </td>
-                                    <td>  </td>
-                                    <td>  </td>
-                                    <td>  </td>
-                                    <td>  </td>
-                                    <td>  </td>
-                                    <td>  </td>
-                                    <td>  </td>
-                                    <td> 0 </td>
-
+                                    @foreach (var vp in GridCaptionHelper.GpriGridChapters.Values)
+                                    {
+                                        <th> @vp </th>
+                                    }
                                 </tr>
-                            }
-                        </tbody>
-                    </table>
-                </div> 
-                </div> 
-            }
-            else
-            {
-                <div style="width:1000px">  
-                    @* <div style="width:fit-content"> *@
-                <div class="scrollable-table">
-                    <table class="table">
+                            </thead>
+                            <tbody>
+                                @for (int i = 0; i < 10; i++)
+                                {
+                                    <tr>
+                                        <td>  </td>
+                                        <td>  </td>
+                                        <td>  </td>
+                                        <td>  </td>
+                                        <td>  </td>
+                                        <td>  </td>
+                                        <td>  </td>
+                                        <td>  </td>
+                                        <td>  </td>
+                                        <td>  </td>
+                                        <td>  </td>
+                                        <td>  </td>
+                                        <td>  </td>
+                                        <td>  </td>
+                                        <td>  </td>
+                                        <td>  </td>
+                                        <td>  </td>
+                                        <td>  </td>
+                                        <td>  </td>
+                                        <td>  </td>
+                                        <td>  </td>
+                                        <td>  </td>
+                                        <td>  </td>
+                                        <td>  </td>
+                                        <td>  </td>
+                                        <td>  </td>
+                                        <td>  </td>
+                                        <td>  </td>
+                                        <td>  </td>
+                                        <td>  </td>
+                                        <td>  </td>
+                                        <td>  </td>
+                                        <td> 0 </td>
+
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+                else
+                {
+                    <div class="scrollable-table">
+                        <table class="table">
                             <thead>
                                 <tr>
                                     @foreach (var vp in GridCaptionHelper.GpriGridChapters.Values)
@@ -145,13 +140,7 @@
                                 @foreach (var item in listVags)
                                 {
                                     <tr @onclick="() => OnRowClick(item.ID)" class="@GetRowClass(item.ID)">
-                                      @*   <td>
-                                            <input type="checkbox" @bind="selectedItems[item.ID]" />
-                                        </td> *@
                                         <td> @item.DT.ToShortDateString() </td>
-                                       @*  <td>
-                                            <span style="width:150px;">@item.DT.ToShortDateString()</span>
-                                        </td> *@
                                         <td> @item.VR.ToString(@"hh\:mm\:ss") </td>
                                         <td> @item.NVAG </td>
                                         <td> @item.NDOK </td>
@@ -190,8 +179,8 @@
                             </tbody>
                         </table>
                     </div>
-                 </div>  
-            }
+                }
+            </div>
         </div>
         @* Таблица - окончание *@
 
