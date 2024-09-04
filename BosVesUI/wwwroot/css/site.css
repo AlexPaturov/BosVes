@@ -32,35 +32,45 @@ h1 {
 
 .scrollable-table {
     height: 300px;
-    width: 1450px;
+    width: 100% !important;
     overflow-y: auto;
 }
 
     .scrollable-table > .table {
-        width: 100%;
+        width: 100% !important;
     }
 
 .table {
-    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    /*font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;*/
     border-collapse: collapse;
     font-size: 14px;
-    /*table-layout: auto;*/
-    width: 1450px;
+    width: 100% !important;
 }
 
     .table th {
-        background-color: mediumaquamarine;
-        color: #ffffff;
+        /*background-color: #6DECB9;*/
+        /*color: #414141;*/
+
+        background-color: #A3F3EB; /* попробовать белый шрифт в заголовке ? */
+        color: #252525;
+        /*background-color: #A3F3EB;
+        color: #04322E;*/
+        /*background-color: #08FFC8;*/
+        /*color: #414141;*/
+        /*background-color: #9AC5F4;
+        color: #092635;*/
+
+        font-weight: 600;
+        font-size: 14px;
         text-align: left;
         position: sticky;
         top: 0;
-        
     }
 
     .table th,
     .table td {
         padding: 2px 6px;
-        font-weight: normal;
+        
         white-space: nowrap;
     }
 
