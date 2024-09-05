@@ -78,8 +78,27 @@ h1 {
     .table tbody tr:nth-of-type(even) {
         background-color: #f3f3f3;
     }
-/* ------------------------------------------------------------ */
+/* ------------------------------------------------------------------------ */
 
+/* --------------------- input-corners-left begin --------------------------*/
+.input-corners-right {
+    border-bottom-right-radius: 0px;
+    border-top-right-radius: 0px;
+}
+/* --------------------- input-corners-left end -----------------------------*/
+
+/* --------------------- input-corners-right begin --------------------------*/
+.input-corners-left {
+    border-bottom-left-radius: 0px;
+    border-top-left-radius: 0px;
+}
+/* --------------------- input-corners-right end ----------------------------*/
+
+/* --------------------- input-group-prepend begin --------------------------*/
+.input-group-prepend {
+    display: flex; 
+}
+/* --------------------- input-group-prepend end ----------------------------*/
 .page-heading {
     text-align: center;
 }

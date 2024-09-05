@@ -23,10 +23,10 @@
             <div class="col-auto mb-2">
                 <div class="input-group">
                     <div class="input-group-prepend">
-                        <span class="input-group-text">Дата взвешивания</span>
+                        <span class="input-group-text input-corners-right">Дата взвешивания</span>
                     </div>
                     <div class="col-auto">
-                        <InputDate Type="InputDateType.Date" @bind-Value="@inDt" id="idDT" class="form-control" />
+                        <InputDate Type="InputDateType.Date" @bind-Value="@inDt" id="idDT" class="form-control input-corners-left" />
                     </div>
                 </div>
             </div>
@@ -35,10 +35,10 @@
             <div class="col-auto mb-2">
                 <div class="input-group">
                     <div class="input-group-prepend">
-                        <span class="input-group-text">Время взвешивания</span>
+                        <span class="input-group-text input-corners-right">Время взвешивания</span>
                     </div>
                     <div class="col-auto">
-                        <InputDate Type="InputDateType.Time" @bind-Value:format="hh:mm:ss" @bind-Value="@inVr" id="VR" step="1" class="form-control" />
+                        <InputDate Type="InputDateType.Time" @bind-Value:format="hh:mm:ss" @bind-Value="@inVr" id="VR" step="1" class="form-control input-corners-left" />
                     </div>
                 </div>
             </div>
@@ -47,10 +47,10 @@
             <div class="col-auto mb-2">
                 <div class="input-group">
                     <div class="input-group-prepend">
-                        <span class="input-group-text">Номер вагона</span>
+                        <span class="input-group-text input-corners-right">Номер вагона</span>
                     </div>
                     <div class="col-auto">
-                        <InputText @bind-Value="@inNvag" id="NVAG" class="form-control" />
+                        <InputText @bind-Value="@inNvag" id="NVAG" class="form-control input-corners-left" />
                     </div>
                 </div>
             </div>
@@ -357,12 +357,12 @@
                         </div>
 
                         @* 12 vagon.CEX *@
-                        <div class="form-group row">
+                        <div class="col-auto mb-1">
                             <label for="CEX" class="col col-form-label">Цех</label>
                             <div class="col">
                                 <div class="input-group">
                                     <div class="input-group-prepend">
-                                        <div class="input-group-text">
+                                        <div class="input-group-text input-corners-right">
                                             <input type="checkbox" checked="@isCheckedCexList" @oninput="GetListCex" />
                                         </div>
                                     </div>
