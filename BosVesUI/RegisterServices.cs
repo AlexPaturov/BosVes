@@ -1,4 +1,5 @@
-﻿using BosVesUI.Shared.Components;
+﻿using BosVesAppLibrary.Command;
+using BosVesUI.Shared.Components;
 using Microsoft.AspNetCore.Components.Server.Circuits;
 
 namespace BosVesUI;
@@ -36,5 +37,7 @@ public static class RegisterServices
       builder.Services.AddSingleton<TaraPodstanovkaData>(); // 
       builder.Services.AddSingleton<VikVagData>();          // 
       builder.Services.AddSingleton<BruttoAsTaraData>();    // 
+      builder.Services.AddSingleton<VagonsAPIData>();       // 
+      builder.Services.AddSingleton<VagonsService>();       // 
    }
 }

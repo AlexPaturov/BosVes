@@ -7,3 +7,4 @@ global using NLog;
 global using NLog.Web;
 global using System;
 global using System.Threading.Tasks;
+global using BosVesAppLibrary.Command;

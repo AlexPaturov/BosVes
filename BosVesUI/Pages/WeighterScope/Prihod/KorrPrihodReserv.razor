@@ -1,4 +1,4 @@
-﻿@page "/Pages/WeighterScope/Prihod/KorrPrihod"
+﻿@page "/Pages/WeighterScope/Prihod/KorrPrihodReserv"
 @using BosVesUI.Shared.Components
 @using NetcodeHub.Packages.Components.Modal
 @inject IJSRuntime JS;
@@ -6,13 +6,9 @@
 @inject ILogger<KorrPrihod> logger;
 @inject BruttoAsTaraData bruttoAsTara;
 @inject TaraPodstanovkaData taraPodstanovka;
-@inject VagonsService vagonService;
 @inject NavigationManager navManager;
 
-<div class="align-content-center">
-    <h3>Pattern COMMANDER</h3>
-</div>
-
+@* <div class="container border border-dark"> *@
 <div class="row justify-content-center">
     <div class="col-md-12 col-xl-12 form-layout">
 
@@ -481,7 +477,6 @@
                         </div>
 
                         <div class="col text-end">
-                            <button class="btn btn-dark" @onclick="InsVag">Вставить</button>
                             <button class="btn btn-success" @onclick="UpdVag">Сохранить</button>
                             <button class="btn btn-danger" @onclick="CleanModels">Очистить</button>
                         </div>
@@ -877,7 +872,7 @@
     #region Работа с чекбоксами таблицы промсмотра
     private void InitializeSelected(List<GpriModel> listVagons)
     {
-
+   
         // Initialize the dictionary with item IDs
         foreach (var item in listVags)
         {
@@ -925,7 +920,7 @@
     private async Task GetByDtVr()
     {
         _logger.Info("GetByDtVr");
-        listVags = ((List<GpriModel>)await gpridata.GetByDtVr(inDt.ToString("yyyy-MM-dd"), inVr.ToString("HH:mm:ss"), "10")).OrderByDescending(x => x.ID).ToList();
+        listVags = (List<GpriModel>)await gpridata.GetByDtVr(inDt.ToString("yyyy-MM-dd"), inVr.ToString("HH:mm:ss"), "10");
         InitializeSelected(listVags);
     }
 
@@ -1027,19 +1022,6 @@
         // иначе показать всплывающее окошко - нечего сохранять
     }
     #endregion
-    //-------------------------------------------------------------------------------
-    private async Task InsVag()
-    {
-        var resutTmp = await vagonService.SaveVagons(vagon);
-
-        //var tmp = await gpridata.InsNew(vagon);
-
-        _logger.Info($"new id {resutTmp}");
-        vagon = new GpriModel();    // чистим модель
-        await GetByDtVr();          // обновляем данные на странице
-
-    }
-    //-------------------------------------------------------------------------------
     #region Показываю справочник цехов
     [Parameter]
     public bool IsCheckedCexList { get; set; } = false;

@@ -22,7 +22,7 @@ public class GpriData
       return new FbConnection(_connectionString);
    }
 
-   public async Task InsNew(GpriModel vagon)  // прооверен
+   public async Task<int> InsNew(GpriModel vagon)  // прооверен
    {
       
       using (var connection = CreateConnection()) 
@@ -89,7 +89,6 @@ public class GpriData
                              ",@PP " +
                              ",@PR " +
                              ",@DELTA " +
-                             ",@KOD_SAP " +
                              ",@N_TEPLOVOZ " +
                              ",@POGRESHNOST " +
                              ",@REJVZVESH " +
@@ -97,20 +96,15 @@ public class GpriData
                              ",@PLATFORMS_BRUTTO " +
                              ",@ID_PLATFORMS " +
                              ",@SHABLON" +
-                             ")";
+                             ") RETURNING ID";
          
-         try
-         {
-            await connection.ExecuteAsync(query, vagon);
-         }
-         catch (Exception ex) 
-         { 
-            Console.WriteLine(ex.ToString());
-         }
+         
+           return await connection.ExecuteScalarAsync<int>(query, vagon);
+        
       }
    }
 
-   public async Task UpdVag(GpriModel vagon)                   // в работе
+   public async Task UpdVag(GpriModel vagon)                   
    {
       using (var connection = CreateConnection())
       {
@@ -147,6 +141,16 @@ public class GpriData
                                     ",SHABLON = @SHABLON " + // сделать триггер на базе
                      "where id = @ID";   
          await connection.ExecuteAsync(query, vagon);
+      }
+   }
+
+   // Используется при неудачной попытке установки маркера в цвик web api.
+   public async Task<int> Delete(int id)                                
+   {
+      using (var connection = CreateConnection())
+      {
+         var query = "DELETE FROM gpri where id = @ID";
+         return await connection.ExecuteAsync(query, new { ID = id });
       }
    }
 

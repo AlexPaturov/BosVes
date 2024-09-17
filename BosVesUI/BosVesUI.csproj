@@ -11,7 +11,6 @@
 	</ItemGroup>
 	<ItemGroup>
 		<Folder Include="Components\" />
-		<Folder Include="Models\" />
 		<Folder Include="Pages\WeighterScope\Korrectirovki\" />
 	</ItemGroup>
 	<ItemGroup>
@@ -39,7 +38,7 @@
 		<None Include="Shared\Components\InputTime.razor" />
 	</ItemGroup>
 	<ItemGroup>
-		<Content Update="Pages\WeighterScope\Prihod\KorrPrihod.razor">
+		<Content Update="Pages\WeighterScope\Prihod\KorrPrihodReserv.razor">
 			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
 		</Content>
 	</ItemGroup>
