@@ -480,35 +480,29 @@
                             </div>
                         </div>
 
-                        <div class="col text-end">
-                            @* <button class="btn btn-dark" @onclick="InsVag">Вставить</button> *@
+                        @*------------------------------*@
+                        <div id="mainDiv" class="d-flex flex-column" style="min-height: 50px; position: relative;">
 
-                          @*   @if (isLoading)
-                            {
-                                <div class="loading-spinner">
-                                    <!-- Simple loading spinner animation -->
-                                    <p>Processing... Please wait.</p>
-                                    <div class="spinner-border" role="status">
-                                        <span class="visually-hidden">Loading...</span>
-                                    </div>
-                                </div>
-                            } *@
                             @if (isLoading)
                             {
-                                <div>
+                                <div class="button-row d-flex justify-content-center" style="position: absolute; bottom: 10px; width: 100%;">
                                     <div class="spinner"></div>
+                                    <button class="btn btn-success" @onclick="UpdVag">Сохранить</button>
+                                    <button class="btn btn-danger" @onclick="CleanModels">Очистить</button>
                                 </div>
                             }
                             else
                             {
-                                <div>
+                                <div class="button-row d-flex justify-content-center" style="position: absolute; bottom: 10px; width: 100%;">
                                     <button class="btn btn-dark" @onclick="InsVag" disabled="@isLoading">Вставить</button>
+                                    <button class="btn btn-success" @onclick="UpdVag">Сохранить</button>
+                                    <button class="btn btn-danger" @onclick="CleanModels">Очистить</button>
                                 </div>
                             }
 
-                            <button class="btn btn-success" @onclick="UpdVag">Сохранить</button>
-                            <button class="btn btn-danger" @onclick="CleanModels">Очистить</button>
+      
                         </div>
+                        @*------------------------------*@
 
                     </div>
                     @* четвёртый блок окончание *@
