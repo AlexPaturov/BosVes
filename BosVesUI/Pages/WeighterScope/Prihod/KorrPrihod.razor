@@ -481,7 +481,25 @@
                         </div>
 
                         <div class="col text-end">
-                            <button class="btn btn-dark" @onclick="InsVag">Вставить</button>
+                            @* <button class="btn btn-dark" @onclick="InsVag">Вставить</button> *@
+
+                            @if (isLoading)
+                            {
+                                <div class="loading-spinner">
+                                    <!-- Simple loading spinner animation -->
+                                    <p>Processing... Please wait.</p>
+                                    <div class="spinner-border" role="status">
+                                        <span class="visually-hidden">Loading...</span>
+                                    </div>
+                                </div>
+                            }
+                            else
+                            {
+                                <div>
+                                    <button class="btn btn-dark" @onclick="InsVag" disabled="@isLoading">Вставить</button>
+                                </div>
+                            }
+
                             <button class="btn btn-success" @onclick="UpdVag">Сохранить</button>
                             <button class="btn btn-danger" @onclick="CleanModels">Очистить</button>
                         </div>
@@ -734,26 +752,20 @@
 @* "container *@
 
 @code {
-    private int windowWidth;
-    private bool startStop { get; set; } = false;
-    private CancellationToken cts = new();
+    private bool isLoading = false;       // To control loading state
+    private string resultMessage = null;  // To store the result message
 
-    private async Task MyButtonClickAsync()
-    {
-        if (startStop == false)
-        {
-            while (startStop == false)
-            {
-                windowWidth = await JS.InvokeAsync<int>("getWindowWidth");
-                await Task.Delay(TimeSpan.FromSeconds(2), cts);
-            }
-        }
-    }
+    // Method triggered by button click
+    // private async Task HandleButtonClick()
+    // {
+    //     isLoading = true;   // Show the loading indicator
+    //     resultMessage = null;
 
-    private void StopRefresWindowsSize()
-    {
-        startStop = !startStop;
-    }
+    //     // Simulate a long-running database query (replace this with actual database call)
+    //     resultMessage = await _databaseService.GetDataFromDatabase();
+
+    //     isLoading = false;  // Hide the loading indicator
+    // }
 
     #region Переменные формы
     private DateTime inDt = DateTime.ParseExact("2024-07-05", "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture);
@@ -826,12 +838,12 @@
         // }
     }
 
-    [JSInvokable]
-    public void UpdateWindowWidth(int newWidth)
-    {
-        windowWidth = newWidth;
-        StateHasChanged();
-    }
+    // [JSInvokable]
+    // public void UpdateWindowWidth(int newWidth)
+    // {
+    //     windowWidth = newWidth;
+    //     StateHasChanged();
+    // }
     #endregion
     #region  HandleValidSubmit()
     private void HandleValidSubmit()
@@ -1030,13 +1042,14 @@
     //-------------------------------------------------------------------------------
     private async Task InsVag()
     {
-        var resutTmp = await vagonService.SaveVagons(vagon);
+        isLoading = true;                                       // Show the loading indicator
+        resultMessage = null;
 
-        //var tmp = await gpridata.InsNew(vagon);
+        var resutTmp = await vagonService.SaveVagons(vagon);    // Simulate a long-running database query (replace this with actual database call)
+        vagon = new GpriModel();                                // чистим модель
+        await GetByDtVr();                                      // обновляем данные на странице
 
-        _logger.Info($"new id {resutTmp}");
-        vagon = new GpriModel();    // чистим модель
-        await GetByDtVr();          // обновляем данные на странице
+        isLoading = false;                                      // Hide the loading indicator
 
     }
     //-------------------------------------------------------------------------------

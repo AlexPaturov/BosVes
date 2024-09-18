@@ -18,6 +18,9 @@ public class WriteVagonsCommand : ICommand
    {
       // Try to write to databaseOne
       _storedId = await _dbOneGpri.InsNew(_vagonsOne);
+
+      // Эмуляция задержки операции для демонстрации спиннера.
+      await Task.Delay(5000);
       if (_storedId == -1)
       {
          return false; // If the writeOne fails, return false

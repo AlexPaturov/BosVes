@@ -80,6 +80,22 @@ h1 {
     }
 /* ------------------------------------------------------------------------ */
 
+/* Custom CSS to center and style the loading spinner  --- begin ---*/
+.loading-spinner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 20px;
+    flex-direction: column;
+}
+
+.spinner-border {
+    width: 3rem;
+    height: 3rem;
+    margin-top: 10px;
+}
+/*Custom CSS to center and style the loading spinner  --- end ---*/
+
 /* --------------------- input-corners-left begin --------------------------*/
 .input-corners-right {
     border-bottom-right-radius: 0px;
