@@ -480,9 +480,8 @@
                             </div>
                         </div>
 
-                        @*------------------------------*@
-                        <div id="mainDiv" class="d-flex flex-column" style="min-height: 50px; position: relative;">
-
+                        @*--------- var 1 begin ---------------------*@
+@*                         <div id="mainDiv" class="d-flex flex-column" style="min-height: 50px; position: relative;">
                             @if (isLoading)
                             {
                                 <div class="button-row d-flex justify-content-center" style="position: absolute; bottom: 10px; width: 100%;">
@@ -499,10 +498,48 @@
                                     <button class="btn btn-danger" @onclick="CleanModels">Очистить</button>
                                 </div>
                             }
+                        </div> *@
+                        @*----------- var 1 end -------------------*@
 
-      
+                        @*-------------- var 2 begin ----------------*@
+                        <div id="mainDiv" class="d-flex flex-column" style="position: relative; min-height: 50px;">
+                      @*       @if (isLoading)
+                            {
+                                <div id="spYes" class="flex-grow-1 d-flex justify-content-center align-items-center">
+                                    <div class="spinner"></div>
+                                </div>
+                            }
+                            else
+                            {
+                                <div id="spNot" class="flex-grow-1 d-flex justify-content-center align-items-center">
+                                    <button class="btn btn-dark" @onclick="InsVag" disabled="@isLoading">Вставить</button>
+                                </div>
+                            } *@
+
+                            <div class="d-flex justify-content-between align-items-center" style="position: absolute; bottom: 10px; width: 100%;">
+                                <div>
+                                    @* This will contain either spYes or spNot *@
+                                    @if (isLoading)
+                                    {
+                                        <div id="spYes" class="d-inline-block">
+                                            <div class="spinner"></div>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div id="spNot" class="d-inline-block">
+                                            <button class="btn btn-dark" @onclick="InsVag" disabled="@isLoading">Вставить</button>
+                                        </div>
+                                    }
+                                </div>
+
+                                <div>
+                                    <button id="btnUpd" class="btn btn-success mx-2" @onclick="UpdVag">Сохранить</button>
+                                    <button id="btnCls" class="btn btn-danger" @onclick="CleanModels">Очистить</button>
+                                </div>
+                            </div>
                         </div>
-                        @*------------------------------*@
+                        @*----------- var 2 end -------------------*@
 
                     </div>
                     @* четвёртый блок окончание *@
