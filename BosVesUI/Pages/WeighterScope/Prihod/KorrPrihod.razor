@@ -483,7 +483,7 @@
                         <div class="col text-end">
                             @* <button class="btn btn-dark" @onclick="InsVag">Вставить</button> *@
 
-                            @if (isLoading)
+                          @*   @if (isLoading)
                             {
                                 <div class="loading-spinner">
                                     <!-- Simple loading spinner animation -->
@@ -491,6 +491,12 @@
                                     <div class="spinner-border" role="status">
                                         <span class="visually-hidden">Loading...</span>
                                     </div>
+                                </div>
+                            } *@
+                            @if (isLoading)
+                            {
+                                <div>
+                                    <div class="spinner"></div>
                                 </div>
                             }
                             else
