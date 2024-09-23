@@ -1,4 +1,5 @@
 ﻿@page "/"
+@inject ILogger<Index> Logger
 @inject AuthenticationStateProvider authProvider
 @inject NavigationManager navManager
 
@@ -381,10 +382,15 @@
     private bool showKorrectirovka = false;
     #endregion
 
+    protected override void OnInitialized()
+    {
+        Logger.LogInformation("Index component initialized.");
+    }
+
     #region
     private void OnWeightScopeClick(string brunch)
     {
-        navManager.NavigateTo(brunch); 
+        navManager.NavigateTo(brunch, true); 
     }
     #endregion
 

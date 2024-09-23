@@ -2,48 +2,63 @@
 
 
 
+using NLog;
+
 namespace BosVesUI
 {
    public class Program
    {
       public static void Main(string[] args)
       {
-         // Early init of NLog to allow startup and exception logging, before host is built
-         var logger = LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
-         logger.Info("Start program");
+    
 
          try
          {
             var builder = WebApplication.CreateBuilder(args);
+            //-----------------------------------------------------------------------------------------------------
+            // Step 1: Configure NLog to read from the config file
+            var logger = NLog.LogManager.Setup().LoadConfigurationFromFile("nlog.config").GetCurrentClassLogger();
+
+            // Step 2: Add NLog as the logging provider
+            builder.Logging.ClearProviders();  // Remove other logging providers if you want only NLog
+            builder.Logging.AddNLog();         // Add NLog as the logging provider
+                                               //-----------------------------------------------------------------------------------------------------
+
+
+
+
             builder.ConfigureServices();
 
             var app = builder.Build();
 
-            // Configure the HTTP request pipeline.
-            if (!app.Environment.IsDevelopment())
-            {
-               app.UseExceptionHandler("/Error");
-               app.UseHsts();
-            }
+            // Step 3: Log information (example)
+            logger.Info("Blazor app started!");
+           
 
+               app.UseHsts();
+            app.UseExceptionHandler("/Error");
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseRouting();
             app.MapBlazorHub();
             app.MapFallbackToPage("/_Host");
-            //logger.Info("info main");
+
+
+            // Step 4: Log a message during app lifetime events (optional)
+            app.Lifetime.ApplicationStarted.Register(() => logger.Info("Application has started."));
+            app.Lifetime.ApplicationStopped.Register(() => logger.Info("Application has stopped."));
+
+
             app.Run();
          }
          catch (Exception exception)
          {
             // NLog: catch setup errors
-            logger.Error(exception, "Stopped program because of exception");
             //throw;
          }
          finally
          {
             // Ensure to flush and stop internal timers/threads before application-exit (Avoid segmentation fault on Linux)
-            LogManager.Shutdown();
          }
       }
    }

@@ -2,9 +2,8 @@
 global using BosVesAppLibrary.Helpers;
 global using BosVesAppLibrary.Models;
 global using Microsoft.Extensions.DependencyInjection;
-global using Microsoft.Extensions.Logging;
-global using NLog;
-global using NLog.Web;
+global using Microsoft.Extensions.Hosting;
+global using NLog.Extensions.Logging;
 global using System;
 global using System.Threading.Tasks;
 global using BosVesAppLibrary.Command;

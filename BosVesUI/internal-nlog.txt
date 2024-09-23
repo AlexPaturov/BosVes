@@ -1,0 +1,10 @@
+2024-09-22 14:11:36.2150 Info Registered target NLog.Targets.FileTarget(Name=logfile)
+2024-09-22 14:11:36.2333 Info NLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 5.3.3.2683. Product version: 5.3.3+341c753ad4dce4dd476dcf0bc3ff2cfd9db76493. GlobalAssemblyCache: False
+2024-09-22 14:11:36.2410 Info Validating config: TargetNames=logfile, ConfigItems=12, FilePath=D:\repos\cSharp\job\BosVes\BosVesUI\bin\Debug\net8.0\nlog.config
+2024-09-22 14:11:36.2410 Info Configuration initialized.
+2024-09-22 14:11:36.4212 Info Validating config: TargetNames=logfile, ConfigItems=12, FilePath=D:\repos\cSharp\job\BosVes\BosVesUI\bin\Debug\net8.0\nlog.config
+2024-09-22 14:14:34.3030 Info Registered target NLog.Targets.FileTarget(Name=logfile)
+2024-09-22 14:14:34.3228 Info NLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 5.3.3.2683. Product version: 5.3.3+341c753ad4dce4dd476dcf0bc3ff2cfd9db76493. GlobalAssemblyCache: False
+2024-09-22 14:14:34.3304 Info Validating config: TargetNames=logfile, ConfigItems=12, FilePath=D:\repos\cSharp\job\BosVes\BosVesUI\bin\Debug\net8.0\nlog.config
+2024-09-22 14:14:34.3304 Info Configuration initialized.
+2024-09-22 14:14:34.5122 Info Validating config: TargetNames=logfile, ConfigItems=12, FilePath=D:\repos\cSharp\job\BosVes\BosVesUI\bin\Debug\net8.0\nlog.config
