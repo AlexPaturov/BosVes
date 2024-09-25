@@ -362,6 +362,8 @@
 
 </div>
 
+
+
 @code {
     #region состояние главного меню - развёрнуто или нет
     private bool showRailweight = false;
@@ -396,7 +398,42 @@
 
 }
 
+builder.Services.AddScoped<FileWorkerData>();            // get list files
 
+@inject FileWorkerData fileData
+<div>
+    <button @onclick="GetFileList">GetFileList to console</button>
+</div>
+
+<div>
+    @if ((_listLogFilesPath is not null) && (_listLogFilesPath.Count > 0))
+    {
+        foreach (var path in _listLogFilesPath)
+        {
+            <div>
+                <a id="exportCsv" class="btn" href="@path" download="@Path.GetFileName(path)" role="button" target="=_top">@Path.GetFileName(path)</a>
+            </div>
+        }
+    }
+</div>
+
+@code {
+    List<string>? _listLogFilesPath;
+
+    private void OnInitialyzeAsync()
+    {
+        _listLogFilesPath = new List<string>();
+    }
+
+    private void GetFileList()
+    {
+        _listLogFilesPath = fileData.GetListLogFiles();
+
+        foreach (var path in _listLogFilesPath)
+            Console.WriteLine("Index: '{0}'.", path);
+    }
+
+}
 
 
 

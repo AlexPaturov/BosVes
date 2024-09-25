@@ -10,7 +10,6 @@
 		<Content Remove="Pages\EmployeeDemoComponent2.razor" />
 	</ItemGroup>
 	<ItemGroup>
-		<Folder Include="Components\" />
 		<Folder Include="Pages\WeighterScope\Korrectirovki\" />
 	</ItemGroup>
 	<ItemGroup>
