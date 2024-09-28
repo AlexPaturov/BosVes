@@ -1,9 +1,24 @@
 ﻿@page "/"
+@using System.Globalization;
+@inject GitVersionService GitVersionService
 @inject ILogger<Index> Logger
 @inject AuthenticationStateProvider authProvider
 @inject NavigationManager navManager
 
 <h1 class="page-heading text-uppercase mb-4">Web Bos Wes</h1>
+
+<p>Deployment Version: @gitVersion</p>
+
+<div class="grid-center">
+    <span>
+        @Assembly.GetExecutingAssembly();
+    </span>
+    <p></p>
+    <span>
+        @Assembly.GetExecutingAssembly()GetName().Version.ToString();
+    </span>
+
+</div>
 
 @* первое уменьшение в размерах меню весовщиков - начало *@
 <div class="row">
@@ -361,10 +376,26 @@
     </div>
 
 </div>
-
+<footer>
+    <p>&copy; @DateTime.Now.Year - @VersionHelper.GetAssemblyVersion()</p>
+</footer>
 
 
 @code {
+    //------------------------------------------------------------------
+    private string gitVersion;
+
+        
+
+    //------------------------------------------------------------------
+    public class VersionHelper
+    {
+        public static string GetAssemblyVersion()
+        {
+            Version v = Assembly.GetExecutingAssembly().GetName().Version;
+            return string.Format(CultureInfo.InvariantCulture, @"YourApp Version {0}.{1}.{2} (r{3})", v.Major, v.Minor, v.Build, v.Revision);
+        }
+    }
     #region состояние главного меню - развёрнуто или нет
     private bool showRailweight = false;
     private bool showAvtoWeight = false;
@@ -384,8 +415,9 @@
     private bool showKorrectirovka = false;
     #endregion
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
+        gitVersion = await GitVersionService.GetGitVersionAsync();
         Logger.LogInformation("Index component initialized.");
     }
 
@@ -398,42 +430,7 @@
 
 }
 
-builder.Services.AddScoped<FileWorkerData>();            // get list files
 
-@inject FileWorkerData fileData
-<div>
-    <button @onclick="GetFileList">GetFileList to console</button>
-</div>
-
-<div>
-    @if ((_listLogFilesPath is not null) && (_listLogFilesPath.Count > 0))
-    {
-        foreach (var path in _listLogFilesPath)
-        {
-            <div>
-                <a id="exportCsv" class="btn" href="@path" download="@Path.GetFileName(path)" role="button" target="=_top">@Path.GetFileName(path)</a>
-            </div>
-        }
-    }
-</div>
-
-@code {
-    List<string>? _listLogFilesPath;
-
-    private void OnInitialyzeAsync()
-    {
-        _listLogFilesPath = new List<string>();
-    }
-
-    private void GetFileList()
-    {
-        _listLogFilesPath = fileData.GetListLogFiles();
-
-        foreach (var path in _listLogFilesPath)
-            Console.WriteLine("Index: '{0}'.", path);
-    }
-
-}
 
 
 

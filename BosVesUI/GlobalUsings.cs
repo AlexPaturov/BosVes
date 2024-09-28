@@ -5,5 +5,6 @@ global using Microsoft.Extensions.DependencyInjection;
 global using Microsoft.Extensions.Hosting;
 global using NLog.Extensions.Logging;
 global using System;
+global using System.Reflection;
 global using System.Threading.Tasks;
 global using BosVesAppLibrary.Command;

@@ -21,6 +21,7 @@ public static class RegisterServices
 
       builder.Services.AddRazorPages();
       builder.Services.AddServerSideBlazor();
+      builder.Services.AddSingleton<GitVersionService>(); // читаю гит версию
       builder.Services.AddScoped<CircuitHandler, CustomCircuitHandler>();
 
       builder.Services.AddMemoryCache();

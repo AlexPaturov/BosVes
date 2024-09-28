@@ -9,6 +9,17 @@
 @inject VagonsService vagonService;
 @inject NavigationManager navManager;
 
+<div class="grid-center">
+    <span>
+        @Assembly.GetExecutingAssembly();
+    </span>
+    <p></p>
+    <span>
+        @Assembly.GetExecutingAssembly()GetName().Version.ToString();
+    </span>
+
+</div>
+
 <div class="align-content-center">
     <h3>Pattern COMMANDER</h3>
 </div>

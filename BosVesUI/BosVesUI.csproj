@@ -2,6 +2,8 @@
 	<PropertyGroup>
 		<TargetFramework>net8.0</TargetFramework>
 		<ImplicitUsings>enable</ImplicitUsings>
+		<Version>1.2.4.0</Version>
+		<GitVersion>$(GIT_VERSION)</GitVersion>
 		<UserSecretsId>36a2323d-317b-456f-897c-10f265e9bd3c</UserSecretsId>
 		<PackageIcon></PackageIcon>
 	</PropertyGroup>
@@ -41,4 +43,7 @@
 			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
 		</Content>
 	</ItemGroup>
+	<Target Name="GenerateGitInfo" AfterTargets="Compile">
+		<WriteLinesToFile File="wwwroot/gitversion.txt" Lines="$(GitVersion)" Overwrite="true" />
+	</Target>
 </Project>
