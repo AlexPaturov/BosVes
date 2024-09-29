@@ -1,7 +1,7 @@
 ﻿using BosVesAppLibrary.Command;
 using BosVesUI.Shared.Components;
 using Microsoft.AspNetCore.Components.Server.Circuits;
-using NLog;
+using System.DirectoryServices.AccountManagement;
 
 namespace BosVesUI;
 
@@ -25,6 +25,8 @@ public static class RegisterServices
       builder.Services.AddScoped<CircuitHandler, CustomCircuitHandler>();
 
       builder.Services.AddMemoryCache();
+      // Register Configuration
+      builder.Services.Configure<ActiveDirectoryHelper>(builder.Configuration.GetSection("ActiveDirectory"));
       builder.Services.Configure<BosVesAppSettings>(builder.Configuration.GetSection("BosVesAppSettings")); // заполняю конфигурационными настройками классс, который планирую использовать во всём приложении
       builder.Services.AddSingleton<GpriData>();            // 
       builder.Services.AddSingleton<GrasData>();            // 

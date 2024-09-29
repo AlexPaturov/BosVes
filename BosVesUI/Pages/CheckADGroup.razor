@@ -1,0 +1,54 @@
+﻿@page "/check-ad-group"
+@inject IConfiguration Configuration
+
+<h3>Check AD Group Membership</h3>
+
+<!-- User Input for User Name and Group -->
+<label for="userName">User Name:</label>
+<input id="userName" @bind="userName" />
+
+<label for="groupName">Group Name:</label>
+<input id="groupName" @bind="groupName" />
+
+<button @onclick="CheckUserGroupMembership">Check User Group Membership</button>
+
+@if (userCheckResult.HasValue)
+{
+    <p>@(userCheckResult.Value ? "User is in the group." : "User is NOT in the group.")</p>
+}
+
+<!-- User Input for Computer Name and Group -->
+<label for="computerName">Computer Name:</label>
+<input id="computerName" @bind="computerName" />
+
+<button @onclick="CheckComputerGroupMembership">Check Computer Group Membership</button>
+
+@if (computerCheckResult.HasValue)
+{
+    <p>@(computerCheckResult.Value ? "Computer is in the group." : "Computer is NOT in the group.")</p>
+}
+
+@code {
+    private string userName;
+    private string groupName;
+    private bool? userCheckResult = null;
+
+    private string computerName;
+    private bool? computerCheckResult = null;
+
+    private async Task CheckUserGroupMembership()
+    {
+        var domainName = Configuration["ActiveDirectory:DomainName"];
+        var adHelper = new ActiveDirectoryHelper(domainName);
+
+        userCheckResult = adHelper.IsUserInGroup(userName, groupName);
+    }
+
+    private async Task CheckComputerGroupMembership()
+    {
+        var domainName = Configuration["ActiveDirectory:DomainName"];
+        var adHelper = new ActiveDirectoryHelper(domainName);
+
+        computerCheckResult = adHelper.IsComputerInGroup(computerName, groupName);
+    }
+}
