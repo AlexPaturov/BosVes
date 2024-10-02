@@ -1,6 +1,5 @@
 ﻿@page "/"
 @using System.Globalization;
-@inject GitVersionService GitVersionService
 @inject ILogger<Index> Logger
 @inject AuthenticationStateProvider authProvider
 @inject NavigationManager navManager
@@ -417,7 +416,6 @@
 
     protected override async Task OnInitializedAsync()
     {
-        gitVersion = await GitVersionService.GetGitVersionAsync();
         Logger.LogInformation("Index component initialized.");
     }
 

@@ -1,7 +1,3 @@
-
-
-
-
 using NLog;
 
 namespace BosVesUI
@@ -21,7 +17,7 @@ namespace BosVesUI
 
             // Step 2: Add NLog as the logging provider
             builder.Logging.ClearProviders();  // Remove other logging providers if you want only NLog
-            builder.Logging.AddNLog();         // Add NLog as the logging provider
+            //builder.Logging.AddNLog();         // Add NLog as the logging provider
             //-----------------------------------------------------------------------------------------------------
 
 
