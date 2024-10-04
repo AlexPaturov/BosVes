@@ -826,7 +826,7 @@
     private string selRowID = string.Empty;
     private Dictionary<int, bool> selectedItems = new Dictionary<int, bool>();
     private bool isChecked = false; // for checkbox - temp
-    NLog.Logger _logger = NLog.LogManager.GetCurrentClassLogger();
+    // NLog.Logger _logger = NLog.LogManager.GetCurrentClassLogger();
     #endregion
     #region Переменные для модального окноа Брутто как тара
     private DateTime inDTBEGIN = DateTime.Today.AddDays(-30);
@@ -984,7 +984,7 @@
     #region GetByDtVr()
     private async Task GetByDtVr()
     {
-        _logger.Info("GetByDtVr");
+        //_logger.Info("GetByDtVr");
         listVags = ((List<GpriModel>)await gpridata.GetByDtVr(inDt.ToString("yyyy-MM-dd"), inVr.ToString("HH:mm:ss"), "10")).OrderByDescending(x => x.ID).ToList();
         InitializeSelected(listVags);
     }
