@@ -6,7 +6,8 @@ namespace BosVesAppLibrary.Helpers;
 
 public class TelemetryService
 {
-   private readonly ILogger _logger; private readonly IHttpContextAccessor _httpContextAccessor;
+   private readonly ILogger _logger; 
+   private readonly IHttpContextAccessor _httpContextAccessor;
    private readonly TelemetryClient _telemetryClient;
 
    public TelemetryService(IHttpContextAccessor httpContextAccessor, TelemetryClient telemetryClient)

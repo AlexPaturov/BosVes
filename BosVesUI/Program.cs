@@ -21,13 +21,13 @@ namespace BosVesUI
            
             app.UseHsts();
             app.UseExceptionHandler("/Error");
-            
+            app.MapControllers();
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseRouting();
 
-          
 
+       
 
             app.MapBlazorHub();
             app.MapFallbackToPage("/_Host");

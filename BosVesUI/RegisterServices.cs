@@ -1,8 +1,5 @@
-﻿using BosVesAppLibrary.Command;
-using BosVesUI.Shared.Components;
+﻿using BosVesUI.Shared.Components;
 using Microsoft.AspNetCore.Components.Server.Circuits;
-using Serilog;
-using System.DirectoryServices.AccountManagement;
 
 namespace BosVesUI;
 
@@ -22,6 +19,7 @@ public static class RegisterServices
 
       builder.Services.AddRazorPages();
       builder.Services.AddServerSideBlazor();
+      builder.Services.AddControllers();
 
       //-------------------------работаю с логами--------------------------------
       builder.Logging.AddApplicationInsights();
@@ -31,7 +29,7 @@ public static class RegisterServices
       builder.Services.AddHttpContextAccessor();
 
       // Register TelemetryService
-      builder.Services.AddSingleton<TelemetryService>();
+      //builder.Services.AddSingleton<TelemetryService>();
       //---------------------------------------------------------
 
       builder.Services.AddScoped<CircuitHandler, CustomCircuitHandler>();
@@ -51,5 +49,6 @@ public static class RegisterServices
       builder.Services.AddSingleton<BruttoAsTaraData>();    // 
       builder.Services.AddSingleton<VagonsAPIData>();       // 
       builder.Services.AddSingleton<VagonsService>();       // 
+      builder.Services.AddSingleton<MachineInfoService>(); // Register the service
    }
 }

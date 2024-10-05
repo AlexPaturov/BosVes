@@ -3,14 +3,18 @@
 @inject ILogger<Index> Logger
 @inject AuthenticationStateProvider authProvider
 @inject NavigationManager navManager
-@inject TelemetryService TelemetryService
+@inject MachineInfoService MachineInfoService
 
 <h1 class="page-heading text-uppercase mb-4">Web Bos Wes</h1>
 
 @* первое уменьшение в размерах меню весовщиков - начало *@
 <div class="row">
-
     <div class="col-12 d-block d-md-none">
+    
+        @* Получаю от пользователя имя пк и юзера *@
+        <h3>Send PC Domain Name</h3>
+        <button @onclick="SendDomainName">Send Domain Name</button>
+        
         @if (true) // проверка прав
         {
             <div class="weightscope" @onclick="(() => showAvto = !showAvto)">
@@ -364,8 +368,6 @@
 
 </div>
 
-<h3>Track Custom Event</h3>
-<button @onclick="TrackEvent">Track Event</button>
 
 <footer>
     <p>&copy; @DateTime.Now.Year - @VersionHelper.GetAssemblyVersion()</p>
@@ -375,9 +377,25 @@
 
 @code {
     //-------------------------------------------------------------------------------------------------
-    private void TrackEvent()
+    private async Task SendDomainName()
     {
-        TelemetryService.TrackCustomEvent("CustomButtonClicked");
+        string domainName = MachineInfoService.GetPCDomainName();
+
+        // Send the domain name in a request
+        using var httpClient = new HttpClient();
+        var request = new HttpRequestMessage(HttpMethod.Post, "https://localhost:7221/api/senddomain");
+        request.Content = new StringContent($"{{\"domainName\": \"{domainName}\"}}", System.Text.Encoding.UTF8, "application/json");
+
+        var response = await httpClient.SendAsync(request);
+
+        if (response.IsSuccessStatusCode)
+        {
+            Console.WriteLine("Domain name sent successfully");
+        }
+        else
+        {
+            Console.WriteLine("Failed to send domain name");
+        }
     }
     //-------------------------------------------------------------------------------------------------
 
