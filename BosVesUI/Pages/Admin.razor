@@ -1,0 +1,150 @@
+﻿@page "/Admin"
+@inject NavigationManager navManager
+@inject TcpClientService TcpClientService
+@inject ILogger<Admin> Logger
+
+<h3>Admin</h3>
+
+<div class="row justify-content-center">
+    <div class="col-md-12 col-xl-12 form-layout">
+        @* кнопочка закрытия формы *@
+        <div class="close-button-section mb-1">
+            <button class="btn btn-close" @onclick="ClosePage"></button>
+        </div>
+
+        @*----------------------------------------*@
+        <div class="col-md-4">
+
+            <div class="mb-3">
+                <label for="ipInput" class="form-label">Server IP Address:</label>
+                <input type="text" class="form-control" id="ipInput" @bind="IpAddress" placeholder="Enter IP Address" />
+            </div>
+            <div class="mb-3">
+                <label for="portInput" class="form-label">Server Port:</label>
+                <input type="number" class="form-control" id="portInput" @bind="Port" placeholder="Enter Port" />
+            </div>
+
+            <button class="btn btn-primary me-2" @onclick="ConnectToServer" disabled="@IsConnected">Connect</button>
+            <button class="btn btn-danger" @onclick="DisconnectFromServer" disabled="@( !IsConnected )">Disconnect</button>
+
+            <hr />
+
+            <div class="mb-3">
+                <label for="commandInput" class="form-label">Command to Send:</label>
+                <input type="text" class="form-control" id="commandInput" @bind="Command" placeholder="Enter Command" />
+            </div>
+
+            <button class="btn btn-success me-2" @onclick="SendCommand" disabled="@(!IsConnected || string.IsNullOrWhiteSpace(Command))">Send Command</button>
+            <button class="btn btn-secondary" @onclick="ClearLog">Clear Log</button>
+
+            <hr />
+
+            <h4>Received Data:</h4>
+            <textarea class="form-control" rows="10" readonly>@ReceivedData</textarea>
+
+        </div>
+        @*----------------------------------------*@
+
+    </div>
+</div>
+
+@code {
+    private string IpAddress { get; set; } = "127.0.0.1";
+    private int Port { get; set; } = 8887;
+    private string Command { get; set; } = string.Empty;
+    private string ReceivedData { get; set; } = string.Empty;
+    private bool IsConnected { get; set; } = false;
+    private CancellationTokenSource _cancellationTokenSource;
+
+    /// <summary>
+    /// Connects to the server using the provided IP and port.
+    /// </summary>
+    private async Task ConnectToServer()
+    {
+        try
+        {
+            bool connected = await TcpClientService.ConnectAsync(IpAddress, Port, TimeSpan.FromSeconds(10), TimeSpan.FromSeconds(10));
+            if (connected)
+            {
+                IsConnected = true;
+                ReceivedData += $"Connected to {IpAddress}:{Port}\n";
+                Logger.LogInformation($"Connected to {IpAddress}:{Port}");
+
+                _cancellationTokenSource = new CancellationTokenSource();
+                _ = TcpClientService.ReceiveDataAsync(OnDataReceived, _cancellationTokenSource.Token);
+            }
+        }
+        catch (Exception ex)
+        {
+            ReceivedData += $"Connection failed: {ex.Message}\n";
+            Logger.LogError($"Connection failed: {ex.Message}");
+        }
+    }
+
+    /// <summary>
+    /// Disconnects from the server.
+    /// </summary>
+    private void DisconnectFromServer()
+    {
+        try
+        {
+            _cancellationTokenSource?.Cancel();
+            TcpClientService.Dispose();
+            IsConnected = false;
+            ReceivedData += "Disconnected from server.\n";
+            Logger.LogInformation("Disconnected from server.");
+        }
+        catch (Exception ex)
+        {
+            ReceivedData += $"Error disconnecting: {ex.Message}\n";
+            Logger.LogError($"Error disconnecting: {ex.Message}");
+        }
+    }
+
+    /// <summary>
+    /// Sends a command to the connected server.
+    /// </summary>
+    private async Task SendCommand()
+    {
+        try
+        {
+            await TcpClientService.SendCommandAsync(Command);
+            ReceivedData += $"Sent: {Command}\n";
+            Logger.LogInformation($"Sent: {Command}");
+            Command = string.Empty;
+        }
+        catch (Exception ex)
+        {
+            ReceivedData += $"Error sending command: {ex.Message}\n";
+            Logger.LogError($"Error sending command: {ex.Message}");
+        }
+    }
+
+    /// <summary>
+    /// Handles received data from the server.
+    /// </summary>
+    private async Task OnDataReceived(string data)
+    {
+        // Update the ReceivedData string and refresh the UI
+        await InvokeAsync(() =>
+        {
+            ReceivedData += $"Received: {data}\n";
+            StateHasChanged();
+        });
+    }
+
+    /// <summary>
+    /// Clears the received data log.
+    /// </summary>
+    private void ClearLog()
+    {
+        ReceivedData = string.Empty;
+    }
+
+    #region ClosePage()
+    private void ClosePage()
+    {
+        navManager.NavigateTo("/", true);
+    }
+    #endregion
+}

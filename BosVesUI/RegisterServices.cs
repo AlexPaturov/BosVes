@@ -13,9 +13,7 @@ public static class RegisterServices
          options.SetDefaultCulture(supportedCultures[0])
              .AddSupportedCultures(supportedCultures)
              .AddSupportedUICultures(supportedCultures);
-         
       });
-
 
       builder.Services.AddRazorPages();
       builder.Services.AddServerSideBlazor();
@@ -26,6 +24,7 @@ public static class RegisterServices
       builder.Services.AddApplicationInsightsTelemetry();
 
       // Register IHttpContextAccessor
+      builder.Services.AddHttpClient();
       builder.Services.AddHttpContextAccessor();
 
       // Register TelemetryService
@@ -50,5 +49,7 @@ public static class RegisterServices
       builder.Services.AddSingleton<VagonsAPIData>();       // 
       builder.Services.AddSingleton<VagonsService>();       // 
       builder.Services.AddSingleton<MachineInfoService>(); // Register the service
+                                                           // Configure the TCP client service with target IP and port
+      builder.Services.AddSingleton<TcpClientService>();
    }
 }
