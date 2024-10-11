@@ -4,6 +4,8 @@
 @inject AuthenticationStateProvider authProvider
 @inject NavigationManager navManager
 @inject MachineInfoService MachineInfoService
+@inject GetPcDomainNameService getPcNameService 
+@inject BosVesAppSettings bvAppSet
 
 <h1 class="page-heading text-uppercase mb-4">Web Bos Wes</h1>
 
@@ -375,11 +377,47 @@
 
 <footer>
     <p>&copy; @DateTime.Now.Year - @VersionHelper.GetAssemblyVersion()</p>
-    <p>&copy; @DateTime.Now.Year - @VersionHelper.GetAssemblyVersion()</p>
+    <p>&copy; @pcName</p>
 </footer>
 
 
 @code {
+    #region состояние главного меню - развёрнуто или нет
+    private bool showRailweight = false;
+    private bool showAvtoWeight = false;
+    private bool showAgglomerate = false;
+    private bool showCastIron = false;
+    private bool showScrapRental = false;
+    private bool showDrossl = false;
+    private bool showRailWeightByTime = false;
+    #endregion
+    #region состояние меню весовщиков - развёрнуто или нет
+    private bool showAvto = false;
+    private bool showChugun = false;
+    private bool showPrihod = false;
+    private bool showRashod = false;
+    private bool showVesySix = false;
+    private bool showKorrectirovka = false;
+    #endregion
+    private string pcName;
+
+    protected override async Task OnInitializedAsync()
+    {
+        Logger.LogInformation("Index component initialized.");
+        // здесь я должен проверить доступен ли домен метинвест ldap -> not -> modal window and app shutdown
+        
+        // здесь я должен получить имя пк -> not -> modal window and app shutdown
+        await getPcNameService.StartAsync();
+        pcName = bvAppSet.pcName;
+        StateHasChanged();
+
+        // здесь я должен проверить есть ли пк в группе весовых not -> обычный пользователь
+        // 
+        // здесь я должен получить есть ли пользователь в группе
+        
+
+    }
+
     //-------------------------------------------------------------------------------------------------
     private async Task SendDomainName()
     {
@@ -403,7 +441,6 @@
     }
     //-------------------------------------------------------------------------------------------------
 
-
     public class VersionHelper
     {
         public static string GetAssemblyVersion()
@@ -412,29 +449,6 @@
             return string.Format(CultureInfo.InvariantCulture, @"YourApp Version {0}.{1}.{2} (r{3})", v.Major, v.Minor, v.Build, v.Revision);
         }
     }
-    #region состояние главного меню - развёрнуто или нет
-    private bool showRailweight = false;
-    private bool showAvtoWeight = false;
-    private bool showAgglomerate = false;
-    private bool showCastIron = false;
-    private bool showScrapRental = false;
-    private bool showDrossl = false;
-    private bool showRailWeightByTime = false;
-    #endregion
-
-    #region состояние меню весовщиков - развёрнуто или нет
-    private bool showAvto = false;
-    private bool showChugun = false;
-    private bool showPrihod = false;
-    private bool showRashod = false;
-    private bool showVesySix = false;
-    private bool showKorrectirovka = false;
-    #endregion
-
-    protected override async Task OnInitializedAsync()
-    {
-        Logger.LogInformation("Index component initialized.");
-    }
 
     #region
     private void OnWeightScopeClick(string brunch)
@@ -442,7 +456,6 @@
         navManager.NavigateTo(brunch, true); 
     }
     #endregion
-
 }
 
 

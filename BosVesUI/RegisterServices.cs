@@ -20,6 +20,8 @@ public static class RegisterServices
       builder.Services.AddControllers();
 
       //-------------------------работаю с логами--------------------------------
+      builder.Logging.ClearProviders();
+      builder.Logging.AddConsole();
       builder.Logging.AddApplicationInsights();
       builder.Services.AddApplicationInsightsTelemetry();
 
@@ -37,6 +39,7 @@ public static class RegisterServices
       // Register Configuration
       builder.Services.Configure<ActiveDirectoryHelper>(builder.Configuration.GetSection("ActiveDirectory"));
       builder.Services.Configure<BosVesAppSettings>(builder.Configuration.GetSection("BosVesAppSettings")); // заполняю конфигурационными настройками классс, который планирую использовать во всём приложении
+      builder.Services.AddSingleton<BosVesAppSettings>();            // 
       builder.Services.AddSingleton<GpriData>();            // 
       builder.Services.AddSingleton<GrasData>();            // 
       builder.Services.AddSingleton<GruzGdData>();          // 
@@ -48,8 +51,17 @@ public static class RegisterServices
       builder.Services.AddSingleton<BruttoAsTaraData>();    // 
       builder.Services.AddSingleton<VagonsAPIData>();       // 
       builder.Services.AddSingleton<VagonsService>();       // 
-      builder.Services.AddSingleton<MachineInfoService>(); // Register the service
-                                                           // Configure the TCP client service with target IP and port
+      builder.Services.AddSingleton<MachineInfoService>();  // Register the service
+
+      // Register TcpClientService as Singleton
       builder.Services.AddSingleton<TcpClientService>();
+
+      // Register GetPcDomainNameService as Transient Service.
+      builder.Services.AddTransient<GetPcDomainNameService>();
+
+
+
+
+
    }
 }

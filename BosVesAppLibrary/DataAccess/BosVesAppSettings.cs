@@ -7,7 +7,7 @@ public class BosVesAppSettings
    public string FbDbConnectionString { get; set; }
    public string MyProperty { get; set; }
 
-   //public string MyProperty { get; set; }
+   public string pcName { get; set; }
    //public string MyProperty { get; set; }
    //public string MyProperty { get; set; }
 }
