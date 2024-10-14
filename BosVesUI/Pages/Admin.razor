@@ -1,7 +1,7 @@
 ﻿@page "/Admin"
 @inject NavigationManager navManager
-@inject TcpClientService TcpClientService
 @inject ILogger<Admin> Logger
+@inject UserService UserService
 
 <h3>Admin</h3>
 
@@ -56,29 +56,35 @@
     private bool IsConnected { get; set; } = false;
     private CancellationTokenSource _cancellationTokenSource;
 
+    protected override async Task OnInitializedAsync()
+    {
+        ReceivedData = await UserService.GetPcNameAsync();
+        base.OnInitialized();
+    }
+
     /// <summary>
     /// Connects to the server using the provided IP and port.
     /// </summary>
     private async Task ConnectToServer()
     {
-        try
-        {
-            bool connected = await TcpClientService.ConnectAsync(IpAddress, Port, TimeSpan.FromSeconds(10), TimeSpan.FromSeconds(10));
-            if (connected)
-            {
-                IsConnected = true;
-                ReceivedData += $"Connected to {IpAddress}:{Port}\n";
-                Logger.LogInformation($"Connected to {IpAddress}:{Port}");
+        // try
+        // {
+        //     bool connected = await TcpClientService.ConnectAsync(IpAddress, Port, TimeSpan.FromSeconds(10), TimeSpan.FromSeconds(10));
+        //     if (connected)
+        //     {
+        //         IsConnected = true;
+        //         ReceivedData += $"Connected to {IpAddress}:{Port}\n";
+        //         Logger.LogInformation($"Connected to {IpAddress}:{Port}");
 
-                _cancellationTokenSource = new CancellationTokenSource();
-                _ = TcpClientService.ReceiveDataAsync(OnDataReceived, _cancellationTokenSource.Token);
-            }
-        }
-        catch (Exception ex)
-        {
-            ReceivedData += $"Connection failed: {ex.Message}\n";
-            Logger.LogError($"Connection failed: {ex.Message}");
-        }
+        //         _cancellationTokenSource = new CancellationTokenSource();
+        //         _ = TcpClientService.ReceiveDataAsync(OnDataReceived, _cancellationTokenSource.Token);
+        //     }
+        // }
+        // catch (Exception ex)
+        // {
+        //     ReceivedData += $"Connection failed: {ex.Message}\n";
+        //     Logger.LogError($"Connection failed: {ex.Message}");
+        // }
     }
 
     /// <summary>
@@ -86,19 +92,19 @@
     /// </summary>
     private void DisconnectFromServer()
     {
-        try
-        {
-            _cancellationTokenSource?.Cancel();
-            TcpClientService.Dispose();
-            IsConnected = false;
-            ReceivedData += "Disconnected from server.\n";
-            Logger.LogInformation("Disconnected from server.");
-        }
-        catch (Exception ex)
-        {
-            ReceivedData += $"Error disconnecting: {ex.Message}\n";
-            Logger.LogError($"Error disconnecting: {ex.Message}");
-        }
+        // try
+        // {
+        //     _cancellationTokenSource?.Cancel();
+        //     TcpClientService.Dispose();
+        //     IsConnected = false;
+        //     ReceivedData += "Disconnected from server.\n";
+        //     Logger.LogInformation("Disconnected from server.");
+        // }
+        // catch (Exception ex)
+        // {
+        //     ReceivedData += $"Error disconnecting: {ex.Message}\n";
+        //     Logger.LogError($"Error disconnecting: {ex.Message}");
+        // }
     }
 
     /// <summary>
@@ -106,18 +112,18 @@
     /// </summary>
     private async Task SendCommand()
     {
-        try
-        {
-            await TcpClientService.SendCommandAsync(Command);
-            ReceivedData += $"Sent: {Command}\n";
-            Logger.LogInformation($"Sent: {Command}");
-            Command = string.Empty;
-        }
-        catch (Exception ex)
-        {
-            ReceivedData += $"Error sending command: {ex.Message}\n";
-            Logger.LogError($"Error sending command: {ex.Message}");
-        }
+        // try
+        // {
+        //     await TcpClientService.SendCommandAsync(Command);
+        //     ReceivedData += $"Sent: {Command}\n";
+        //     Logger.LogInformation($"Sent: {Command}");
+        //     Command = string.Empty;
+        // }
+        // catch (Exception ex)
+        // {
+        //     ReceivedData += $"Error sending command: {ex.Message}\n";
+        //     Logger.LogError($"Error sending command: {ex.Message}");
+        // }
     }
 
     /// <summary>

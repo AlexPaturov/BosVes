@@ -3,8 +3,6 @@
 @inject ILogger<Index> Logger
 @inject AuthenticationStateProvider authProvider
 @inject NavigationManager navManager
-@inject MachineInfoService MachineInfoService
-@inject GetPcDomainNameService getPcNameService 
 @inject BosVesAppSettings bvAppSet
 
 <h1 class="page-heading text-uppercase mb-4">Web Bos Wes</h1>
@@ -407,37 +405,15 @@
         // здесь я должен проверить доступен ли домен метинвест ldap -> not -> modal window and app shutdown
         
         // здесь я должен получить имя пк -> not -> modal window and app shutdown
-        await getPcNameService.StartAsync();
-        pcName = bvAppSet.pcName;
-        StateHasChanged();
-
-        // здесь я должен проверить есть ли пк в группе весовых not -> обычный пользователь
-        // 
-        // здесь я должен получить есть ли пользователь в группе
         
-
+        
+        StateHasChanged();
     }
 
     //-------------------------------------------------------------------------------------------------
     private async Task SendDomainName()
     {
-        string domainName = MachineInfoService.GetPCDomainName();
-
-        // Send the domain name in a request
-        using var httpClient = new HttpClient();
-        var request = new HttpRequestMessage(HttpMethod.Post, "https://localhost:7221/api/senddomain");
-        request.Content = new StringContent($"{{\"domainName\": \"{domainName}\"}}", System.Text.Encoding.UTF8, "application/json");
-
-        var response = await httpClient.SendAsync(request);
-
-        if (response.IsSuccessStatusCode)
-        {
-            Console.WriteLine("Domain name sent successfully");
-        }
-        else
-        {
-            Console.WriteLine("Failed to send domain name");
-        }
+        
     }
     //-------------------------------------------------------------------------------------------------
 
