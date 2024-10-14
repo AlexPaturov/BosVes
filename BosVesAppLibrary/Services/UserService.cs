@@ -15,8 +15,8 @@
       
                 UserName = string.Empty,
                 DisplayName = string.Empty,
-                PCName  = string.Empty,
-                ID = string.Empty,
+                PcName  = string.Empty,
+                Id = string.Empty,
                 IsGdWeighter = false,
                 Vesy = "0",
                 IsPcGdWeight = false,
@@ -26,7 +26,7 @@
                 IsUserShiftForeman = false,
                 IsUserAVG = false,
                 IsUserCanSeeAvtoWeighting = false,
-                IsPCAvtoWeighterGroup = false,
+                IsPcAvtoWeighterGroup = false,
                 WasCheckedUserRight = false,
                 IsError = false,
                 ErrorText = string.Empty,
@@ -96,7 +96,7 @@
             await _semaphore.WaitAsync();
             try
             {
-                return _user.ID;
+                return _user.Id;
             }
             finally
             {
@@ -110,7 +110,7 @@
             await _semaphore.WaitAsync();
             try
             {
-                _user.ID = usrId;
+                _user.Id = usrId;
             }
             finally
             {
@@ -376,7 +376,7 @@
             await _semaphore.WaitAsync();
             try
             {
-                _user.IsPCAvtoWeighterGroup = isPCAvtoWeighterGroup;
+                _user.IsPcAvtoWeighterGroup = isPCAvtoWeighterGroup;
             }
             finally
             {
@@ -390,7 +390,7 @@
             await _semaphore.WaitAsync();
             try
             {
-                return _user.IsPCAvtoWeighterGroup;
+                return _user.IsPcAvtoWeighterGroup;
             }
             finally
             {
@@ -531,7 +531,7 @@
             try
             {
 
-                return _user.PCName;
+                return _user.PcName;
             }
             finally
             {

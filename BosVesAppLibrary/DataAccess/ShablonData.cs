@@ -53,7 +53,7 @@ public class ShablonData
                            ",TN " +
                            ",NPP " +
                            ",DATPAM " +
-                           ",ID " +
+                           ",Id " +
                        "from " + GetShablonTableName(vikno) + " " +
                        "where NVAG = @NVAG";
          var parameters = new { NVAG = nvag };
@@ -86,7 +86,7 @@ public class ShablonData
                           ",TN " +
                           ",NPP " +
                           ",DATPAM " +
-                          ",ID " +
+                          ",Id " +
                       "from " + GetShablonTableName(vikno);
          return await connection.QueryAsync<ShablonModel>(query);
       }

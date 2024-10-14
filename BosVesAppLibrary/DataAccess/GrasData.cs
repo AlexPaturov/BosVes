@@ -175,7 +175,7 @@ public class GrasData
                               "REJVZVESH, " +         //
                               "PLATFORMS_TARA, " +    //
                               "PLATFORMS_BRUTTO, " +  //
-                              "ID, " +                //
+                              "Id, " +                //
                               "ID_PLATFORMS " +       //
                      "FROM gras " +                   //
                      "where DT = @DT " +              //
@@ -225,7 +225,7 @@ public class GrasData
                               "REJVZVESH, " +
                               "PLATFORMS_TARA, " +
                               "PLATFORMS_BRUTTO, " +
-                              "ID, " +
+                              "Id, " +
                               "ID_PLATFORMS " +
                       "FROM gras " +
                       "where DT = @DT " +

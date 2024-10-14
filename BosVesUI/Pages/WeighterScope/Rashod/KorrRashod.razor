@@ -441,7 +441,7 @@
     private List<GrasModel> listVags = null;
     private GrasModel vagon = new GrasModel();
 
-    private int? selectedRowId;                                             // Временно для отображения ID выбранной ячейки.
+    private int? selectedRowId;                                             // Временно для отображения Id выбранной ячейки.
     private bool isSaving = false;
     private string selRowID = string.Empty;
     #endregion
@@ -487,7 +487,7 @@
     {
         CleanModels();                                                                      // Чистим поля при переходе
         selectedRowId = id;
-        selRowID = selectedRowId.ToString();                                                // Для отладки - отображаю ID записи по которой кликнул.
+        selRowID = selectedRowId.ToString();                                                // Для отладки - отображаю Id записи по которой кликнул.
         vagon = (GrasModel)(listVags.Where(i => i.ID == id).FirstOrDefault()).Clone();      // Взять все данные из клика по гриду -> переместить в объект.
     }
 

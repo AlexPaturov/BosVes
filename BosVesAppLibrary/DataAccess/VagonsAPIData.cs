@@ -29,7 +29,7 @@ public class VagonsAPIData
          var query = "UPDATE VAGONSAPI SET "+
                      "LASTUPDATEDBY = @LASTUPDATEDBY, " +
                      "LASTUPDATEDATE = @LASTUPDATEDATE " +
-                     "where id = @ID";
+                     "where id = @Id";
          return await connection.ExecuteAsync(query, vagon);
       }
    }

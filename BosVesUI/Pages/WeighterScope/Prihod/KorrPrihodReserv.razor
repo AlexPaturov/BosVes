@@ -755,7 +755,7 @@
     private string inNvag = string.Empty;
     private List<GpriModel> listVags = null;
     private GpriModel vagon = new GpriModel();
-    private int? selectedRowId;                                             // Временно для отображения ID выбранной ячейки.
+    private int? selectedRowId;                                             // Временно для отображения Id выбранной ячейки.
     private bool isSaving = false;
     private string selRowID = string.Empty;
     private Dictionary<int, bool> selectedItems = new Dictionary<int, bool>();
@@ -930,7 +930,7 @@
     {
         CleanModels();                                                                      // Чистим поля при переходе
         selectedRowId = id;
-        selRowID = selectedRowId.ToString();                                                // Для отладки - отображаю ID записи по которой кликнул.
+        selRowID = selectedRowId.ToString();                                                // Для отладки - отображаю Id записи по которой кликнул.
         vagon = (GpriModel)(listVags.Where(i => i.ID == id).FirstOrDefault()).Clone();      // Взять все данные из клика по гриду -> переместить в объект.
     }
 

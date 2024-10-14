@@ -53,7 +53,7 @@ namespace BosVesAppLibrary.Models
       [Range(0, 100, ErrorMessage = "Диапазон ввода от 1 до 100")]
       public Int16? NPP { get; set; }                  // номер по порядку в составе
 
-      [Range(0, int.MaxValue, ErrorMessage = "Ошибка ID")]
+      [Range(0, int.MaxValue, ErrorMessage = "Ошибка Id")]
       public int? ID { get; }                          // уникальный идентификатор записи
 
       [StringLength(15, ErrorMessage = "Максимальная длина 15 символов")]

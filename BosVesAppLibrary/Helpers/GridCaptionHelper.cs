@@ -69,7 +69,7 @@ public static class GridCaptionHelper
       {"N_TEPLOVOZ", "Ном. теплов."},
       {"POGRESHNOST", "Погрешность"},
       {"REJVZVESH", "Реж. взвеш."},
-      {"ID", "id"},                          // после отладки - скрыть
+      {"Id", "id"},                          // после отладки - скрыть
       {"ID_PLATFORMS", "Платф. подст."}
    };
 
@@ -90,7 +90,7 @@ public static class GridCaptionHelper
       {"VESY", "Весы"},          //
       {"TN", "Таб. ном."},       //
       {"NPP", "НПП"},            //
-      {"ID", "id"},              //
+      {"Id", "id"},              //
       {"NAIM", "Имя цеха"}       // Поменять? Одинаковые с CEX
    };
 
@@ -105,7 +105,7 @@ public static class GridCaptionHelper
       {"NETTO", "Нетто"},        //
       {"GRUZ", "Груз"},          //
       {"VESY", "Весы"},          //
-      {"ID", "id"},              //
+      {"Id", "id"},              //
    };
 
    // Для формы подстановки брутто как тары.

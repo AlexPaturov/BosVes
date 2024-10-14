@@ -33,7 +33,7 @@ namespace BosVesAppLibrary.Models
       [Range(0, 99, ErrorMessage = "Диапазон ввода от 1 до 99")]
       public Int16 VESY { get; set; }                 // номер весов
 
-      [Range(0, int.MaxValue, ErrorMessage = "Ошибка ID")]
+      [Range(0, int.MaxValue, ErrorMessage = "Ошибка Id")]
       public int ID { get; }                          // уникальный идентификатор записи
 
       public object Clone()

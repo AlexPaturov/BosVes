@@ -112,10 +112,10 @@ namespace BosVesAppLibrary.Models
       [StringLength(8, ErrorMessage = "Максимальная длина 8 символов")]
       public string PLATFORMS_BRUTTO { get; set; }    // комбинация включённых платформ при взвешивании
 
-      [Range(0, int.MaxValue, ErrorMessage = "Ошибка ID")]
+      [Range(0, int.MaxValue, ErrorMessage = "Ошибка Id")]
       public int? ID { get; }                          // уникальный идентификатор записи
 
-      [Range(0, int.MaxValue, ErrorMessage = "Ошибка подстановки ID ")]
+      [Range(0, int.MaxValue, ErrorMessage = "Ошибка подстановки Id ")]
       public int? ID_PLATFORMS { get; set; }           // id записи, которая была взята для подставления тары
 
       public object Clone()

@@ -96,7 +96,7 @@ public class GpriData
                              ",@PLATFORMS_BRUTTO " +
                              ",@ID_PLATFORMS " +
                              ",@SHABLON" +
-                             ") RETURNING ID";
+                             ") RETURNING Id";
          
          
            return await connection.ExecuteScalarAsync<int>(query, vagon);
@@ -139,7 +139,7 @@ public class GpriData
                                     ",PLATFORMS_BRUTTO = @PLATFORMS_BRUTTO " +
                                     ",ID_PLATFORMS = @ID_PLATFORMS " +
                                     ",SHABLON = @SHABLON " + // сделать триггер на базе
-                     "where id = @ID";   
+                     "where id = @Id";   
          await connection.ExecuteAsync(query, vagon);
       }
    }
@@ -149,7 +149,7 @@ public class GpriData
    {
       using (var connection = CreateConnection())
       {
-         var query = "DELETE FROM gpri where id = @ID";
+         var query = "DELETE FROM gpri where id = @Id";
          return await connection.ExecuteAsync(query, new { ID = id });
       }
    }
@@ -188,7 +188,7 @@ public class GpriData
                            ",N_TEPLOVOZ " +        //
                            ",POGRESHNOST " +       //
                            ",REJVZVESH " +         //
-                           ",ID " +                //
+                           ",Id " +                //
                            ",PLATFORMS_TARA " +    //
                            ",PLATFORMS_BRUTTO " +  //
                            ",ID_PLATFORMS " +      //
@@ -237,7 +237,7 @@ public class GpriData
                               ",N_TEPLOVOZ " +
                               ",POGRESHNOST " +
                               ",REJVZVESH " +
-                              ",ID " +
+                              ",Id " +
                               ",PLATFORMS_TARA " +
                               ",PLATFORMS_BRUTTO " +
                               ",ID_PLATFORMS " +

@@ -40,7 +40,7 @@ public class BruttoAsTaraData
                               ", DV.VESY AS VESY" +                  //
                               ", DV.TN AS TN" +                      //
                               ", DV.NPP AS NPP" +                    //
-                              ", DV.ID AS ID" +                      //
+                              ", DV.Id AS Id" +                      //
                               ", KC.NAIM AS NAIM " +                 //
                       "FROM GPRI DV " +                              //
                       "LEFT JOIN KCEX_GD KC on DV.CEX = KC.CEX " +   //
