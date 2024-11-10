@@ -1,6 +1,7 @@
 ﻿@page "/Pages/WeighterScope/Prihod/KorrPrihod"
 @using BosVesUI.Shared.Components
 @using NetcodeHub.Packages.Components.Modal
+@using System.Globalization
 @inject IJSRuntime JS;
 @inject GpriData gpridata;
 @inject ILogger<KorrPrihod> logger;
@@ -41,7 +42,15 @@
                         <span class="input-group-text input-corners-right">Дата взвешивания</span>
                     </div>
                     <div class="col-auto">
-                        <InputDate Type="InputDateType.Date" @bind-Value="@inDt" id="idDT" class="form-control input-corners-left" />
+                       @*  <InputDate Type="InputDateType.Date" 
+                                   @bind-Value="@inDt" 
+                                   @bind-Value:format="dd.MM.yyyy"
+                                   id="idDT" 
+                                   class="form-control input-corners-left" /> *@
+
+                        <input id="idDT" class="form-control input-corners-left"
+                               @bind="FormattedDate"
+                               @bind:event="oninput" />
                     </div>
                 </div>
             </div>
@@ -800,23 +809,32 @@
 @* "container *@
 
 @code {
+ 
+    // Property for formatted date string
+    private string FormattedDate
+    {
+        get => inDt.ToString("dd.MM.yyyy"); // Get formatted string
+        set
+        {
+            if (DateTime.TryParseExact(value, "dd.MM.yyyy",
+                                       CultureInfo.InvariantCulture,
+                                       DateTimeStyles.None, out var parsedDate))
+            {
+                inDt = parsedDate; // Only set _date if parsing succeeds
+            }
+            else
+            {
+                // Handle invalid date input if necessary (e.g., show an error message)
+            }
+        }
+    }
+
     private bool isLoading = false;       // To control loading state
     private string resultMessage = null;  // To store the result message
-
-    // Method triggered by button click
-    // private async Task HandleButtonClick()
-    // {
-    //     isLoading = true;   // Show the loading indicator
-    //     resultMessage = null;
-
-    //     // Simulate a long-running database query (replace this with actual database call)
-    //     resultMessage = await _databaseService.GetDataFromDatabase();
-
-    //     isLoading = false;  // Hide the loading indicator
-    // }
-
     #region Переменные формы
-    private DateTime inDt = DateTime.ParseExact("2024-07-05", "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture);
+    // private DateTime inDt = DateTime.ParseExact("2024-07-05", "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture);
+    // private DateTime inDt = DateTime.Parse("05.07.2024");
+    private DateTime inDt = DateTime.ParseExact("05.07.2024", "dd.MM.yyyy", CultureInfo.InvariantCulture);
     private DateTime inVr = DateTime.ParseExact("10:13:33", "HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
     private string inNvag = string.Empty;
     private List<GpriModel> listVags = null;
@@ -1137,7 +1155,4 @@
         navManager.NavigateTo("/");
     }
     #endregion
-
-
-
 }
