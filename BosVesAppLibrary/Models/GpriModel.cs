@@ -9,6 +9,7 @@ namespace BosVesAppLibrary.Models
    {
 
       [DataType(DataType.Date)]
+      [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd.MM.yyyy}")]
       public DateTime DT { get; set; } = DateTime.Now;    // дата взвешивания состава
 
       public TimeSpan VR { get; set; } = new TimeSpan(DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second);
