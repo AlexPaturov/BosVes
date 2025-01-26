@@ -75,12 +75,6 @@ public class InsertQueueService
    {
       var existing = await _dbOneGpri.СheckExisting(vagon);
 
-      //if (existing.HasValue)
-      //{
-      //   Console.WriteLine($"[LOG] Запись {GenerateUniqueKey(vagon)} уже существует в БД (ID={existing.Value})");
-      //   return existing.Value;
-      //}
-
       if (existing.HasValue)
          return existing.Value;
 
