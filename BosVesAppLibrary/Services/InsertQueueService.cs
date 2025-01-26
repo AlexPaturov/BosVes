@@ -1,10 +1,12 @@
-﻿using System.Collections.Concurrent;
+﻿using Dapper;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
 
 namespace BosVesAppLibrary.Services;
 public class InsertQueueService
 {
-   private readonly ConcurrentQueue<GpriModel> _queue = new();
-   private readonly ConcurrentDictionary<string, TaskCompletionSource<bool>> _activeTasks = new();
+   private readonly ConcurrentQueue<(GpriModel, TaskCompletionSource<int>)> _queue = new();
+   private readonly ConcurrentDictionary<string, TaskCompletionSource<int>> _activeTasks = new();
    private readonly SemaphoreSlim _semaphore = new(1, 1); // Ограничиваем выполнение одним потоком
    private readonly GpriData _dbOneGpri;
 
@@ -21,24 +23,20 @@ public class InsertQueueService
    public async Task<int> EnqueueInsertAsync(GpriModel vagon)
    {
       string key = GenerateUniqueKey(vagon);
-
-      // Проверяем, есть ли уже активная задача для этого ключа
-      var taskCompletionSource = new TaskCompletionSource<bool>();
+      var taskCompletionSource = new TaskCompletionSource<int>();
 
       if (_activeTasks.TryAdd(key, taskCompletionSource))
       {
-         _queue.Enqueue(vagon);
+         _queue.Enqueue((vagon, taskCompletionSource));
          _ = ProcessQueueAsync(); // Запускаем обработку очереди в фоне
       }
       else
       {
          Console.WriteLine($"[LOG] Ожидание завершения вставки для {key}");
-         await _activeTasks[key].Task; // Ожидаем завершения предыдущей вставки
+         return await _activeTasks[key].Task; // Ожидаем завершения предыдущей вставки
       }
 
-      // После завершения ждем подтверждения результата
-
-      return await CheckAndInsertAsync(vagon);
+      return await taskCompletionSource.Task; // Ждем результат из ProcessQueueAsync()
    }
 
    private async Task ProcessQueueAsync()
@@ -46,21 +44,24 @@ public class InsertQueueService
       await _semaphore.WaitAsync();
       try
       {
-         while (_queue.TryDequeue(out var vagon))
+         while (_queue.TryDequeue(out var item))
          {
+            var (vagon, taskCompletionSource) = item;
             string key = GenerateUniqueKey(vagon);
 
             try
             {
-               await CheckAndInsertAsync(vagon);
+               int insertedId = await CheckAndInsertAsync(vagon);
+               taskCompletionSource.SetResult(insertedId);
+            }
+            catch (Exception ex)
+            {
+               Console.WriteLine($"Ошибка при вставке {key}: {ex.Message}");
+               taskCompletionSource.SetException(ex);
             }
             finally
             {
-               // Сигнализируем, что запись обработана
-               if (_activeTasks.TryRemove(key, out var tcs))
-               {
-                  tcs.SetResult(true);
-               }
+               _activeTasks.TryRemove(key, out _);
             }
          }
       }
@@ -73,16 +74,15 @@ public class InsertQueueService
    // изменённый метод вставки в базу
    private async Task<int> CheckAndInsertAsync(GpriModel vagon)
    {
-      var existing = await _dbOneGpri.СheckExisting(vagon);
-
-      //if (existing.HasValue)
-      //{
-      //   Console.WriteLine($"[LOG] Запись {GenerateUniqueKey(vagon)} уже существует в БД (ID={existing.Value})");
-      //   return existing.Value;
-      //}
+      using var connection = _dbOneGpri.CreateConnection();
+      var existing = await connection.ExecuteScalarAsync<int?>(
+          "SELECT ID FROM gpri WHERE DT = @DT AND VR = @VR AND NVAG = @NVAG AND VESY = @VESY", vagon);
 
       if (existing.HasValue)
+      {
+         Console.WriteLine($"[LOG] Запись {GenerateUniqueKey(vagon)} уже существует в БД (ID={existing.Value})");
          return existing.Value;
+      }
 
       // Если записи нет — выполняем вставку
       return await _dbOneGpri.InsNew(vagon);
