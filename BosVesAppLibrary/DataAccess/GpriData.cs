@@ -21,7 +21,7 @@ public class GpriData
       return $"{vagon.DT.Date}_{vagon.VR}_{vagon.NVAG}_{vagon.VESY}"; // Уникальный ключ
    }
 
-   private IDbConnection CreateConnection()
+   public IDbConnection CreateConnection()
    {
       _logger.LogDebug("CreateConnection()");
       return new FbConnection(_connectionString);
