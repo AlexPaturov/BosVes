@@ -1,7 +1,9 @@
 ﻿@page "/Admin"
+@using Blazor.IndexedDB
 @inject NavigationManager navManager
 @inject ILogger<Admin> Logger
 @inject UserService UserService
+@inject IIndexedDbFactory DbFactory
 
 <h3>Admin</h3>
 
@@ -24,8 +26,11 @@
                 <input type="number" class="form-control" id="portInput" @bind="Port" placeholder="Enter Port" />
             </div>
 
-            <button class="btn btn-primary me-2" @onclick="ConnectToServer" disabled="@IsConnected">Connect</button>
-            <button class="btn btn-danger" @onclick="DisconnectFromServer" disabled="@( !IsConnected )">Disconnect</button>
+            <button type="button" class="btn btn-success btn-sm" @onclick="AddingRecordIndexDB" >AddingRecordIndexDB</button>
+            <button type="button" class="btn btn-danger btn-sm" @onclick="RemoveRecord">RemoveRecord</button>
+            <button type="button" class="btn btn-info btn-sm" @onclick="ModifyRecord">ModifyRecord</button>
+            <button type="button" class="btn btn-dark btn-sm" @onclick="GetAllRecords">GetAllRecords</button>
+            <button type="button" class="btn btn-dark btn-sm" @onclick="AddPDF">AddPDF</button>
 
             <hr />
 
@@ -34,13 +39,12 @@
                 <input type="text" class="form-control" id="commandInput" @bind="Command" placeholder="Enter Command" />
             </div>
 
-            <button class="btn btn-success me-2" @onclick="SendCommand" disabled="@(!IsConnected || string.IsNullOrWhiteSpace(Command))">Send Command</button>
             <button class="btn btn-secondary" @onclick="ClearLog">Clear Log</button>
 
             <hr />
 
-            <h4>Received Data:</h4>
-            <textarea class="form-control" rows="10" readonly>@ReceivedData</textarea>
+            <div>IndexDB data:</div>
+            <textarea class="form-control" rows="12" readonly>@databaseData</textarea>
 
         </div>
         @*----------------------------------------*@
@@ -52,99 +56,93 @@
     private string IpAddress { get; set; } = "127.0.0.1";
     private int Port { get; set; } = 8887;
     private string Command { get; set; } = string.Empty;
-    private string ReceivedData { get; set; } = string.Empty;
+    private string databaseData { get; set; } = string.Empty;
     private bool IsConnected { get; set; } = false;
     private CancellationTokenSource _cancellationTokenSource;
 
     protected override async Task OnInitializedAsync()
     {
-        ReceivedData = await UserService.GetPcNameAsync();
+        databaseData = await UserService.GetPcNameAsync();
         base.OnInitialized();
     }
 
-    /// <summary>
-    /// Connects to the server using the provided IP and port.
-    /// </summary>
-    private async Task ConnectToServer()
+    private void AddPDF()
     {
-        // try
-        // {
-        //     bool connected = await TcpClientService.ConnectAsync(IpAddress, Port, TimeSpan.FromSeconds(10), TimeSpan.FromSeconds(10));
-        //     if (connected)
-        //     {
-        //         IsConnected = true;
-        //         ReceivedData += $"Connected to {IpAddress}:{Port}\n";
-        //         Logger.LogInformation($"Connected to {IpAddress}:{Port}");
-
-        //         _cancellationTokenSource = new CancellationTokenSource();
-        //         _ = TcpClientService.ReceiveDataAsync(OnDataReceived, _cancellationTokenSource.Token);
-        //     }
-        // }
-        // catch (Exception ex)
-        // {
-        //     ReceivedData += $"Connection failed: {ex.Message}\n";
-        //     Logger.LogError($"Connection failed: {ex.Message}");
-        // }
-    }
-
-    /// <summary>
-    /// Disconnects from the server.
-    /// </summary>
-    private void DisconnectFromServer()
-    {
-        // try
-        // {
-        //     _cancellationTokenSource?.Cancel();
-        //     TcpClientService.Dispose();
-        //     IsConnected = false;
-        //     ReceivedData += "Disconnected from server.\n";
-        //     Logger.LogInformation("Disconnected from server.");
-        // }
-        // catch (Exception ex)
-        // {
-        //     ReceivedData += $"Error disconnecting: {ex.Message}\n";
-        //     Logger.LogError($"Error disconnecting: {ex.Message}");
-        // }
-    }
-
-    /// <summary>
-    /// Sends a command to the connected server.
-    /// </summary>
-    private async Task SendCommand()
-    {
-        // try
-        // {
-        //     await TcpClientService.SendCommandAsync(Command);
-        //     ReceivedData += $"Sent: {Command}\n";
-        //     Logger.LogInformation($"Sent: {Command}");
-        //     Command = string.Empty;
-        // }
-        // catch (Exception ex)
-        // {
-        //     ReceivedData += $"Error sending command: {ex.Message}\n";
-        //     Logger.LogError($"Error sending command: {ex.Message}");
-        // }
-    }
-
-    /// <summary>
-    /// Handles received data from the server.
-    /// </summary>
-    private async Task OnDataReceived(string data)
-    {
-        // Update the ReceivedData string and refresh the UI
-        await InvokeAsync(() =>
+        string path = "C:\\temp\\test.pdf";
+        string readContents;
+        using (StreamReader sr = File.OpenText(path))
         {
-            ReceivedData += $"Received: {data}\n";
-            StateHasChanged();
-        });
+            readContents = sr.ReadToEnd();
+        }
+
+
+        // using var stream = file.OpenReadStream();
+        // using var memoryStream = new MemoryStream();
+        // await stream.CopyToAsync(memoryStream);
+
+        // var pdfDocument = new PdfDocument
+        //     {
+        //         FileName = file.Name,
+        //         FileContent = memoryStream.ToArray()
+        //     };
+
+        // await PdfDb.PdfDocuments.AddAsync(pdfDocument);
+        // await PdfDb.SaveChangesAsync();
+    
     }
 
-    /// <summary>
-    /// Clears the received data log.
-    /// </summary>
+    private async Task AddingRecordIndexDB()
+    {
+        using (var db = await this.DbFactory.Create<ExampleDb>())
+        {
+            db.People.Add(new Person()
+                {
+                    FirstName = "First",
+                    LastName = "Last"
+                });
+            await db.SaveChanges();
+        }
+    }
+
+    private async Task RemoveRecord()
+    {
+        using (var db = await this.DbFactory.Create<ExampleDb>())
+        {
+            var firstPerson = db.People.First();
+            db.People.Remove(firstPerson);
+            await db.SaveChanges();
+        }
+    }
+
+
+    private async Task ModifyRecord()
+    {
+        using (var db = await this.DbFactory.Create<ExampleDb>())
+        {
+            var personWithId1 = db.People.Single(x => x.Id == 5);
+            personWithId1.FirstName = "This is 100% a first name";
+            await db.SaveChanges();
+        }
+    }
+
+    private async Task GetAllRecords()
+    {
+        using (var db = await this.DbFactory.Create<ExampleDb>())
+        {
+            var personWithId1 = db.People.ToList();
+
+            foreach (var item in personWithId1)
+            {
+                databaseData = $"{databaseData} {item.FirstName} {item.LastName} {item.Id} \n";
+                StateHasChanged();
+            }
+        }
+    }
+
+
     private void ClearLog()
     {
-        ReceivedData = string.Empty;
+        databaseData = string.Empty;
     }
 
     #region ClosePage()

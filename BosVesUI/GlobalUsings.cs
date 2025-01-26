@@ -6,4 +6,4 @@ global using BosVesAppLibrary.Services;
 global using Microsoft.Extensions.DependencyInjection;
 global using System;
 global using System.Reflection;
-global using System.Threading.Tasks;
+global using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;

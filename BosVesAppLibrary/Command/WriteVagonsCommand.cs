@@ -5,22 +5,25 @@ public class WriteVagonsCommand : ICommand
    private readonly GpriModel _vagonsOne;
    private readonly GpriData _dbOneGpri;
    private readonly VagonsAPIData _dbVagonsAPI;
+   private readonly InsertQueueService _insertQueue;
    private int _storedId;
 
-   public WriteVagonsCommand(GpriModel vagonsOne, GpriData dbOneGpri, VagonsAPIData dbVagonsAPI)
+   public WriteVagonsCommand(GpriModel vagonsOne, GpriData dbOneGpri, VagonsAPIData dbVagonsAPI, InsertQueueService insertQueue)
    {
       _vagonsOne = vagonsOne;          // Вагон, который нужно сохранить. 
       _dbOneGpri = dbOneGpri;
       _dbVagonsAPI = dbVagonsAPI;      // вызываю UPDATE в базе ЦВИК
+      _insertQueue = insertQueue;
    }
 
    public async Task<bool> Execute()
    {
       // Try to write to databaseOne
-      _storedId = await _dbOneGpri.InsNew(_vagonsOne);
+      //_storedId = await _dbOneGpri.InsNew(_vagonsOne);
+      _storedId = await _insertQueue.EnqueueInsertAsync(_vagonsOne); // вставляем через очередь, с ожиданием завершения предыдущей задачи
 
       // Эмуляция задержки операции для демонстрации спиннера.
-      await Task.Delay(5000);
+      await Task.Delay(1000);
       if (_storedId == -1)
       {
          return false; // If the writeOne fails, return false

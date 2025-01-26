@@ -1,7 +1,11 @@
 ﻿@page "/Pages/WeighterScope/Prihod/KorrPrihod"
 @using BosVesUI.Shared.Components
+@using FastReport
+@using FastReport.Export.PdfSimple
 @using NetcodeHub.Packages.Components.Modal
 @using System.Globalization
+@using Newtonsoft.Json.Linq
+
 @inject IJSRuntime JS;
 @inject GpriData gpridata;
 @inject ILogger<KorrPrihod> logger;
@@ -9,6 +13,9 @@
 @inject TaraPodstanovkaData taraPodstanovka;
 @inject VagonsService vagonService;
 @inject NavigationManager navManager;
+@inject IWebHostEnvironment WebHostEnvironment;
+@inject IHttpClientFactory HttpClientFactory
+@inject ProtectedLocalStorage Protected
 
 <div class="grid-center">
     <span>
@@ -42,12 +49,6 @@
                         <span class="input-group-text input-corners-right">Дата взвешивания</span>
                     </div>
                     <div class="col-auto">
-                       @*  <InputDate Type="InputDateType.Date" 
-                                   @bind-Value="@inDt" 
-                                   @bind-Value:format="dd.MM.yyyy"
-                                   id="idDT" 
-                                   class="form-control input-corners-left" /> *@
-
                         <input id="idDT" class="form-control input-corners-left"
                                @bind="FormattedDate"
                                @bind:event="oninput" />
@@ -55,7 +56,7 @@
                 </div>
             </div>
 
-            @* 2 тест *@
+            @* 2 inVr *@
             <div class="col-auto mb-2">
                 <div class="input-group">
                     <div class="input-group-prepend">
@@ -67,7 +68,7 @@
                 </div>
             </div>
 
-            @* 3 тест *@
+            @* 3 inNvag *@
             <div class="col-auto mb-2">
                 <div class="input-group">
                     <div class="input-group-prepend">
@@ -172,6 +173,7 @@
                                         <td> @item.VR.ToString(@"hh\:mm\:ss") </td>
                                         <td> @item.NVAG </td>
                                         <td> @item.NDOK </td>
+                                        <td> @item.ID </td>
                                         <td> @item.GRUZ </td>
                                         <td> @item.BRUTTO </td>
                                         <td> @item.TAR_BRS </td>
@@ -197,7 +199,6 @@
                                         <td> @item.N_TEPLOVOZ </td>
                                         <td> @item.POGRESHNOST </td>
                                         <td> @item.REJVZVESH </td>
-                                        <td> @item.ID </td>
                                         <td> @item.PLATFORMS_TARA </td>
                                         <td> @item.PLATFORMS_BRUTTO </td>
                                         <td> @item.ID_PLATFORMS </td>
@@ -266,7 +267,11 @@
                                     <span class="input-group-text">Номер докум.</span>
                                 </div>
                                 <div class="col">
-                                    <InputNumber @bind-Value="@vagon.NDOK" id="NDOK" class="form-control" />
+
+                                    @* <InputNumber @bind-Value="@vagon.NDOK" id="NDOK" class="form-control" /> *@
+
+                                    <input @bind="DecimalValue" class="form-control" />
+
                                     <ValidationMessage For="@(() => vagon.NDOK)" />
                                 </div>
                             </div>
@@ -500,41 +505,8 @@
                             </div>
                         </div>
 
-                        @*--------- var 1 begin ---------------------*@
-@*                         <div id="mainDiv" class="d-flex flex-column" style="min-height: 50px; position: relative;">
-                            @if (isLoading)
-                            {
-                                <div class="button-row d-flex justify-content-center" style="position: absolute; bottom: 10px; width: 100%;">
-                                    <div class="spinner"></div>
-                                    <button class="btn btn-success" @onclick="UpdVag">Сохранить</button>
-                                    <button class="btn btn-danger" @onclick="CleanModels">Очистить</button>
-                                </div>
-                            }
-                            else
-                            {
-                                <div class="button-row d-flex justify-content-center" style="position: absolute; bottom: 10px; width: 100%;">
-                                    <button class="btn btn-dark" @onclick="InsVag" disabled="@isLoading">Вставить</button>
-                                    <button class="btn btn-success" @onclick="UpdVag">Сохранить</button>
-                                    <button class="btn btn-danger" @onclick="CleanModels">Очистить</button>
-                                </div>
-                            }
-                        </div> *@
-                        @*----------- var 1 end -------------------*@
-
-                        @*-------------- var 2 begin ----------------*@
                         <div id="mainDiv" class="d-flex flex-column" style="position: relative; min-height: 50px;">
-                      @*       @if (isLoading)
-                            {
-                                <div id="spYes" class="flex-grow-1 d-flex justify-content-center align-items-center">
-                                    <div class="spinner"></div>
-                                </div>
-                            }
-                            else
-                            {
-                                <div id="spNot" class="flex-grow-1 d-flex justify-content-center align-items-center">
-                                    <button class="btn btn-dark" @onclick="InsVag" disabled="@isLoading">Вставить</button>
-                                </div>
-                            } *@
+
 
                             <div class="d-flex justify-content-between align-items-center" style="position: absolute; bottom: 10px; width: 100%;">
                                 <div>
@@ -556,10 +528,10 @@
                                 <div>
                                     <button id="btnUpd" class="btn btn-success mx-2" @onclick="UpdVag">Сохранить</button>
                                     <button id="btnCls" class="btn btn-danger" @onclick="CleanModels">Очистить</button>
+                                    <button id="btnCls" class="btn btn-danger" @onclick="Print">Печать</button>
                                 </div>
                             </div>
                         </div>
-                        @*----------- var 2 end -------------------*@
 
                     </div>
                     @* четвёртый блок окончание *@
@@ -802,357 +774,43 @@
         </Modal>
         @* Модальное окошко "Взять цех" окончание *@
         
+        @*----------------------------------------------------------------------------*@
+        <div>
+            <button class="btn btn-primary mb-1" @onclick="GenerateAndDownloadReport">Скачать отчет PDF</button>
+        </div>
+        @*----------------------------------------------------------------------------*@
+
+        @*----------------------------------------------------------------------------*@
+        <div>
+            <button class="btn btn-primary mb-1" @onclick="GenerateAndShowReport">Показать отчет PDF</button>
+        </div>
+
+        @if (!string.IsNullOrEmpty(PdfUrl))
+        {
+            <div class="row form-control">
+                <iframe src="@PdfUrl" width="100%" height="600px" frameborder="0"></iframe>
+            </div>
+        }
+        @*----------------------------------------------------------------------------*@
+
+        @*----------------------------------------------------------------------------*@
+        <button class="btn btn-primary mb-1" @onclick="OpenReport">Печать отчета</button>
+        @*----------------------------------------------------------------------------*@
+        <button class="btn btn-primary" @onclick="TestJsFunction">Тест JS</button>
+
+        @*----------------------------------------------------------------------------*@
+        <button @onclick="GenerateAndStorePdf">Сохранить PDF в хранилище</button>
+        <button @onclick="RetrieveAndPrintPdf">Напечатать PDF</button>
+        @*----------------------------------------------------------------------------*@
+        
+        @*----------------------------------------------------------------------------*@
+        <div>
+            <button class="btn btn-sm btn-danger" @onclick="DownloadReportAsync">Report -> EXEL</button>
+        </div>
+        @*----------------------------------------------------------------------------*@
+            
+        
     </div>
 </div>
 
 
-@* "container *@
-
-@code {
- 
-    // Property for formatted date string
-    private string FormattedDate
-    {
-        get => inDt.ToString("dd.MM.yyyy"); // Get formatted string
-        set
-        {
-            if (DateTime.TryParseExact(value, "dd.MM.yyyy",
-                                       CultureInfo.InvariantCulture,
-                                       DateTimeStyles.None, out var parsedDate))
-            {
-                inDt = parsedDate; // Only set _date if parsing succeeds
-            }
-            else
-            {
-                // Handle invalid date input if necessary (e.g., show an error message)
-            }
-        }
-    }
-
-    private bool isLoading = false;       // To control loading state
-    private string resultMessage = null;  // To store the result message
-    #region Переменные формы
-    // private DateTime inDt = DateTime.ParseExact("2024-07-05", "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture);
-    // private DateTime inDt = DateTime.Parse("05.07.2024");
-    private DateTime inDt = DateTime.ParseExact("05.07.2024", "dd.MM.yyyy", CultureInfo.InvariantCulture);
-    private DateTime inVr = DateTime.ParseExact("10:13:33", "HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
-    private string inNvag = string.Empty;
-    private List<GpriModel> listVags = null;
-    private GpriModel vagon = new GpriModel();
-    private int? selectedRowId;                                             // Временно для отображения Id выбранной ячейки.
-    private bool isSaving = false;
-    private string selRowID = string.Empty;
-    private Dictionary<int, bool> selectedItems = new Dictionary<int, bool>();
-    private bool isChecked = false; // for checkbox - temp
-    // NLog.Logger _logger = NLog.LogManager.GetCurrentClassLogger();
-    #endregion
-    #region Переменные для модального окноа Брутто как тара
-    private DateTime inDTBEGIN = DateTime.Today.AddDays(-30);
-    private DateTime inDTEND = DateTime.Today;
-    private bool IsOpenBrAsTar { get; set; }
-    private string? SelectedActionBrAsTar { get; set; }
-    private bool ConfirmBrAsTar { get; set; }
-    private Confirmation? confirmationBrAsTar;
-    private int? selectedRowIdBruttoAsTara = 0;
-    private List<BruttoAsTaraModel> listBruttoAsTara = null;                // Для заполнения таблицы в модальном окне "Брутто как тара".
-    private BruttoAsTaraModel bruttoAsTaraOne = new BruttoAsTaraModel();    // Для получения выбранной в модальном окне строки.
-    #endregion
-    #region Переменные для модального окноа Взять тару
-    private DateTime inDTBEGINtara = DateTime.Today.AddDays(-30);
-    private DateTime inDTENDtara = DateTime.Today;
-    private bool IsOpenTara { get; set; }
-    private string? SelectedActionTara { get; set; }
-    private bool ConfirmTara { get; set; }
-    private Confirmation? confirmationTara;
-    private int? selectedRowIdTara = 0;
-    private List<TaraPodstanovkaModel> listTara = null;                // Для заполнения таблицы в модальном окне "Брутто как тара".
-    private TaraPodstanovkaModel taraOne = new TaraPodstanovkaModel();    // Для получения выбранной в модальном окне строки.
-    #endregion
-    #region работаем с модальным окном взять цех
-    private bool IsOpenGetCex { get; set; }
-    private int? selectedRowCex = 0;
-
-    private void OpenModalGetCex()
-    {
-        IsOpenGetCex = true;
-    }
-    private void ButtonGetCexActions()
-    {
-
-    }
-    // ищу цех по части  названия или по коду
-    private void GetCexClick()
-    {
-
-    }
-    #endregion
-    #region GetRowClassCex()
-    private string GetRowClassCex(short? cex)
-    {
-        return selectedRowCex == cex ? "selected-row" : "";
-    }
-    #endregion
-    #region OnInitializedAsync()
-    protected async override Task OnInitializedAsync()
-    {
-        // перерисовываю ширину окна броузера - раз в секунду
-        // while (startStop == false)
-        // {
-        //     windowWidth = await JS.InvokeAsync<int>("getWindowWidth");
-        //     StateHasChanged();
-        //     await Task.Delay(TimeSpan.FromSeconds(1), cts);
-        // }
-    }
-
-    // [JSInvokable]
-    // public void UpdateWindowWidth(int newWidth)
-    // {
-    //     windowWidth = newWidth;
-    //     StateHasChanged();
-    // }
-    #endregion
-    #region  HandleValidSubmit()
-    private void HandleValidSubmit()
-    {
-        // Handle the valid form submission
-        //if (vagon.ModelState.isValid)
-    }
-    #endregion
-    #region OpenModalGetTara()
-    private async Task OpenModalGetTara()
-    {
-        IsOpenTara = true;
-        await GetTaraClick();
-    }
-    #endregion
-    #region GetTaraClick()
-    private async Task GetTaraClick()
-    {
-        if ((selectedRowId is not null) && (selectedRowId > 0)) // если клик по строке был и есть выбранный вагон
-        {   // На открытии окна - забирать данные с условием для 2-х и есть шаблон -> 1, иначе -> 2
-            if ((vagon is not null) && (vagon.VESY != null) && (vagon.VESY == 2) && (!string.IsNullOrEmpty(vagon.SHABLON)) && (vagon.SHABLON.ToLower() == "yes")) // приводить к нижнему регистру
-            {
-                listTara = (List<TaraPodstanovkaModel>)await taraPodstanovka.GetTwentyOneDays(
-                    (listVags.Where(i => i.ID == selectedRowId).FirstOrDefault()).NVAG
-                ); // получил список вагонов для выборки подстановки тары с ограничением в 21 день
-            }
-            else
-            {
-                listTara = (List<TaraPodstanovkaModel>)await taraPodstanovka.GetFromYear(
-                    inDTBEGINtara, inDTENDtara, (listVags.Where(i => i.ID == selectedRowId).FirstOrDefault()).NVAG
-                ); // получил список вагонов для выборки подстановки тары -> ограничение 1 год
-            }
-        }
-    }
-    #endregion
-    #region GetRowClassTara()
-    private string GetRowClassTara(int? id)
-    {
-        return selectedRowIdTara == id ? "selected-row" : "";
-    }
-    #endregion
-
-    #region Работа с чекбоксами таблицы промсмотра
-    private void InitializeSelected(List<GpriModel> listVagons)
-    {
-
-        // Initialize the dictionary with item IDs
-        foreach (var item in listVags)
-        {
-            selectedItems[item.ID] = false; // Initially set all as unselected
-        }
-    }
-    #endregion
-    #region OnRowGetTaraClick()
-    private void OnRowGetTaraClick(int? id)
-    {
-        selectedRowIdTara = id;
-    }
-    #endregion
-    #region ButtonGetTaraActions()
-    void ButtonGetTaraActions(string action)
-    {
-        SelectedActionTara = action;
-        if (action == "ok")
-        {
-            ConfirmTara = true; //
-            if (selectedRowIdTara > 0)
-            {
-                taraOne = (TaraPodstanovkaModel)(listTara.Where(i => i.ID == selectedRowIdTara).FirstOrDefault()).Clone();
-                if ((vagon is not null) && (taraOne is not null) && (vagon.BRUTTO > taraOne.TAR_BRS))// Присвоить, брутто под тару, пересчитать нетто
-                {
-                    vagon.TAR_BRS = taraOne.TAR_BRS;
-                    vagon.NETTO = vagon.BRUTTO - vagon.TAR_BRS;
-                }
-
-                taraOne = new TaraPodstanovkaModel();                      // стираем данные в объекте
-                selectedRowIdTara = 0;
-            }
-        }
-        else if (action == "cancel")
-        {
-            taraOne = new TaraPodstanovkaModel();                      // стираем данные в объекте
-            selectedRowIdTara = 0;
-            ConfirmTara = false;    // you can also do something
-            inDTBEGINtara = DateTime.Today.AddDays(-30);              // Для модального окошка "Брутто как тара".
-            inDTENDtara = DateTime.Today;
-        }
-    }
-    #endregion
-    #region GetByDtVr()
-    private async Task GetByDtVr()
-    {
-        //_logger.Info("GetByDtVr");
-        listVags = ((List<GpriModel>)await gpridata.GetByDtVr(inDt.ToString("yyyy-MM-dd"), inVr.ToString("HH:mm:ss"), "10")).OrderByDescending(x => x.ID).ToList();
-        InitializeSelected(listVags);
-    }
-
-    #endregion
-
-    #region действия на клике по строке в гриде просмотра вагонов
-    private void OnRowClick(int? id)
-    {
-        CleanModels();                                                                      // Чистим поля при переходе
-        selectedRowId = id;
-        selRowID = selectedRowId.ToString();                                                // Для отладки - отображаю Id записи по которой кликнул.
-        vagon = (GpriModel)(listVags.Where(i => i.ID == id).FirstOrDefault()).Clone();      // Взять все данные из клика по гриду -> переместить в объект.
-    }
-
-    private string GetRowClass(int id)
-    {
-        // Use TryGetValue to safely access the dictionary
-        return selectedItems.TryGetValue(id, out bool isSelected) && isSelected ? "table-active" : string.Empty; 
-    }
-    #endregion
-    #region GetRowClassBruttoAsTara()
-    private string GetRowClassBruttoAsTara(int? id)
-    {
-        return selectedRowIdBruttoAsTara == id ? "selected-row" : "";
-    }
-    #endregion
-    #region OnRowGetBruttoAsTaraClick()
-    private void OnRowGetBruttoAsTaraClick(int? id)
-    {
-        selectedRowIdBruttoAsTara = id;
-    }
-    #endregion
-    #region OnRowGetCexClick()
-    private void OnRowGetCexClick(int? id)
-    {
-        selectedRowIdBruttoAsTara = id;
-    }
-    #endregion
-    #region ButtonGetBruttoAsTaraActions(string)
-    void ButtonGetBruttoAsTaraActions(string action)
-    {
-        SelectedActionBrAsTar = action;
-        if (action == "ok")
-        {
-            ConfirmBrAsTar = true; //
-            if (selectedRowIdBruttoAsTara > 0)
-            {
-                bruttoAsTaraOne = (BruttoAsTaraModel)(listBruttoAsTara.Where(i => i.ID == selectedRowIdBruttoAsTara).FirstOrDefault()).Clone();
-                if ((vagon is not null) && (bruttoAsTaraOne is not null) && (vagon.BRUTTO > bruttoAsTaraOne.BRUTTO))// Присвоить, брутто под тару, пересчитать нетто
-                {
-                    vagon.TAR_BRS = bruttoAsTaraOne.BRUTTO;
-                    vagon.NETTO = vagon.BRUTTO - vagon.TAR_BRS;
-                }
-                bruttoAsTaraOne = new BruttoAsTaraModel();                      // стираем данные в объекте
-                selectedRowIdBruttoAsTara = 0;
-            }
-        }
-        else if (action == "cancel")
-        {
-            bruttoAsTaraOne = new BruttoAsTaraModel();
-            selectedRowIdBruttoAsTara = 0;
-            ConfirmBrAsTar = false;    // you can also do something
-            inDTBEGIN = DateTime.Today.AddDays(-30);               // Для модального окошка "Брутто как тара".
-            inDTEND = DateTime.Today;
-        }
-    }
-    #endregion
-    #region OpenModalGetBruttoAsTara()
-    private async Task OpenModalGetBruttoAsTara()
-    {
-        IsOpenBrAsTar = true;
-        await GetBruttoAsTaraClick();
-    }
-    #endregion
-    #region GetBruttoAsTaraClick()
-    private async Task GetBruttoAsTaraClick()
-    {
-        listBruttoAsTara = (List<BruttoAsTaraModel>)await bruttoAsTara.GetByRangeDtAndNvag(inDTBEGIN.ToString("yyyy-MM-dd"), inDTEND.ToString("yyyy-MM-dd"), vagon.NVAG, "10");
-    }
-    #endregion
-    #region UpdVag
-    private async Task UpdVag()
-    {
-        if (vagon is not null)
-        {
-            try
-            {
-                await gpridata.UpdVag(vagon);
-                vagon = new GpriModel();    // чистим модель
-                await GetByDtVr();          // обновляем данные на странице
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.ToString());
-                // переделать на запись в файл
-            }
-
-        }
-        // иначе показать всплывающее окошко - нечего сохранять
-    }
-    #endregion
-    //-------------------------------------------------------------------------------
-    private async Task InsVag()
-    {
-        isLoading = true;                                       // Show the loading indicator
-        resultMessage = null;
-
-        var resutTmp = await vagonService.SaveVagons(vagon);    // Simulate a long-running database query (replace this with actual database call)
-        vagon = new GpriModel();                                // чистим модель
-        await GetByDtVr();                                      // обновляем данные на странице
-
-        isLoading = false;                                      // Hide the loading indicator
-
-    }
-    //-------------------------------------------------------------------------------
-    #region Показываю справочник цехов
-    [Parameter]
-    public bool IsCheckedCexList { get; set; } = false;
-    private bool isCheckedCexList;
-    protected override void OnParametersSet()
-    {
-        isCheckedCexList = this.IsCheckedCexList;
-    }
-
-    private void GetListCex(ChangeEventArgs e)
-    {
-        if (e != null)
-        {
-            bool res = (bool) e.Value;
-            if (res)
-            {
-                OpenModalGetCex();
-            }
-        }
-    }
-    #endregion
-    #region CleanModel()
-    private void CleanModels()
-    {
-        vagon = new GpriModel();
-        bruttoAsTaraOne = new BruttoAsTaraModel();                      // стираем данные в объекте
-        selectedRowIdBruttoAsTara = 0;
-        selectedRowId = 0;
-    }
-    #endregion
-    #region ClosePage()
-    private void ClosePage()
-    {
-        navManager.NavigateTo("/");
-    }
-    #endregion
-}

@@ -11,7 +11,8 @@
     <link rel="stylesheet" href="css/bootstrap/bootstrap.min.css" />
     <link href="css/site.css" rel="stylesheet" />
     <link href="BosVesUI.styles.css" rel="stylesheet" />
-    <component type="typeof(HeadOutlet)" render-mode="ServerPrerendered" />
+    
+    <component type="typeof(HeadOutlet)" render-mode="Server" />
 </head>
 <body>
     @RenderBody()
@@ -30,5 +31,17 @@
     <script src="_content/NetcodeHub.Packages.Components.Modal/modal.js"></script>
     <script src="_framework/blazor.server.js"></script>
     <script src="js/site.js"></script>
+    <script src="_content/Blazor.IndexedDB/indexedDb.Blazor.js"></script>
+    <script>
+        function BlazorDownloadFile(url, filename) {
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = filename;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+    </script>
+
 </body>
 </html>

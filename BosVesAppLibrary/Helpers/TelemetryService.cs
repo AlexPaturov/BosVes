@@ -6,7 +6,7 @@ namespace BosVesAppLibrary.Helpers;
 
 public class TelemetryService
 {
-   private readonly ILogger _logger; 
+   private readonly ILogger _logger;
    private readonly IHttpContextAccessor _httpContextAccessor;
    private readonly TelemetryClient _telemetryClient;
 
@@ -24,4 +24,8 @@ public class TelemetryService
       telemetry.Properties.Add("ClientIP", ipAddress ?? "Unknown");
       _telemetryClient.TrackEvent(telemetry);
    }
+
+
+
+
 }

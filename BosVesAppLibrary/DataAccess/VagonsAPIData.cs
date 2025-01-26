@@ -26,11 +26,10 @@ public class VagonsAPIData
    {
       using (var connection = CreateConnection())
       {
-         var query = "UPDATE VAGONSAPI SET "+
-                     "LASTUPDATEDBY = @LASTUPDATEDBY, " +
-                     "LASTUPDATEDATE = @LASTUPDATEDATE " +
-                     "where id = @Id";
-         return await connection.ExecuteAsync(query, vagon);
+         var query = "UPDATE or insert into VAGONSAPI (LASTUPDATEDBY, LASTUPDATEDATE, ID) " +
+                     "values (@lastupdatedby, @lastupdateddate, @id) " +
+                     "matching(ID)";
+         return await connection.ExecuteAsync(query, new { lastupdatedby = vagon.LastUpdatedBy, lastupdateddate = vagon.LastUpdateDate, id = vagon.Id });
       }
    }
 

@@ -16,6 +16,11 @@ public class GpriData
       _logger = logger;
    }
 
+   private string GenerateUniqueKey(GpriModel vagon)
+   {
+      return $"{vagon.DT.Date}_{vagon.VR}_{vagon.NVAG}_{vagon.VESY}"; // Уникальный ключ
+   }
+
    private IDbConnection CreateConnection()
    {
       _logger.LogDebug("CreateConnection()");
@@ -102,6 +107,14 @@ public class GpriData
            return await connection.ExecuteScalarAsync<int>(query, vagon);
         
       }
+   }
+
+   // проверяем, существует ли запись в базе ?
+   public async Task<int?> СheckExisting(GpriModel vagon) 
+   {
+      using var connection = CreateConnection();
+      return await connection.ExecuteScalarAsync<int?>("select ID from gpri where DT = @DT AND VR = @VR AND NVAG = @NVAG AND VESY = @VESY",
+                                                               new { DT = vagon.DT.Date.ToShortDateString(), VR = vagon.VR, NVAG = vagon.NVAG, VESY = vagon.VESY });
    }
 
    public async Task UpdVag(GpriModel vagon)                   
@@ -199,6 +212,53 @@ public class GpriData
                      "and VESY = @VESY";           //
 
          var parameters = new { DT = pDt, VR = pVr, VESY = vikno };
+         return await connection.QueryAsync<GpriModel>(query, parameters);
+      }
+   }
+
+   public async Task<IEnumerable<GpriModel>> GetByDt(string pDt, string vikno) // прооверен
+   {
+      using (var connection = CreateConnection())
+      {
+         var query = "SELECT " +                   //
+                           "DT " +                 //
+                           ",VR " +                //
+                           ",NVAG " +              //
+                           ",NDOK " +              //
+                           ",GRUZ " +              //
+                           ",BRUTTO " +            //
+                           ",TAR_BRS " +           //
+                           ",TAR_DOK " +           //
+                           ",NETTO " +             //
+                           ",NET_DOK " +           //
+                           ",MUSOR " +             //
+                           ",CEX " +               //
+                           ",TARIF " +             //
+                           ",POTR " +              //
+                           ",PLAT " +              //
+                           ",SKOR " +              //
+                           ",VESY " +              //
+                           ",TN " +                //
+                           ",NPP " +               //
+                           ",V13 " +               //
+                           ",V24 " +               //
+                           ",V12 " +               //
+                           ",V34 " +               //
+                           ",PP " +                //
+                           ",PR " +                //
+                           ",DELTA " +             //
+                           ",N_TEPLOVOZ " +        //
+                           ",POGRESHNOST " +       //
+                           ",REJVZVESH " +         //
+                           ",ID " +                //
+                           ",PLATFORMS_TARA " +    //
+                           ",PLATFORMS_BRUTTO " +  //
+                           ",ID_PLATFORMS " +      //
+                     "FROM gpri " +                //
+                     "where DT = @DT " +           //
+                     "and VESY = @VESY";           //
+
+         var parameters = new { DT = pDt, VESY = vikno };
          return await connection.QueryAsync<GpriModel>(query, parameters);
       }
    }

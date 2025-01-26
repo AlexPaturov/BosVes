@@ -1,26 +1,724 @@
 ﻿@page "/Pages/WeighterScope/Prihod/VvodPrihod"
+@using System.Globalization
+@using BosVesUI.Shared.Components
+@using NetcodeHub.Packages.Components.Modal
+@inject BruttoAsTaraData bruttoAsTara;
+@inject VagonsService vagonService;
+@inject GpriData gpridata;
+@inject TaraPodstanovkaData taraPodstanovka;
 @inject NavigationManager navManager
 
 <h1>/Pages/WeighterScope/Prihod/VvodPrihod</h1>
 
 <div class="row justify-content-center create-form">
     <div class="col-md-12 col-xl-12 form-layout">
+
         <div class="close-button-section">
             <button class="btn btn-close" @onclick="ClosePage"></button>
         </div>
 
+         @* Блок полей для корректировки - начало *@
+        <div class="row mb-2" style="max-width: 95vw; margin-left:5px;">
+            <EditForm Model="vagon" OnValidSubmit="HandleValidSubmit">
+                <DataAnnotationsValidator />
+                <div class="row d-flex justify-content-center">
+                    @* первый блок начало *@
+                    <div class="col-md-3">
 
+                        @* 1 vagon.DT *@
+                        <div class="col-auto mb-1">
+                            <div class="input-group">
+                                <div class="input-group-prepend" style="margin-right:5px;">
+                                    <span class="input-group-text">Дата взвешивания</span>
+                                </div>
+                                <div class="col">
+                                    <InputDate Type="InputDateType.Date" @bind-Value="@vagon.DT" id="idDT" class="form-control" />
+                                    <ValidationMessage For="@(() => vagon.DT)" />
+                                </div>
+                            </div>
+                        </div>
+
+                        @* 2 vagon.VR *@
+                        <div class="col-auto mb-1">
+                            <div class="input-group">
+                                <div class="input-group-prepend" style="margin-right:5px;">
+                                    <span class="input-group-text">Время взвешивания</span>
+                                </div>
+                                <div class="col">
+                                    <InputTime @bind-Value="vagon.VR" id="VR" step="1" class="form-control" />
+                                    <ValidationMessage For="@(() => vagon.VR)" />
+                                </div>
+                            </div>
+                        </div>
+
+                        @* 3 vagon.NVAG *@
+                        <div class="col-auto mb-1">
+                            <div class="input-group">
+                                <div class="input-group-prepend" style="margin-right:5px;">
+                                    <span class="input-group-text">Номер вагона</span>
+                                </div>
+                                <div class="col">
+                                    <InputText @bind-Value="@vagon.NVAG" id="NVAG" class="form-control" />
+                                    <ValidationMessage For="@(() => vagon.NVAG)" />
+                                </div>
+                            </div>
+                        </div>
+
+                        @* 4 vagon.NDOK *@
+                        <div class="col-auto mb-1">
+                            <div class="input-group">
+                                <div class="input-group-prepend" style="margin-right:5px;">
+                                    <span class="input-group-text">Номер докум.</span>
+                                </div>
+                                <div class="col">
+                                    <InputNumber @bind-Value="@vagon.NDOK" id="NDOK" class="form-control" />
+                                    <ValidationMessage For="@(() => vagon.NDOK)" />
+                                </div>
+                            </div>
+                        </div>
+
+                        @* 5 vagon.GRUZ *@
+                        <div class="col-auto mb-1">
+                            <div class="input-group">
+                                <div class="input-group-prepend" style="margin-right:5px;">
+                                    <span class="input-group-text">Груз</span>
+                                </div>
+                                <div class="col">
+                                    <InputText @bind-Value="@vagon.GRUZ" id="GRUZ" class="form-control" />
+                                    <ValidationMessage For="@(() => vagon.GRUZ)" />
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    @* первый блок окончание *@
+                    @* второй блок начало *@
+                    <div class="col-md-2">
+
+                        @* 6 vagon.BRUTTO *@
+                        <div class="col-auto mb-1">
+                            <div class="input-group">
+                                <div class="input-group-prepend" style="margin-right:5px;">
+                                    <span class="input-group-text">Брутто</span>
+                                </div>
+                                <div class="col">
+                                    <InputNumber @bind-Value="@vagon.BRUTTO" id="BRUTTO" class="form-control" />
+                                    <ValidationMessage For="@(() => vagon.BRUTTO)" />
+                                </div>
+                            </div>
+                        </div>
+
+                        @* 7 vagon.TAR_BRS *@
+                        <div class="col-auto mb-1">
+                            <div class="input-group">
+                                <div class="input-group-prepend" style="margin-right:5px;">
+                                    <span class="input-group-text">Тара брус</span>
+                                </div>
+                                <div class="col">
+                                    <InputNumber @bind-Value="@vagon.TAR_BRS" id="TAR_BRS" class="form-control" />
+                                    <ValidationMessage For="@(() => vagon.TAR_BRS)" />
+                                </div>
+                            </div>
+                        </div>
+
+                        @* 8 vagon.TAR_DOK *@
+                        <div class="col-auto mb-1">
+                            <div class="input-group">
+                                <div class="input-group-prepend" style="margin-right:5px;">
+                                    <span class="input-group-text">Тара докум.</span>
+                                </div>
+                                <div class="col">
+                                    <InputNumber @bind-Value="@vagon.TAR_DOK" id="TAR_DOK" class="form-control" />
+                                    <ValidationMessage For="@(() => vagon.TAR_DOK)" />
+                                </div>
+                            </div>
+                        </div>
+
+                        @* 9 vagon.NETTO *@
+                        <div class="col-auto mb-1">
+                            <div class="input-group">
+                                <div class="input-group-prepend" style="margin-right:5px;">
+                                    <span class="input-group-text">Нетто</span>
+                                </div>
+                                <div class="col">
+                                    <InputNumber @bind-Value="@vagon.NETTO" id="NETTO" class="form-control" />
+                                    <ValidationMessage For="@(() => vagon.NETTO)" />
+                                </div>
+                            </div>
+                        </div>
+
+                        @* 10 vagon.NET_DOK *@
+                        <div class="col-auto mb-1">
+                            <div class="input-group">
+                                <div class="input-group-prepend" style="margin-right:5px;">
+                                    <span class="input-group-text">Нетто докум.</span>
+                                </div>
+                                <div class="col">
+                                    <InputNumber @bind-Value="@vagon.NET_DOK" id="NET_DOK" class="form-control" />
+                                    <ValidationMessage For="@(() => vagon.NET_DOK)" />
+                                </div>
+                            </div>
+                        </div>
+
+                        @if (false)
+                        {
+                            <div class="col text-end">
+                                <button class="btn btn-primary" @onclick="OpenModalGetTara">Взять тару</button>
+                            </div>
+                        }
+
+                    </div>
+                    @* второй блок окончание *@
+                    @* третий блок начало *@
+                    <div class="col-md-3">
+
+                        @* 11 vagon.MUSOR *@
+                        <div class="col-auto mb-1">
+                            <div class="input-group">
+                                <div class="input-group-prepend" style="margin-right:5px;">
+                                    <span class="input-group-text">Мусор</span>
+                                </div>
+                                <div class="col">
+                                    <InputNumber @bind-Value="@vagon.MUSOR" id="MUSOR" class="form-control" />
+                                    <ValidationMessage For="@(() => vagon.MUSOR)" />
+                                </div>
+                            </div>
+                        </div>
+
+                        @* 12 vagon.CEX *@
+                        <div class="col-auto mb-1">
+                            <label for="CEX" class="col col-form-label">Цех</label>
+                            <div class="col">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text input-corners-right">
+                                            <input type="checkbox" checked="@isCheckedCexList" @oninput="GetListCex" />
+                                        </div>
+                                    </div>
+                                    <InputNumber @bind-Value="@vagon.CEX" id="CEX" class="form-control" />
+                                    <ValidationMessage For="@(() => vagon.CEX)" />
+                                </div>
+                            </div>
+                        </div>
+
+                        @* 13 vagon.TARIF *@
+                        <div class="col-auto mb-1">
+                            <div class="input-group">
+                                <div class="input-group-prepend" style="margin-right:5px;">
+                                    <span class="input-group-text">Тариф</span>
+                                </div>
+                                <div class="col">
+                                    <InputNumber @bind-Value="@vagon.TARIF" id="TARIF" class="form-control" />
+                                    <ValidationMessage For="@(() => vagon.TARIF)" />
+                                </div>
+                            </div>
+                        </div>
+
+                        @* 14 *@
+                        <div class="col-auto mb-1">
+                            <div class="input-group">
+                                <div class="input-group-prepend" style="margin-right:5px;">
+                                    <span class="input-group-text">Потребитель</span>
+                                </div>
+                                <div class="col">
+                                    <InputText @bind-Value="vagon.POTR" id="POTR" class="form-control" />
+                                    <ValidationMessage For="@(() => vagon.POTR)" />
+                                </div>
+                            </div>
+                        </div>
+
+                        @* 15 *@
+                        <div class="col-auto mb-1">
+                            <div class="input-group">
+                                <div class="input-group-prepend" style="margin-right:5px;">
+                                    <span class="input-group-text">Плательщик</span>
+                                </div>
+                                <div class="col">
+                                    <InputText @bind-Value="vagon.PLAT" id="PLAT" class="form-control" />
+                                    <ValidationMessage For="@(() => vagon.PLAT)" />
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    @* третий блок окончание *@
+                    @* четвёртый блок начало *@
+                    <div class="col-md-3">
+
+                        @* 16 vagon.TN *@
+                        <div class="col-auto mb-1">
+                            <div class="input-group">
+                                <div class="input-group-prepend" style="margin-right:5px;">
+                                    <span class="input-group-text">Таб. ном.</span>
+                                </div>
+                                <div class="col">
+                                    <InputNumber @bind-Value="vagon.TN" id="TN" class="form-control" />
+                                    <ValidationMessage For="@(() => vagon.TN)" />
+                                </div>
+                            </div>
+                        </div>
+
+                        @* 17 vagon.N_TEPLOVOZ *@
+                        <div class="col-auto mb-1">
+                            <div class="input-group">
+                                <div class="input-group-prepend" style="margin-right:5px;">
+                                    <span class="input-group-text">Ном. тепл</span>
+                                </div>
+                                <div class="col">
+                                    <InputText @bind-Value="vagon.N_TEPLOVOZ" id="N_TEPLOVOZ" class="form-control" />
+                                    <ValidationMessage For="@(() => vagon.N_TEPLOVOZ)" />
+                                </div>
+                            </div>
+                        </div>
+
+                        @* 18 *@
+                        <div class="col-auto mb-1">
+                            <div class="input-group">
+                                <div class="input-group-prepend" style="margin-right:5px;">
+                                    <span class="input-group-text">Погрешность</span>
+                                </div>
+                                <div class="col">
+                                    <InputNumber @bind-Value="vagon.POGRESHNOST" id="POGRESHNOST" class="form-control" />
+                                    <ValidationMessage For="@(() => vagon.POGRESHNOST)" />
+                                </div>
+                            </div>
+                        </div>
+
+                        @* 19 *@
+                        <div class="col-auto mb-1">
+                            <div class="input-group">
+                                <div class="input-group-prepend" style="margin-right:5px;">
+                                    <span class="input-group-text">Реж. взвеш.</span>
+                                </div>
+                                <div class="col">
+                                    <InputText @bind-Value="vagon.REJVZVESH" type="text" id="REJVZVESH" class="form-control" />
+                                    <ValidationMessage For="@(() => vagon.REJVZVESH)" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col text-end">
+                           @*  <button class="btn btn-success" @onclick="InsertNew">Сохранить</button>
+                             <button class="btn btn-danger" @onclick="CleanModels">Очистить</button>*@
+                        </div>
+
+                    </div>
+                    @* четвёртый блок окончание *@
+                </div>
+            </EditForm>
+        </div>
+       
+          @* Модальное окошко "Подстановка тары" начало *@
+        <Modal Actions="ButtonGetTaraActions"
+               BootstrapClass="border-dark"
+               CustomStyle="width:600px"
+               @bind-Open="IsOpenTara">
+
+            <ContentContent>
+                <div class="row">
+                    @* Блок для фильтрации по дате. Номер вагона изменять нельзя. Начало. *@
+                    <div class="col">
+                        <div class="form-group row">
+                            <label for="idDTBEGINtara" class="col col-form-label">Дата начало</label>
+                            <div class="col">
+                                <InputDate Type="InputDateType.Date" @bind-Value="@inDTBEGINtara" id="idDTBEGINtara" class="form-control" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col">
+                        <div class="form-group row">
+                            <label for="idDTENDtara" class="col col-form-label">Дата окончания</label>
+                            <div class="col">
+                                <InputDate Type="InputDateType.Date" @bind-Value="@inDTENDtara" id="idDTENDtara" class="form-control" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="button" class="btn btn-secondary" @onclick="GetTaraClick">Показать</button>
+                    @*  Блок для фильтрации по дате. Номер вагона изменять нельзя. Окончание. *@
+                </div>
+
+                @* Таблица - начало *@
+                <div class="table-responsive">
+                    <div style="width:fit-content">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    @foreach (var vp in GridCaptionHelper.TaraChapters.Values)
+                                    {
+                                        <th> @vp </th>
+                                    }
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (listTara is not null)
+                                {
+                                    @foreach (var item in listTara) //
+                                    {
+                                        <tr @onclick="() => OnRowGetTaraClick(item.ID)" class="@GetRowClassTara(item.ID)">
+                                            <td> @item.DT.ToShortDateString() </td>
+                                            <td> @item.VR.ToString(@"hh\:mm\:ss") </td>
+                                            <td> @item.NVAG </td>
+                                            <td> @item.BRUTTO </td>
+                                            <td> @item.TAR_BRS </td>
+                                            <td> @item.NETTO </td>
+                                            <td> @item.GRUZ </td>
+                                            <td> @item.VESY </td>
+                                            <td> @item.ID </td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                @* Таблица - окончание *@
+            </ContentContent>
+
+            <ButtonTemplate>
+                <div class="d-flex justify-content-center align-content-center">
+                    <button class="btn btn-success btn-sm" value="ok" style="margin-right:5px">Взять вес</button>
+                    <button class="btn btn-danger btn-sm" value="cancel">Отмена</button>
+                </div>
+            </ButtonTemplate>
+
+        </Modal>
+        @* Модальное окошко "Подстановка тары" окончание *@
+
+        @* Модальное окошко "Взять цех" начало *@
+        <Modal Actions="ButtonGetCexActions"
+               BootstrapClass="border-dark"
+               CustomStyle="width:600px"
+               @bind-Open="IsOpenGetCex">
+
+            <ContentContent>
+                <div class="row">
+                    @* Блок для поиска по имени/номеру. Начало. *@
+                    <div class="col">
+                        <div class="form-group row">
+                            <label for="DTBEGIN" class="col col-form-label">Дата начало</label>
+                            <div class="col">
+                                <InputDate Type="InputDateType.Date" @bind-Value="@inDTBEGIN" id="idDTBEGIN" class="form-control" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col">
+                        <div class="form-group row">
+                            <label for="DTEND" class="col col-form-label">Дата окончания</label>
+                            <div class="col">
+                                <InputDate Type="InputDateType.Date" @bind-Value="@inDTEND" id="idDTEND" class="form-control" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="button" class="btn btn-secondary" @onclick="GetCexClick">Показать</button>
+                    @*  Блок для поиска по имени/номеру. Окончание. *@
+                </div>
+
+                @* Таблица - начало *@
+                <div class="table-responsive">
+                    <div style="width:fit-content">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    @foreach (var vp in GridCaptionHelper.CexChapters.Values)
+                                    {
+                                        <th> @vp </th>
+                                    }
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (listBruttoAsTara is not null)
+                                {
+                                    @foreach (var item in listBruttoAsTara)
+                                    {
+                                        <tr @onclick="() => OnRowGetCexClick(item.CEX)" class="@GetRowClassCex(item.CEX)">
+                                            <td> @item.CEX </td>
+                                            <td> @item.NAIM </td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                @* Таблица - окончание *@
+            </ContentContent>
+
+            <ButtonTemplate>
+                <div class="d-flex justify-content-center align-content-center">
+                    <button class="btn btn-success btn-sm" value="ok" style="margin-right:5px">Взять цех</button>
+                    <button class="btn btn-danger btn-sm" value="cancel">Отмена</button>
+                </div>
+            </ButtonTemplate>
+
+        </Modal>
+        @* Модальное окошко "Взять цех" окончание *@
+      
 
     </div>
 </div>
 
 @code {
+    private string FormattedDate
+    {
+        get => inDt.ToString("dd.MM.yyyy"); // Get formatted string
+        set
+        {
+            if (DateTime.TryParseExact(value, "dd.MM.yyyy",
+                                       CultureInfo.InvariantCulture,
+                                       DateTimeStyles.None, out var parsedDate))
+            {
+                inDt = parsedDate; // Only set _date if parsing succeeds
+            }
+            else
+            {
+                // Handle invalid date input if necessary (e.g., show an error message)
+            }
+        }
+    }
+    #region
+    private string? inputValue;
+
+    private void OnInput(string value)
+    {
+        var newValue = value ?? string.Empty;
+
+        inputValue = newValue.Length > 4 ? "Long!" : newValue;
+    }
+    #endregion
+    private decimal decimalValue = 0;
+    private NumberStyles style = NumberStyles.Integer | NumberStyles.AllowLeadingSign;
+    private CultureInfo culture = CultureInfo.CreateSpecificCulture("en-US");
+    private string DecimalValue
+    {
+        get
+        {
+            return vagon.NDOK?.ToString("0", culture) ?? string.Empty;
+        }
+        set
+        {
+            if (Decimal.TryParse(value, style, culture, out var number))
+            {
+                if (number > 99999999)
+                {
+                    vagon.NDOK = 0;
+                    decimalValue = 0;
+                }
+                else
+                {
+                    vagon.NDOK = number;
+                    decimalValue = number;
+                }
+            }
+        }
+    }
+    private double? NDOK { get; set; }
+    private void HandleInput(ChangeEventArgs e)
+    {
+        // Get the input value as a string
+        var inputValue = e.Value?.ToString();
+
+        // Validate or manipulate the input value (example: restrict to max 8 digits)
+        if (inputValue != null && inputValue.Length > 8)
+        {
+            inputValue = inputValue.Substring(0, 8); // Restrict to max 8 characters
+        }
+
+        // Update the bound property with the validated/modified value
+        if (double.TryParse(inputValue, out double result))
+        {
+            NDOK = result;
+            StateHasChanged();
+        }
+        else
+        {
+            NDOK = null; // Reset or handle invalid input
+        }
+
+    }
+    private bool isLoading = false;       // To control loading state
+    private string resultMessage = null;  // To store the result message
+    #region Переменные формы
+    // private DateTime inDt = DateTime.ParseExact("2024-07-05", "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture);
+    // private DateTime inDt = DateTime.Parse("05.07.2024");
+    private DateTime inDt = DateTime.ParseExact("05.07.2024", "dd.MM.yyyy", CultureInfo.InvariantCulture);
+    private DateTime inVr = DateTime.ParseExact("10:13:33", "HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
+    private string inNvag = string.Empty;
+    private List<GpriModel> listVags = null;
+    private GpriModel vagon = new GpriModel();
+    private int? selectedRowId;                                             // Временно для отображения Id выбранной ячейки.
+    private bool isSaving = false;
+    private string selRowID = string.Empty;
+    private Dictionary<int, bool> selectedItems = new Dictionary<int, bool>();
+    private bool isChecked = false; // for checkbox - temp
+                                    // NLog.Logger _logger = NLog.LogManager.GetCurrentClassLogger();
+    #endregion
+    #region Переменные для модального окноа Брутто как тара
+    private DateTime inDTBEGIN = DateTime.Today.AddDays(-30);
+    private DateTime inDTEND = DateTime.Today;
+    private bool IsOpenBrAsTar { get; set; }
+    private string? SelectedActionBrAsTar { get; set; }
+    private bool ConfirmBrAsTar { get; set; }
+   // private Confirmation? confirmationBrAsTar;
+    private int? selectedRowIdBruttoAsTara = 0;
+    private List<BruttoAsTaraModel> listBruttoAsTara = null;                // Для заполнения таблицы в модальном окне "Брутто как тара".
+    private BruttoAsTaraModel bruttoAsTaraOne = new BruttoAsTaraModel();    // Для получения выбранной в модальном окне строки.
+    #endregion
+    #region Переменные для модального окноа Взять тару
+    private DateTime inDTBEGINtara = DateTime.Today.AddDays(-30);
+    private DateTime inDTENDtara = DateTime.Today;
+    private bool IsOpenTara { get; set; }
+    private string? SelectedActionTara { get; set; }
+    private bool ConfirmTara { get; set; }
+    private Confirmation? confirmationTara;
+    private int? selectedRowIdTara = 0;
+    private List<TaraPodstanovkaModel> listTara = null;                // Для заполнения таблицы в модальном окне "Брутто как тара".
+    private TaraPodstanovkaModel taraOne = new TaraPodstanovkaModel();    // Для получения выбранной в модальном окне строки.
+    #endregion
+    #region работаем с модальным окном взять цех
+    private bool IsOpenGetCex { get; set; }
+    private int? selectedRowCex = 0;
+    private string PdfUrl;
+
+
+    private void OpenModalGetCex()
+    {
+        IsOpenGetCex = true;
+    }
+    private void ButtonGetCexActions()
+    {
+
+    }
+    private void GetCexClick()
+    {
+
+    }
+    #endregion
+    #region GetRowClassCex()
+    private string GetRowClassCex(short? cex)
+    {
+        return selectedRowCex == cex ? "selected-row" : "";
+    }
+    #endregion
+    #region OnInitializedAsync()
+    protected async override Task OnInitializedAsync()
+    {
+        // перерисовываю ширину окна броузера - раз в секунду
+
+    }
+    #endregion
+
+    #region  HandleValidSubmit()
+    private void HandleValidSubmit()
+    {
+        //
+    }
+    #endregion
+    #region OpenModalGetTara()
+    private async Task OpenModalGetTara()
+    {
+        IsOpenTara = true;
+        await GetTaraClick();
+    }
+    #endregion
+    #region GetTaraClick()
+    private async Task GetTaraClick()
+    {
+        if ((selectedRowId is not null) && (selectedRowId > 0)) // если клик по строке был и есть выбранный вагон
+        {   // На открытии окна - забирать данные с условием для 2-х и есть шаблон -> 1, иначе -> 2
+            if ((vagon is not null) && (vagon.VESY != null) && (vagon.VESY == 2) && (!string.IsNullOrEmpty(vagon.SHABLON)) && (vagon.SHABLON.ToLower() == "yes")) // приводить к нижнему регистру
+            {
+                listTara = (List<TaraPodstanovkaModel>)await taraPodstanovka.GetTwentyOneDays(
+                    (listVags.Where(i => i.ID == selectedRowId).FirstOrDefault()).NVAG
+                ); // получил список вагонов для выборки подстановки тары с ограничением в 21 день
+            }
+            else
+            {
+                listTara = (List<TaraPodstanovkaModel>)await taraPodstanovka.GetFromYear(
+                    inDTBEGINtara, inDTENDtara, (listVags.Where(i => i.ID == selectedRowId).FirstOrDefault()).NVAG
+                ); // получил список вагонов для выборки подстановки тары -> ограничение 1 год
+            }
+        }
+    }
+    #endregion
+    #region GetRowClassTara()
+    private string GetRowClassTara(int? id)
+    {
+        return selectedRowIdTara == id ? "selected-row" : "";
+    }
+    #endregion
+    #region ButtonGetTaraActions()
+    void ButtonGetTaraActions(string action)
+    {
+        SelectedActionTara = action;
+        if (action == "ok")
+        {
+            ConfirmTara = true; //
+            if (selectedRowIdTara > 0)
+            {
+                taraOne = (TaraPodstanovkaModel)(listTara.Where(i => i.ID == selectedRowIdTara).FirstOrDefault()).Clone();
+                if ((vagon is not null) && (taraOne is not null) && (vagon.BRUTTO > taraOne.TAR_BRS))// Присвоить, брутто под тару, пересчитать нетто
+                {
+                    vagon.TAR_BRS = taraOne.TAR_BRS;
+                    vagon.NETTO = vagon.BRUTTO - vagon.TAR_BRS;
+                }
+
+                taraOne = new TaraPodstanovkaModel();                      // стираем данные в объекте
+                selectedRowIdTara = 0;
+            }
+        }
+        else if (action == "cancel")
+        {
+            taraOne = new TaraPodstanovkaModel();                      // стираем данные в объекте
+            selectedRowIdTara = 0;
+            ConfirmTara = false;    // you can also do something
+            inDTBEGINtara = DateTime.Today.AddDays(-30);              // Для модального окошка "Брутто как тара".
+            inDTENDtara = DateTime.Today;
+        }
+    }
+    #endregion
+    #region Показываю справочник цехов
+    [Parameter]
+    public bool IsCheckedCexList { get; set; } = false;
+    private bool isCheckedCexList;
+    protected override void OnParametersSet()
+    {
+        isCheckedCexList = this.IsCheckedCexList;
+    }
+
+    private void GetListCex(ChangeEventArgs e)
+    {
+        if (e != null)
+        {
+            bool res = (bool)e.Value;
+            if (res)
+            {
+                OpenModalGetCex();
+            }
+        }
+    }
+    #endregion
+    #region OnRowGetTaraClick()
+    private void OnRowGetTaraClick(int? id)
+    {
+        selectedRowIdTara = id;
+    }
+    #endregion
+    #region OnRowGetCexClick()
+    private void OnRowGetCexClick(int? id)
+    {
+        selectedRowIdBruttoAsTara = id;
+    }
+    #endregion
 
 
     #region ClosePage()
     private void ClosePage()
     {
-        navManager.NavigateTo("/");
+        navManager.NavigateTo("/", true);
     }
     #endregion
 }

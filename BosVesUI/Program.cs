@@ -1,4 +1,4 @@
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.ApplicationInsights.Extensibility;
 using System.Globalization;
 
@@ -34,10 +34,10 @@ namespace BosVesUI
             // Step 3: Log information (example)
             //logger.Info("Blazor app started!");
 
-            app.UseHsts();
+            // app.UseHsts();
             app.UseExceptionHandler("/Error");
             app.MapControllers();
-            app.UseHttpsRedirection();
+            // app.UseHttpsRedirection(); // попытка отключить https
             app.UseStaticFiles();
             app.UseRouting();
             app.MapBlazorHub();
@@ -51,6 +51,7 @@ namespace BosVesUI
          catch (Exception exception)
          {
             // NLog: catch setup errors
+            Console.WriteLine(exception.StackTrace);
             //throw;
          }
          finally

@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BosVesAppLibrary.Models
 {
-   public class GpriModel : ICloneable
+   public class GpriModel : ICloneable //, IValidatableObject
    {
 
       [DataType(DataType.Date)]
@@ -21,8 +21,8 @@ namespace BosVesAppLibrary.Models
       [StringLength(10, ErrorMessage = "Максимальная длина 10 символов")]
       public string NVAG { get; set; }                // номер вагона
 
-      [RegularExpression(@"^(0|-?\d{0,8}(\.\d{0,0})?)$", ErrorMessage = "Ошибка NDOK")]
-      public double? NDOK { get; set; }               // номер документа уждт
+      [Range(0, 99999999, ErrorMessage = "NDOK must be a number between 0 and 99,999,999.")]
+      public decimal? NDOK { get; set; } = 0;              // номер документа уждт
 
       [StringLength(20, ErrorMessage = "Максимальная длина 20 символов")]
       public string GRUZ { get; set; }                // наименование груза

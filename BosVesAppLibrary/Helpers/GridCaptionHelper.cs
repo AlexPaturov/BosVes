@@ -7,6 +7,7 @@ public static class GridCaptionHelper
       {"VR", "Время взв."},
       {"NVAG", "Ном. вагона"},
       {"NDOK", "Ном. докум."},
+      {"ID", "ID"},
       {"GRUZ", "Груз"},
       {"BRUTTO", "Брутто"},
       {"TAR_BRS", "Тара брс."},

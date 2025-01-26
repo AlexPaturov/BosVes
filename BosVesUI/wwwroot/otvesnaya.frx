@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="11/24/2024 18:13:39" ReportInfo.Modified="12/18/2024 16:20:27" ReportInfo.CreatorVersion="2022.2.0.0">
+  <Dictionary>
+    <BusinessObjectDataSource Name="GpriModel" ReferenceName="GpriModelRef" DataType="null" Enabled="true">
+      <Column Name="DT" DataType="System.String"/>
+      <Column Name="VR" DataType="System.String"/>
+      <Column Name="NVAG" DataType="System.String"/>
+      <Column Name="NDOK" DataType="System.String"/>
+      <Column Name="GRUZ" DataType="System.String"/>
+      <Column Name="BRUTTO" DataType="System.String"/>
+      <Column Name="TAR_BRS" DataType="System.String"/>
+      <Column Name="NETTO" DataType="System.String"/>
+      <Column Name="POTR" DataType="System.String"/>
+      <Column Name="PLAT" DataType="System.String"/>
+    </BusinessObjectDataSource>
+    <Total Name="TotalBrutto" Expression="[GpriModel.BRUTTO]" Evaluator="Data1" PrintOn="PageFooter1"/>
+    <Total Name="TotalTara" Expression="[GpriModel.TAR_BRS]" Evaluator="Data1" PrintOn="PageFooter1"/>
+  </Dictionary>
+  <ReportPage Name="Page1" Watermark.Font="Arial, 60pt">
+    <ReportTitleBand Name="ReportTitle1" Width="718.2" Height="66.15">
+      <TextObject Name="Text1" Left="179.55" Top="9.45" Width="302.4" Height="37.8" Fill.Color="Gainsboro" Text="This is my first report" Font="Arial, 20pt, style=Bold"/>
+      <TextObject Name="Text16" Left="670.95" Width="94.5" Height="18.9" IsIntersectedWithOtherObject="true" Text="[Date]" Font="Arial, 10pt"/>
+    </ReportTitleBand>
+    <PageHeaderBand Name="PageHeader1" Top="70.15" Width="718.2" Height="18.9">
+      <TextObject Name="Text3" Width="113.4" Height="18.9" Border.Lines="All" Text="DT" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text5" Left="113.4" Width="94.5" Height="18.9" Border.Lines="All" Text="VR" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text7" Left="207.9" Width="94.5" Height="18.9" Border.Lines="All" Text="NVAG" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text9" Left="302.4" Width="94.5" Height="18.9" Border.Lines="All" Text="NDOK" Font="Arial, 10pt"/>
+      <TextObject Name="Text11" Left="396.9" Width="94.5" Height="18.9" Border.Lines="All" Text="GRUZ" Font="Arial, 10pt"/>
+      <TextObject Name="Text13" Left="491.4" Width="94.5" Height="18.9" Border.Lines="All" Text="BRUTTO" Font="Arial, 10pt"/>
+      <TextObject Name="Text15" Left="585.9" Width="94.5" Height="18.9" Border.Lines="All" Text="TAR_BRS" Font="Arial, 10pt"/>
+    </PageHeaderBand>
+    <DataBand Name="Data1" Top="93.05" Width="718.2" Height="18.9" DataSource="GpriModel">
+      <TextObject Name="Text2" Width="113.4" Height="18.9" Text="[GpriModel.DT]" Font="Arial, 10pt"/>
+      <TextObject Name="Text4" Left="113.4" Width="94.5" Height="18.9" Text="[GpriModel.VR]" Font="Arial, 10pt"/>
+      <TextObject Name="Text6" Left="207.9" Width="94.5" Height="18.9" Text="[GpriModel.NVAG]" Font="Arial, 10pt"/>
+      <TextObject Name="Text8" Left="302.4" Width="94.5" Height="18.9" Text="[GpriModel.NDOK]" Font="Arial, 10pt"/>
+      <TextObject Name="Text10" Left="396.9" Width="94.5" Height="18.9" Text="[GpriModel.GRUZ]" Font="Arial, 10pt"/>
+      <TextObject Name="Text12" Left="491.4" Width="94.5" Height="18.9" Text="[GpriModel.BRUTTO]" Font="Arial, 10pt"/>
+      <TextObject Name="Text14" Left="585.9" Width="94.5" Height="18.9" Text="[GpriModel.TAR_BRS]" Font="Arial, 10pt"/>
+    </DataBand>
+    <PageFooterBand Name="PageFooter1" Top="115.95" Width="718.2" Height="18.9">
+      <TextObject Name="Text17" Left="680.4" Width="85.05" Height="18.9" IsIntersectedWithOtherObject="true" Text="[Page]" Font="Arial, 10pt"/>
+      <TextObject Name="Text18" Left="491.4" Width="94.5" Height="18.9" Text="[TotalBrutto]" Font="Arial, 10pt"/>
+      <TextObject Name="Text19" Left="585.9" Width="94.5" Height="18.9" Text="[TotalTara]" Font="Arial, 10pt"/>
+    </PageFooterBand>
+  </ReportPage>
+</Report>
