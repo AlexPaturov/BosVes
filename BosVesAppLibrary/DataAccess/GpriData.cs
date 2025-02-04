@@ -23,7 +23,6 @@ public class GpriData
 
    public IDbConnection CreateConnection()
    {
-      _logger.LogDebug("CreateConnection()");
       return new FbConnection(_connectionString);
    }
 

@@ -74,25 +74,14 @@ public class InsertQueueService
    // изменённый метод вставки в базу
    private async Task<int> CheckAndInsertAsync(GpriModel vagon)
    {
-      //using var connection = _dbOneGpri.CreateConnection();
-      //var existing = await connection.ExecuteScalarAsync<int?>(
-      //    "SELECT ID FROM gpri WHERE DT = @DT AND VR = @VR AND NVAG = @NVAG AND VESY = @VESY", vagon);
-
-      //if (existing.HasValue)
-      //{
-      //   Console.WriteLine($"[LOG] Запись {GenerateUniqueKey(vagon)} уже существует в БД (ID={existing.Value})");
-      //   return existing.Value;
-      //}
-
-      //// Если записи нет — выполняем вставку
-      //return await _dbOneGpri.InsNew(vagon);
-
       var existing = await _dbOneGpri.СheckExisting(vagon);
 
       if (existing.HasValue)
+      {
+         Console.WriteLine($"[LOG] Запись {GenerateUniqueKey(vagon)} уже существует в БД (ID={existing.Value})");
          return existing.Value;
+      }
 
-      // Если записи нет — выполняем вставку
-      return await _dbOneGpri.InsNew(vagon);
+      return await _dbOneGpri.InsNew(vagon);  // Если записи нет — выполняем вставку
    }
 }
