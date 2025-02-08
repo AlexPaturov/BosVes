@@ -3,7 +3,6 @@ using FirebirdSql.Data.FirebirdClient;
 using Microsoft.Extensions.Options;
 using System.Data;
 
-
 namespace BosVesAppLibrary.DataAccess;
 public class GpriData
 {
@@ -23,15 +22,14 @@ public class GpriData
 
    public IDbConnection CreateConnection()
    {
-      _logger.LogDebug("CreateConnection()");
       return new FbConnection(_connectionString);
    }
 
    public async Task<int> InsNew(GpriModel vagon)  // прооверен
    {
-      
       using (var connection = CreateConnection()) 
       {
+         #region query
          var query = "insert into gpri (" +
                                        "DT " +
                                        ",VR " +
@@ -102,10 +100,8 @@ public class GpriData
                              ",@ID_PLATFORMS " +
                              ",@SHABLON" +
                              ") RETURNING Id";
-         
-         
-           return await connection.ExecuteScalarAsync<int>(query, vagon);
-        
+         #endregion
+         return await connection.ExecuteScalarAsync<int>(query, vagon);
       }
    }
 
@@ -113,8 +109,10 @@ public class GpriData
    public async Task<int?> СheckExisting(GpriModel vagon) 
    {
       using var connection = CreateConnection();
-      return await connection.ExecuteScalarAsync<int?>("select ID from gpri where DT = @DT AND VR = @VR AND NVAG = @NVAG AND VESY = @VESY",
-                                                               new { DT = vagon.DT.Date.ToShortDateString(), VR = vagon.VR, NVAG = vagon.NVAG, VESY = vagon.VESY });
+      string querySelect = "select ID from gpri where DT = @DT AND VR = @VR AND NVAG = @NVAG AND VESY = @VESY";
+      var parameters = new { DT = vagon.DT.Date.ToShortDateString(), VR = vagon.VR, NVAG = vagon.NVAG, VESY = vagon.VESY };
+      var res = await connection.ExecuteScalarAsync<int?>(querySelect, parameters);
+      return res;
    }
 
    public async Task UpdVag(GpriModel vagon)                   
@@ -311,6 +309,4 @@ public class GpriData
          return await connection.QueryAsync<GpriModel>(query, parameters);
       }
    }
-
-
 }

@@ -18,7 +18,6 @@ public class VagonsAPIData
 
    private IDbConnection CreateConnection()
    {
-      _logger.LogDebug("CreateConnection()");
       return new FbConnection(_connectionString);
    }
 
@@ -29,10 +28,10 @@ public class VagonsAPIData
          var query = "UPDATE or insert into VAGONSAPI (LASTUPDATEDBY, LASTUPDATEDATE, ID) " +
                      "values (@lastupdatedby, @lastupdateddate, @id) " +
                      "matching(ID)";
-         return await connection.ExecuteAsync(query, new { lastupdatedby = vagon.LastUpdatedBy, lastupdateddate = vagon.LastUpdateDate, id = vagon.Id });
+
+         var parameters = new { lastupdatedby = vagon.LastUpdatedBy, lastupdateddate = vagon.LastUpdateDate, id = vagon.Id };
+         var res = await connection.ExecuteAsync(query, parameters);
+         return res;
       }
    }
-
-
-
 }
