@@ -510,12 +510,11 @@ a, .btn-link {
     }
 }
 
-.button-row {
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: nowrap; /* запрещаем перенос */
+
+
+.button-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
     gap: 10px;
     width: 100%;
-    overflow-x: auto; /* если экран слишком узкий, появится прокрутка */
 }
-
