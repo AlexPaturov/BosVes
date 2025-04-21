@@ -16,14 +16,8 @@ public class GpriData
       _logger = logger;
    }
 
-   private string GenerateUniqueKey(GpriModel vagon)
-   {
-      return $"{vagon.DT.Date}_{vagon.VR}_{vagon.NVAG}_{vagon.VESY}"; // Уникальный ключ
-   }
-
    public IDbConnection CreateConnection()
    {
-      _logger.LogDebug("CreateConnection()");
       return new FbConnection(_connectionString);
    }
 
@@ -113,15 +107,19 @@ public class GpriData
    public async Task<int?> СheckExisting(GpriModel vagon) 
    {
       using var connection = CreateConnection();
-      return await connection.ExecuteScalarAsync<int?>("select ID from gpri where DT = @DT AND VR = @VR AND NVAG = @NVAG AND VESY = @VESY",
-                                                               new { DT = vagon.DT.Date.ToShortDateString(), VR = vagon.VR, NVAG = vagon.NVAG, VESY = vagon.VESY });
+      string query = "select ID from gpri where DT = @DT AND VR = @VR AND NVAG = @NVAG AND VESY = @VESY";
+      var parameters = new { DT = vagon.DT.Date.ToShortDateString(), VR = vagon.VR, NVAG = vagon.NVAG, VESY = vagon.VESY };
+
+      return await connection.ExecuteScalarAsync<int?>(query, parameters);
    }
 
-   public async Task UpdVag(GpriModel vagon)                   
+   public int UpdVag(GpriModel vagon)                   
    {
-      using (var connection = CreateConnection())
-      {
-         var query = "UPDATE gpri set DT = @DT " +
+      using var connection = CreateConnection();
+      connection.Open();
+      using var transection = connection.BeginTransaction(IsolationLevel.ReadCommitted);   
+
+               var query = "UPDATE gpri set DT = @DT " +
                                     ",VR = @VR " +
                                     ",NVAG = @NVAG " +
                                     ",NDOK = @NDOK " +
@@ -151,9 +149,20 @@ public class GpriData
                                     ",PLATFORMS_TARA = @PLATFORMS_TARA " +
                                     ",PLATFORMS_BRUTTO = @PLATFORMS_BRUTTO " +
                                     ",ID_PLATFORMS = @ID_PLATFORMS " +
-                                    ",SHABLON = @SHABLON " + // сделать триггер на базе
-                     "where id = @Id";   
-         await connection.ExecuteAsync(query, vagon);
+                                    ",SHABLON = @SHABLON " + 
+                     "where id = @Id " + 
+                     "returning id";
+      try
+      {
+         var res = connection.ExecuteScalar<int>(query, vagon, transection, 30);
+         transection.Commit();
+         return res;
+      }
+      catch (Exception ex) 
+      {
+         transection?.Rollback();
+         Console.WriteLine(ex.ToString());
+         return -1;
       }
    }
 
@@ -311,6 +320,5 @@ public class GpriData
          return await connection.QueryAsync<GpriModel>(query, parameters);
       }
    }
-
 
 }

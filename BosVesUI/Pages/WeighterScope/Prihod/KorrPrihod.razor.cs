@@ -9,6 +9,18 @@ using System.Globalization;
 namespace BosVesUI.Pages.WeighterScope.Prihod;
 public partial class KorrPrihod
 {
+   //------------ nullable timespan begin --------------------------------------------------
+
+   private TimeSpan? myTimeSpan = null;
+
+   private void HandleTimeSpanChanged(TimeSpan? newTimeSpan)
+   {
+      myTimeSpan = newTimeSpan;
+      StateHasChanged(); // Обновляем UI
+   }
+
+   //------------ nullable timespan end  ---------------------------------------------------
+
    private string FormattedDate
    {
       get => inDt.ToString("dd.MM.yyyy"); // Get formatted string
@@ -102,6 +114,9 @@ public partial class KorrPrihod
    private Dictionary<int, bool> selectedItems = new Dictionary<int, bool>();
    private bool isChecked = false; // for checkbox - temp
                                    // NLog.Logger _logger = NLog.LogManager.GetCurrentClassLogger();
+
+   private bool isDeleting = false;
+
    #endregion
    #region Переменные для модального окноа Брутто как тара
    private DateTime inDTBEGIN = DateTime.Today.AddDays(-30);
@@ -197,7 +212,7 @@ public partial class KorrPrihod
    // *****************************************************
 
    // Без сохранения файла локально - сразу вывожу на печать в iframe, этот вариант я использую в bos-ves
-   //******************************************************
+   // ******************************************************
    private async Task GenerateAndShowReport()
    {
       if ((listVags is not null) && (listVags.Count > 0))
@@ -219,7 +234,7 @@ public partial class KorrPrihod
          StateHasChanged();
       }
    }
-   //******************************************************
+   // ******************************************************
    private async Task GenerateAndStorePdf()
    {
       // Пример PDF-данных
@@ -533,7 +548,8 @@ public partial class KorrPrihod
       {
          try
          {
-            await gpridata.UpdVag(vagon);
+            var affectedId = gpridata.UpdVag(vagon);
+            Console.WriteLine($"affectedId:{affectedId}" );
             vagon = new GpriModel();    // чистим модель
             await GetByDtVr();          // обновляем данные на странице
          }

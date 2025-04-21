@@ -3,7 +3,7 @@ global using BosVesAppLibrary.DataAccess;
 global using BosVesAppLibrary.Helpers;
 global using BosVesAppLibrary.Models;
 global using BosVesAppLibrary.Services;
+global using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
 global using Microsoft.Extensions.DependencyInjection;
 global using System;
 global using System.Reflection;
-global using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;

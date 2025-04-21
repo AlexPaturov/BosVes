@@ -12,11 +12,12 @@ namespace BosVesAppLibrary.Models
       [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd.MM.yyyy}")]
       public DateTime DT { get; set; } = DateTime.Now;    // дата взвешивания состава
 
-      public TimeSpan VR { get; set; } = new TimeSpan(DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second);
-
-      [NotMapped]
       [DataType(DataType.Time)]
-      public DateTime VRDateTime => DateTime.Today.Add(VR);
+      public TimeSpan VR { get; set; }
+
+      //[NotMapped]
+      //[DataType(DataType.Time)]
+      //public DateTime VRDateTime => DateTime.Today.Add(VR);
 
       [StringLength(10, ErrorMessage = "Максимальная длина 10 символов")]
       public string NVAG { get; set; }                // номер вагона

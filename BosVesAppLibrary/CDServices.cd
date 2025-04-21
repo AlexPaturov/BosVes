@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="BosVesAppLibrary.Services.CommandService">
+    <Position X="0.5" Y="0.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAAAgAAAAAIACAABAAAAAEAAABAEA=</HashCode>
+      <FileName>Services\CommandService.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BosVesAppLibrary.Services.InsertQueueService">
+    <Position X="2.75" Y="0.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AMAAAAAASAAAAAAAEEAAAAAAAAAAAAAAAAAAAAACAAA=</HashCode>
+      <FileName>Services\InsertQueueService.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BosVesAppLibrary.Services.TcpClientService" BaseTypeListCollapsed="true">
+    <Position X="3" Y="3.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAABAgACAAAEBAAEAAAAEAIAgAAAAAAAAAAAAAABA=</HashCode>
+      <FileName>Services\TcpClientService.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="BosVesAppLibrary.Services.TempFileCleanupService">
+    <Position X="0.5" Y="3.75" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAEAAAAAEAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAEA=</HashCode>
+      <FileName>Services\TempFileCleanupService.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BosVesAppLibrary.Services.UserService">
+    <Position X="7.5" Y="0.5" Width="3.25" />
+    <TypeIdentifier>
+      <HashCode>IEBAAAIQAgACAAgEBIA4aHYAEIAAKIAAAtACACgBIAQ=</HashCode>
+      <FileName>Services\UserService.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BosVesAppLibrary.Services.XmlDecodeService">
+    <Position X="5.25" Y="0.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAABAAAAAAAAAAAAEAAAAAAAAAAAIAAAAAAAAAAAA=</HashCode>
+      <FileName>Services\XmlDecodeService.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
