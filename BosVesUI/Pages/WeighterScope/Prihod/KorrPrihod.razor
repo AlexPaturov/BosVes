@@ -393,42 +393,43 @@
                             <ValidationMessage For="@(() => vagon.REJVZVESH)" />
                         </div>
 
-                       
-                    @*-------------------*@
-
+                        @* 20 Кнопки *@
                         <div class="col-auto mb-1">
-                            <div class="button-row">
-                                
-                                    <button type="button"
-                                            class="ios-button ios-button-save"
-                                            @onclick="InsVag"
-                                            disabled="@isSaving">
-                                        @if (isSaving)
-                                        {
-                                            <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
-                                            <span>Запись...</span>
-                                        }
-                                        else
-                                        {
-                                            <span>Записать</span>
-                                        }
-                                    </button>
+                            @*  <button class="btn btn-dark" @onclick="InsVag" disabled="@isLoading">Вставить</button>
+                                <button id="btnUpd" class="btn btn-success mx-2" @onclick="UpdVag">Сохранить</button>
+                                <button id="btnCls" class="btn btn-danger" @onclick="CleanModels">Очистить</button>
+                                 <button id="btnCls" class="btn btn-danger" @onclick="Print">Печать</button> *@
 
-                                    <button type="button"
-                                            class="ios-button ios-button-delete"
-                                            @onclick="CleanModels"
-                                            disabled="@isDeleting">
-                                        @if (isDeleting)
-                                        {
-                                            <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
-                                            <span>Удаление...</span>
-                                        }
-                                        else
-                                        {
-                                            <span>Стереть</span>
-                                        }
-                                    </button>
-                                </div>
+                            <div class="button-row">
+                                <button type="button"
+                                        class="ios-button ios-button-save"
+                                        @onclick="InsVag"
+                                        disabled="@isSaving">
+                                    @if (isSaving)
+                                    {
+                                        <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                                        <span>Запись...</span>
+                                    }
+                                    else
+                                    {
+                                        <span>Записать</span>
+                                    }
+                                </button>
+                                <button type="button"
+                                        class="ios-button ios-button-delete"
+                                        @onclick="CleanModels"
+                                        disabled="@isDeleting">
+                                    @if (isDeleting)
+                                    {
+                                        <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                                        <span>Удаление...</span>
+                                    }
+                                    else
+                                    {
+                                        <span>Стереть</span>
+                                    }
+                                </button>
+                            </div>
 
                         </div>
 
