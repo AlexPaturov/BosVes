@@ -5,21 +5,96 @@
 
 <div class="row justify-content-center create-form">
     <div class="col-xl-8 col-lg-10 form-layout">
+
         <div class="close-button-section">
             <button class="btn btn-close" @onclick="ClosePage"></button>
         </div>
 
+        @* 3 Поле выбора "Время" --------------------- begin test ios ------------------- *@
+        <div class="ios-control-container">
+            <div class="ios-control-group">
+                <label class="ios-input-label">Время взвешивания</label>
 
+                <div class="ios-switch-container">
+                    <label class="ios-switch">
+                        <input type="checkbox"
+                               @bind-value="IsVrInputDisabled"
+                               class="ios-switch-input" />
+                        <span class="ios-switch-slider"></span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="ios-time-input-container">
+                <input type="time"
+                       class="ios-time-input"
+                       @bind="@InputTime"
+                       disabled="@(!IsVrInputDisabled)"
+                       step="1"
+                       @bind:format="HH:mm:ss" />
+            </div>
+        </div>
+        @* 3 Поле выбора "Время" --------------------- end   test ios ------------------- *@
+                
+
+        @* "Один поставщик - один потребитель" - дичь *@
+        <div class="row">
+            <div class="col mb-1">
+
+                <div class="col-auto">
+                    <div class="input-group">
+                        <span class="input-group-text">Один потребитель/поставщик</span>
+                        <div class="input-group-text">
+                            <input type="checkbox"
+                            @bind-value="IsPostavPotrebChecked"
+                            checked="@(IsPostavPotrebChecked ? "checked" : null)"
+                            @oninput="PostavPotrebChange" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-2">
+                    <input type="text"
+                    class="form-control input-corners-left input-corners-right"
+                    id="inlineFormInputGroupCex"
+                    Disabled="@true" 
+                    @bind="@InputCex" />
+                </div>
+
+                <div class="col-md-4">
+                    <input type="text"
+                    class="form-control input-corners-left"
+                    id="inlineFormInputGroupPostav"
+                    Disabled="@true" 
+                    @bind="@InputPostav" />
+                </div>
+
+            </div>
+        </div>
 
     </div>
 </div>
 
 @code {
+    private bool IsVrInputDisabled;
+    private DateTime InputTime;
+
+    private bool IsPostavPotrebChecked;
+    private EventCallback PostavPotrebChange;
+    private string InputCex;
+    private string InputPostav;
+
+
+    // гоогл
+    // Эти свойства должны быть определены в вашем @code блоке
+    // private bool IsVrInputDisabled { get; set; } = false; // Изначально переключатель выключен, ввод времени активен
+    // private TimeSpan InputTime { get; set; } = DateTime.Now.TimeOfDay; // Пример начального значения
+
 
     #region ClosePage()
     private void ClosePage()
     {
-        navManager.NavigateTo("/");
+        navManager.NavigateTo("", true);
     }
     #endregion
 }

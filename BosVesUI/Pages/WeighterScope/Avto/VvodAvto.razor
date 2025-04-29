@@ -1,27 +1,217 @@
 ﻿@page "/Pages/WeighterScope/Avto/VvodAvto"
 @inject NavigationManager navManager
 
-
 <h3>VvodAvto</h3>
 
-<div class="row justify-content-center create-form">
-    <div class="col-xl-8 col-lg-10 form-layout">
+<div class="row justify-content-center">
+    <div class=" col-11 col-sm-11 col-md-11 col-lg-11 col-xl-11 col-xxl-11 form-layout">
+
         <div class="close-button-section">
             <button class="btn btn-close" @onclick="ClosePage"></button>
         </div>
 
+        @* Блок полей для корректировки - начало *@
+        <div class="row mb-2" >
 
+            <div class="row d-flex justify-content-center korr-inputs-area">
+                @* первый блок начало *@
+                <div class="col-12 col-sm-10 col-md-6 col-lg-5 col-xl-5 col-xxl-3 ">
+
+                    @* 1 *@
+                    <div class="col-auto mb-1">
+                        <div class="input-group input-group-min-width">
+                            <span class="input-group-text">Номер вагона</span>
+                            <input type="text" class="form-control" />
+                        </div>
+                    </div>
+
+                    @* 2 *@
+                    <div class="col-auto mb-1">
+                        <div class="input-group input-group-min-width">
+                            <span class="input-group-text">Номер вагона</span>
+                            <input type="text" class="form-control" />
+                        </div>
+                    </div>
+
+                    @* 3 *@
+                    <div class="col-auto mb-1">
+                        <div class="input-group input-group-min-width">
+                            <span class="input-group-text">Номер вагона</span>
+                            <input type="text" class="form-control" />
+                        </div>
+                    </div>
+
+                    @* 4 *@
+                    <div class="col-auto mb-1">
+                        <div class="input-group input-group-min-width">
+                            <span class="input-group-text">Номер вагона</span>
+                            <input type="text" class="form-control" />
+                        </div>
+                    </div>
+
+                </div>
+                @* первый блок окончание *@
+               
+                @* второй блок начало *@
+                <div class="col-12 col-sm-10 col-md-6 col-lg-5 col-xl-5 col-xxl-3">
+                    
+                    @* 1 В две строки *@
+                    <div class="col-auto mb-1">
+                        <div class="ios-input-group">
+                            <label class="ios-input-label" for="wagonNumber">Номер вагона</label>
+                            <input type="text" id="wagonNumber" class="ios-input" />
+                        </div>
+                    </div>
+
+                    @* 1 В две строки *@
+                    <div class="col-auto mb-1">
+                        <div class="ios-input-group">
+                            <label class="ios-input-label" for="wagonNumber">Номер вагона</label>
+                            <input type="text" id="wagonNumber" class="ios-input" />
+                        </div>
+                    </div>
+
+                    @* 1 В две строки *@
+                    <div class="col-auto mb-1">
+                        <div class="ios-input-group">
+                            <label class="ios-input-label" for="wagonNumber">Номер вагона</label>
+                            <input type="text" id="wagonNumber" class="ios-input" />
+                        </div>
+                    </div>
+
+                    @* 1 В две строки *@
+                    <div class="col-auto mb-1">
+                        <div class="ios-input-group">
+                            <label class="ios-input-label" for="wagonNumber">Номер вагона</label>
+                            <input type="text" id="wagonNumber" class="ios-input" />
+                        </div>
+                    </div>
+                </div>
+                @* второй блок окончание *@
+
+                @* третий блок начало *@
+                <div class="col-12 col-sm-10 col-md-6 col-lg-5 col-xl-5 col-xxl-3">
+                    
+                    @* 1 В одну строку *@
+                    <div class="col-auto mb-1">
+                        <div class="ios-inline-input-group">
+                            <label class="ios-inline-label" for="wagonNumber">Дата взвешивания</label>
+                            <input type="text" id="wagonNumber" class="ios-inline-input" />
+                        </div>
+                    </div>
+
+                    @* 2 В одну строку *@
+                    <div class="col-auto mb-1">
+                        <div class="ios-inline-input-group">
+                            <label class="ios-inline-label" for="wagonNumber">Время взвешивания</label>
+                            <input type="text" id="wagonNumber" class="ios-inline-input" />
+                        </div>
+                    </div>
+
+                    @* 3 В одну строку *@
+                    <div class="col-auto mb-1">
+                        <div class="ios-inline-input-group">
+                            <label class="ios-inline-label" for="wagonNumber">Номер вагона</label>
+                            <input type="text" id="wagonNumber" class="ios-inline-input" />
+                        </div>
+                    </div>
+
+                    @* 4 В одну строку *@
+                    <div class="col-auto mb-1">
+                        <div class="ios-inline-input-group">
+                            <label class="ios-inline-label" for="wagonNumber">Тариф</label>
+                            <input type="text" id="wagonNumber" class="ios-inline-input" />
+                        </div>
+                    </div>
+
+                </div>
+                @* третий блок окончание *@
+
+                @* четвёртый блок начало *@
+                <div class="col-12 col-sm-10 col-md-6 col-lg-5 col-xl-5 col-xxl-3">
+
+                    @* 1 В две строки -этот--*@
+                    <div class="col-auto mb-1">
+                        <div class="ios-input-group">
+                            <label class="ios-input-label" for="wagonNumber">Этот</label>
+                            <input type="text" id="wagonNumber" class="ios-input" />
+                        </div>
+                    </div>
+
+                    @* 2 В одну строку *@
+                    <div class="col-auto mb-1">
+                        <div class="ios-inline-input-group">
+                            <label class="ios-inline-label" for="wagonNumber">Номер вагона</label>
+                            <input type="text" id="wagonNumber" class="ios-inline-input" />
+                        </div>
+                    </div>
+
+
+                    <div class="col-auto mb-2">
+                        <div class="button-wrapper">
+                            <button type="button"
+                                    class="ios-button ios-button-save"
+                                    @onclick="InsVag"
+                                    disabled="@isSaving">
+                                @if (isSaving)
+                                {
+                                    <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                                    <span>Запись...</span>
+                                }
+                                else
+                                {
+                                    <span>Записать</span>
+                                }
+                            </button>
+
+                            <button type="button"
+                                    class="ios-button ios-button-delete"
+                                    @onclick="CleanModels"
+                                    disabled="@isDeleting">
+                                @if (isDeleting)
+                                {
+                                    <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                                    <span>Удаление...</span>
+                                }
+                                else
+                                {
+                                    <span>Стереть</span>
+                                }
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                @* четвёртый блок окончание *@
+
+            </div>
+        
+        </div>
+        @* Блок полей для корректировки - окончание *@
 
     </div>
 </div>
 
 @code {
 
+    private bool isSaving = false;
+    private bool isDeleting = false;
 
+
+    private async Task InsVag()
+    {
+        
+    }
+
+    #region CleanModel()
+    private void CleanModels()
+    {
+        
+    }
+    #endregion
     #region ClosePage()
     private void ClosePage()
     {
-        navManager.NavigateTo("/");
+        navManager.NavigateTo("", true);
     }
     #endregion
 }

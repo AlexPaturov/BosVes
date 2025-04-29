@@ -548,9 +548,10 @@ public partial class KorrPrihod
       {
          try
          {
-            var affectedId = gpridata.UpdVag(vagon);
+            var affectedId = await gpridata.UpdVagAsync(vagon);
             Console.WriteLine($"affectedId:{affectedId}" );
             vagon = new GpriModel();    // чистим модель
+            if(affectedId > 0)
             await GetByDtVr();          // обновляем данные на странице
          }
          catch (Exception ex)

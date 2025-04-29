@@ -1,16 +1,151 @@
 ﻿@page "/Pages/WeighterScope/Avto/KorrAvto"
 @inject NavigationManager navManager
 
-
 <h3>"/Pages/WeighterScope/Avto/KorrAvto"</h3>
 
 <div class="row justify-content-center create-form">
-    <div class="col-xl-8 col-lg-10 form-layout">
+    <div class="col-11 col-sm-11 col-md-11 col-lg-11 col-xl-11 col-xxl-11 form-layout">
+
         <div class="close-button-section">
             <button class="btn btn-close" @onclick="ClosePage"></button>
         </div>
 
+        @* Блок полей для корректировки - начало *@
+        <div class="row mb-2">
+            <div class="row d-flex justify-content-center korr-inputs-area">
 
+                @* первый блок начало *@
+                <div class="col-12 col-sm-10 col-md-6 col-lg-5 col-xl-5 col-xxl-3 ">
+
+                    @* 1 *@
+                    <div class="input-container">
+                        <label for="name" class="input-label">Дата взвешивания</label>
+                        <input type="text" id="name" class="input-field">
+                    </div>
+
+                    @* 3 *@
+                    <div class="input-container">
+                        <label for="name" class="input-label">Время взвешивания</label>
+                        <input type="text" id="name" class="input-field">
+                    </div>
+
+                    @* 4 *@
+                    <div class="input-container">
+                        <label for="name" class="input-label">Тариф</label>
+                        <input type="text" id="name" class="input-field">
+                    </div>
+
+                    @* 1 *@
+                    <div class="input-container">
+                        <label for="name" class="input-label">Номер вагона</label>
+                        <input type="text" id="name" class="input-field">
+                    </div>
+
+                </div>
+                @* первый блок окончание *@
+
+                @* второй блок начало *@
+                <div class="col-12 col-sm-10 col-md-6 col-lg-5 col-xl-5 col-xxl-3">
+
+                    @* 1 В две строки *@
+                    <div class="col-auto mb-1">
+                        <div class="ios-input-group">
+                            <label class="ios-input-label" for="wagonNumber">Номер вагона</label>
+                            <input type="text" id="wagonNumber" class="ios-input" />
+                        </div>
+                    </div>
+
+                    @* 1 В две строки *@
+                    <div class="col-auto mb-1">
+                        <div class="ios-input-group">
+                            <label class="ios-input-label" for="wagonNumber">Номер вагона</label>
+                            <input type="text" id="wagonNumber" class="ios-input" />
+                        </div>
+                    </div>
+
+                    @* 1 В две строки *@
+                    <div class="col-auto mb-1">
+                        <div class="ios-input-group">
+                            <label class="ios-input-label" for="wagonNumber">Номер вагона</label>
+                            <input type="text" id="wagonNumber" class="ios-input" />
+                        </div>
+                    </div>
+
+                    @* 1 В две строки *@
+                    <div class="col-auto mb-1">
+                        <div class="ios-input-group">
+                            <label class="ios-input-label" for="wagonNumber">Номер вагона</label>
+                            <input type="text" id="wagonNumber" class="ios-input" />
+                        </div>
+                    </div>
+                </div>
+                @* второй блок окончание *@
+
+                @* третий блок начало *@
+                <div class="col-12 col-sm-10 col-md-6 col-lg-5 col-xl-5 col-xxl-3">
+
+                    @* 1 В одну строку *@
+                    <div class="col-auto mb-1">
+                        <div class="ios-inline-input-group">
+                            <label class="ios-inline-label" for="wagonNumber">Дата взвешивания</label>
+                            <input type="text" id="wagonNumber" class="ios-inline-input" />
+                        </div>
+                    </div>
+
+                    @* 2 В одну строку *@
+                    <div class="col-auto mb-1">
+                        <div class="ios-inline-input-group">
+                            <label class="ios-inline-label" for="wagonNumber">Время взвешивания</label>
+                            <input type="text" id="wagonNumber" class="ios-inline-input" />
+                        </div>
+                    </div>
+
+                    @* 3 В одну строку *@
+                    <div class="col-auto mb-1">
+                        <div class="ios-inline-input-group" style="min-width:350px">
+                            <label class="ios-inline-label" for="wagonNumber">Номер вагона</label>
+                            <input type="text" id="wagonNumber" class="ios-inline-input" />
+                        </div>
+                    </div>
+
+                    @* 4 В одну строку *@
+                    <div class="col-auto mb-1">
+                        <div class="ios-inline-input-group">
+                            <label class="ios-inline-label" for="wagonNumber">Тариф</label>
+                            <input type="text" id="wagonNumber" class="ios-inline-input" />
+                        </div>
+                    </div>
+
+                </div>
+                @* третий блок окончание *@
+
+                @* четвёртый блок начало *@
+                <div class="col-12 col-sm-10 col-md-6 col-lg-5 col-xl-5 col-xxl-3">
+
+                    @* 1 В две строки *@
+                    <div class="col-auto mb-1">
+                        <div class="ios-input-group">
+                            <label class="ios-input-label" for="wagonNumber">Номер вагона</label>
+                            <input type="text" id="wagonNumber" class="ios-input" />
+                        </div>
+                    </div>
+
+                    @* 2 В одну строку *@
+                    <div class="col-auto mb-1">
+                        <div class="ios-inline-input-group">
+                            <label class="ios-inline-label" for="wagonNumber">Номер вагона</label>
+                            <input type="text" id="wagonNumber" class="ios-inline-input" />
+                        </div>
+                    </div>
+
+
+
+                </div>
+                @* четвёртый блок окончание *@
+
+            </div>
+        </div>
+        @* Блок полей для корректировки - окончание *@
 
     </div>
 </div>

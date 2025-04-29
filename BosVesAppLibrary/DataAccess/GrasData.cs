@@ -97,7 +97,7 @@ public class GrasData
       }
    }
 
-   public async Task UpdVag(GrasModel vagon) 
+   public async Task<int> UpdVag(GrasModel vagon) 
    {
       using (var connection = CreateConnection())
       {
@@ -133,7 +133,7 @@ public class GrasData
                                      ",PLATFORMS_BRUTTO = @PLATFORMS_BRUTTO " +  //
                                      ",ID_PLATFORMS = @ID_PLATFORMS " +          //
                                      "WHERE Id = @Id";                           //
-         await connection.ExecuteAsync(query, vagon);
+         return await connection.ExecuteAsync(query, vagon);
       }
    }
 

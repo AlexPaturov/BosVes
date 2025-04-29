@@ -2,6 +2,7 @@
 using FirebirdSql.Data.FirebirdClient;
 using Microsoft.Extensions.Options;
 using System.Data;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 
 namespace BosVesAppLibrary.DataAccess;
@@ -23,7 +24,6 @@ public class GpriData
 
    public async Task<int> InsNew(GpriModel vagon)  // прооверен
    {
-      
       using (var connection = CreateConnection()) 
       {
          var query = "insert into gpri (" +
@@ -165,6 +165,49 @@ public class GpriData
          return -1;
       }
    }
+
+
+   public async Task<int> UpdVagAsync(GpriModel vagon)
+   {
+      using (var connection = CreateConnection())
+      {
+         var query = "UPDATE gpri set DT = @DT " +
+                        ",VR = @VR " +
+                        ",NVAG = @NVAG " +
+                        ",NDOK = @NDOK " +
+                        ",GRUZ = @GRUZ " +
+                        ",TAR_BRS = @TAR_BRS " +
+                        ",TAR_DOK = @TAR_DOK " +
+                        ",NETTO = @NETTO " +
+                        ",NET_DOK = @NET_DOK " +
+                        ",MUSOR = @MUSOR " +
+                        ",CEX = @CEX " +
+                        ",TARIF = @TARIF " +
+                        ",POTR = @POTR " +
+                        ",PLAT = @PLAT " +
+                        ",SKOR = @SKOR " +
+                        ",VESY = @VESY " +
+                        ",TN = @TN " +
+                        ",V13 = @V13 " +
+                        ",V24 = @V24 " +
+                        ",V12 = @V12 " +
+                        ",V34 = @V34 " +
+                        ",PP = @PP " +
+                        ",PR = @PR " +
+                        ",DELTA = @DELTA " +
+                        ",N_TEPLOVOZ = @N_TEPLOVOZ " +
+                        ",POGRESHNOST = @POGRESHNOST " +
+                        ",REJVZVESH = @REJVZVESH " +
+                        ",PLATFORMS_TARA = @PLATFORMS_TARA " +
+                        ",PLATFORMS_BRUTTO = @PLATFORMS_BRUTTO " +
+                        ",ID_PLATFORMS = @ID_PLATFORMS " +
+                        ",SHABLON = @SHABLON " +
+                    "where id = @Id";
+         Task.Delay(2000);
+         return await connection.ExecuteAsync(query, vagon);
+      }
+   }
+
 
    // Используется при неудачной попытке установки маркера в цвик web api.
    public async Task<int> Delete(int id)                                
