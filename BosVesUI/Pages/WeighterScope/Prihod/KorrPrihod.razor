@@ -170,7 +170,7 @@
                                 @foreach (var item in listVags)
                                 {
                                     <tr @onclick="() => OnRowClick(item.ID)" class="@GetRowClass(item.ID)">
-                                        <td style="text-align:center; vertical-align:middle; max-width:14px;">
+                                        <td>
                                             <input type="checkbox" />
                                         </td>
                                         <td> @item.DT.ToShortDateString() </td>
