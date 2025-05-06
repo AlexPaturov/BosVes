@@ -17,7 +17,7 @@
             <button class="btn btn-close" @onclick="ClosePage"></button>
         </div>
 
-         @* Блок полей для корректировки - начало *@
+        @* Блок полей для корректировки - начало *@
         <div class="row mb-2" style="max-width: 95vw; margin-left:5px;">
             <EditForm Model="vagon" OnValidSubmit="HandleValidSubmit">
                 <DataAnnotationsValidator />
@@ -39,7 +39,7 @@
                         </div>
 
                         @* 2 vagon.VR *@
-                       @*  <div class="col-auto mb-1">
+                        @*  <div class="col-auto mb-1">
                             <div class="input-group">
                                 <div class="input-group-prepend" style="margin-right:5px;">
                                     <span class="input-group-text">Время взвешивания</span>
@@ -298,7 +298,7 @@
                         </div>
 
                         <div class="col text-end">
-                           @*  <button class="btn btn-success" @onclick="InsertNew">Сохранить</button>
+                            @*  <button class="btn btn-success" @onclick="InsertNew">Сохранить</button>
                              <button class="btn btn-danger" @onclick="CleanModels">Очистить</button>*@
                         </div>
 
@@ -307,12 +307,12 @@
                 </div>
             </EditForm>
         </div>
-       
-          @* Модальное окошко "Подстановка тары" начало *@
+
+        @* Модальное окошко "Подстановка тары" начало *@
         <Modal Actions="ButtonGetTaraActions"
-               BootstrapClass="border-dark"
-               CustomStyle="width:600px"
-               @bind-Open="IsOpenTara">
+        BootstrapClass="border-dark"
+        CustomStyle="width:600px"
+        @bind-Open="IsOpenTara">
 
             <ContentContent>
                 <div class="row">
@@ -388,9 +388,9 @@
 
         @* Модальное окошко "Взять цех" начало *@
         <Modal Actions="ButtonGetCexActions"
-               BootstrapClass="border-dark"
-               CustomStyle="width:600px"
-               @bind-Open="IsOpenGetCex">
+        BootstrapClass="border-dark"
+        CustomStyle="width:600px"
+        @bind-Open="IsOpenGetCex">
 
             <ContentContent>
                 <div class="row">
@@ -456,7 +456,7 @@
 
         </Modal>
         @* Модальное окошко "Взять цех" окончание *@
-      
+
 
     </div>
 </div>
@@ -479,6 +479,8 @@
             }
         }
     }
+    
+
     #region
     private string? inputValue;
 

@@ -31,26 +31,55 @@
         @* Поля ввода для фильтров - начало *@
         <div class="row justify-content-center">
 
+            @*------------------------------------------------------------------*@
             <div class="col-auto mb-2">
-                <div class="input-group">
-                    <span class="input-group-text input-corners-right">Дата взвешивания</span>
-                    <input id="idDT" class="form-control input-corners-left" @bind="FormattedDate" @bind:event="oninput" />
-                </div>
-            </div>
+                <div class="ios-control-container-gpt">
+                    <div class="ios-control-group-gpt">
+                        <label class="ios-control-label-gpt">Дата взвешивания</label>
 
-            <div class="col-auto mb-2">
-                <div class="input-group">
-                    <span class="input-group-text input-corners-right">Время взвешивания</span>
-                    <InputDate Type="InputDateType.Time" @bind-Value:format="hh:mm:ss" @bind-Value="@inVr" id="VR" step="1" class="form-control input-corners-left" />
+                        <div class="ios-date-input-container-gpt">
+                            <input type="date"
+                                   id="idDT"
+                                   class="ios-date-input-gpt"
+                                   @bind="FormattedDate"
+                                   @bind:event="oninput" />
+                        </div>
+                    </div>
                 </div>
             </div>
-
+            @*------------------------------------------------------------------*@
+            @*------------------------------------------------------------------*@
             <div class="col-auto mb-2">
-                <div class="input-group">
-                    <span class="input-group-text input-corners-right">Номер вагона</span>
-                    <InputText @bind-Value="@inNvag" id="NVAG" class="form-control input-corners-left" />
+                <div class="ios-time-container">
+                    <div class="ios-time-group">
+                        <label class="ios-time-label">Время взвешивания</label>
+                        <div class="ios-time-input-wrapper">
+                            <InputDate Type="InputDateType.Time"
+                                       @bind-Value:format="hh:mm:ss"
+                                       @bind-Value="@inVr"
+                                       id="VR"
+                                       step="1"
+                                       class="ios-time-input" />
+                        </div>
+                    </div>
                 </div>
             </div>
+            @*------------------------------------------------------------------*@
+            @*------------------------------------------------------------------*@
+            <div class="col-auto mb-2">
+                <div class="ios-input-container-nvag">
+                    <div class="ios-input-group-nvag">
+                        <label class="ios-input-label-nvag" for="NVAG">Номер вагона</label>
+                        <div class="ios-input-wrapper-nvag">
+                            <InputText @bind-Value="@inNvag"
+                                       id="NVAG"
+                                       class="ios-text-input-nvag"
+                                       placeholder="Введите номер" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @*------------------------------------------------------------------*@
 
             <div class="col-auto mb-2">
                 <div class="text-end">
@@ -62,7 +91,7 @@
         @* Поля ввода для фильтров - окончание *@
          
         @* Таблица - начало *@
-        <div class="row d-flex justify-content-center mb-2 form-control" style="max-width: 95vw; margin-left:5px;">
+        <div class="row d-flex justify-content-center mb-2" style="max-width: 95vw; margin-left:5px;">
             <div class="col-auto" style="padding-left:1px; padding-right:1px;">
                 
                 <div class="text-center">
@@ -177,7 +206,6 @@
                                         <td> @item.PLATFORMS_TARA </td>
                                         <td> @item.PLATFORMS_BRUTTO </td>
                                         <td> @item.ID_PLATFORMS </td>
-                                        <td> @item.SHABLON </td>
                                     </tr>
                                 }
                             </tbody>
@@ -680,15 +708,15 @@
         @*----------------------------------------------------------------------------*@
 
         @*----------------------------------------------------------------------------*@
-      @*   <div>
+        <div>
             <button class="btn btn-primary mb-1" @onclick="GenerateAndShowReport">Показать отчет PDF</button>
-        </div> *@
+        </div>
 
-        @if (!string.IsNullOrEmpty(PdfUrl))
+        @if (!string.IsNullOrEmpty(pdfFrame))
         {
-            @* <div class="row form-control">
-                <iframe src="@PdfUrl" width="100%" height="600px" frameborder="0"></iframe>
-            </div> *@
+            <div class="row form-control">
+                <iframe src="@pdfFrame" width="100%" height="600px" frameborder="0"></iframe>
+            </div>
         }
         @*----------------------------------------------------------------------------*@
 

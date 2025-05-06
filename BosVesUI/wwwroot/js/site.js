@@ -59,9 +59,6 @@ function getPdfFromIndexedDB(pdfName, dotNetHelper) {
     };
 }
 
-
-
-
 window.openPdfForPrint = function (base64Pdf) {
     const byteCharacters = atob(base64Pdf.split(',')[1]);
     const byteNumbers = new Array(byteCharacters.length).fill().map((_, i) => byteCharacters.charCodeAt(i));
@@ -78,4 +75,19 @@ window.openPdfForPrint = function (base64Pdf) {
     iframe.contentWindow.focus();
     iframe.contentWindow.print();
     document.body.removeChild(iframe);
+}
+
+window.createPdfBlob = (pdfBytes) => {
+    const blob = new Blob([new Uint8Array(pdfBytes)], { type: "application/pdf" });
+    const blobUrl = URL.createObjectURL(blob);
+
+    const iframe = document.getElementById("pdfFrame");
+    if (iframe) {
+        iframe.src = blobUrl;
+
+        iframe.onload = () =>
+        {
+            iframe.contentWindow.focus();
+        }
+    }
 }

@@ -28,57 +28,83 @@ h1 {
         outline: none;
     }
 
-/* -------------------------------------------------------- */
+/* ------- table begin ------------------------------------------------- */
 
+/* Контейнер таблицы со скроллом */
 .scrollable-table {
-    height: 300px;
-    width: 100% !important;
-    overflow-y: auto;
+    overflow-x: auto;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    background-color: #ffffff;
+    padding: 10px;
+    margin-top: 10px;
 }
 
-    .scrollable-table > .table {
-        width: 100% !important;
-    }
-
-.table {
-    /*font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;*/
-    border-collapse: collapse;
+/* Общие стили для таблицы */
+table.table-bordered {
+    width: 100%;
+    border-collapse: separate; /* чтобы закруглить углы */
+    border-spacing: 0;
+    border: none;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     font-size: 14px;
-    width: 100% !important;
+    color: #333;
 }
 
-    .table th {
-        /*background-color: #6DECB9;*/
-        /*color: #414141;*/
+    /* Заголовки */
+    table.table-bordered thead {
+        background-color: #f7f7f7;
+        border-bottom: 1px solid #ddd;
+    }
 
-        background-color: #A3F3EB; /* попробовать белый шрифт в заголовке ? */
-        color: #252525;
-        /*background-color: #A3F3EB;
-        color: #04322E;*/
-        /*background-color: #08FFC8;*/
-        /*color: #414141;*/
-        /*background-color: #9AC5F4;
-        color: #092635;*/
-
+    table.table-bordered th {
+        padding: 8px 12px;
         font-weight: 600;
-        font-size: 14px;
-        text-align: left;
-        position: sticky;
-        top: 0;
+        text-align: center;
+        color: #666;
+        border: none;
     }
 
-    .table th,
-    .table td {
-        padding: 2px 6px;
-        
-        white-space: nowrap;
+    /* Ячейки данных */
+    table.table-bordered td {
+        padding: 6px 10px;
+        border-top: 1px solid #eee;
+        text-align: center;
+        vertical-align: middle;
+        transition: background-color 0.2s ease;
     }
 
-
-    .table tbody tr:nth-of-type(even) {
-        background-color: #f3f3f3;
+    /* Эффект наведения */
+    table.table-bordered tr:hover td {
+        background-color: #f0f0f5;
     }
-/* ------------------------------------------------------------------------ */
+
+    /* Первый и последний столбец — скругление углов */
+    table.table-bordered thead tr:first-child th:first-child {
+        border-top-left-radius: 12px;
+    }
+
+    table.table-bordered thead tr:first-child th:last-child {
+        border-top-right-radius: 12px;
+    }
+
+    table.table-bordered tbody tr:last-child td:first-child {
+        border-bottom-left-radius: 12px;
+    }
+
+    table.table-bordered tbody tr:last-child td:last-child {
+        border-bottom-right-radius: 12px;
+    }
+
+/* Чекбокс */
+input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    accent-color: #007aff; /* iOS синий */
+    cursor: pointer;
+}
+
+/* ---------------- table end -------------------------------------------------------- */
 
 /* Custom CSS to center and style the loading spinner  --- begin ---*/
 .loading-spinner {
@@ -518,7 +544,7 @@ a, .btn-link {
     }
 }
 
-/* В две строки начало */
+/* ------------------ В две строки начало ---------------------- */
 .ios-input-group {
     display: flex;                          /* Используем Flexbox для гибкой вёрстки */
     flex-direction: column;                 /* Располагаем дочерние элементы (метка и инпут) вертикально */
@@ -555,7 +581,7 @@ a, .btn-link {
         box-shadow: 0 0 0 2px #007aff;  /* Синяя рамка при фокусе — фирменный цвет iOS */
         background-color: #fff;         /* Уточняем белый фон, чтобы не тускнел */
     }
-/* В две строки окончание */
+/* --------------- В две строки окончание --------------------- */
 
 /* В одну строку начало */
 .ios-inline-input-group {
@@ -689,7 +715,7 @@ a, .btn-link {
 
 .ios-control-label {
     /*font-family: -apple-system, BlinkMacSystemFont;*/
-  /*  font-size: 12px;
+    /*  font-size: 12px;
     color: #000000;
     opacity: 0.9;*/
     font-size: 1rem; /* Чуть меньше обычного текста */
@@ -698,57 +724,57 @@ a, .btn-link {
     padding-left: 4px; /* Немного смещаем текст метки вправо — визуально приятнее */
 }
 
-.ios-switch {
-    position: relative;     /* Относительное позиционирование для внутренних элементов */
-    display: inline-block;  /* Отображение в строке с возможностью задания размеров */
-    width: 36px;            /* Новая ширина (52px -30% = 36px) */
-    height: 22px;           /* Новая высота (32px -30% = 22px) */
+.ios-switch-time {
+    position: relative; /* Относительное позиционирование для внутренних элементов */
+    display: inline-block; /* Отображение в строке с возможностью задания размеров */
+    width: 36px; /* Новая ширина (52px -30% = 36px) */
+    height: 22px; /* Новая высота (32px -30% = 22px) */
 }
 
-.ios-switch-input {
-    opacity: 0;     /* Полная прозрачность нативного input */
-    width: 0;       /* Обнуление размеров */
-    height: 0;      /* Обнуление размеров */
+.ios-switch-input-time {
+    opacity: 0; /* Полная прозрачность нативного input */
+    width: 0; /* Обнуление размеров */
+    height: 0; /* Обнуление размеров */
 }
 
-.ios-switch-slider {
-    position: absolute;         /* Абсолютное позиционирование относительно контейнера */
-    cursor: pointer;            /* Курсор-указатель при наведении */
-    top: 0;                     /* Привязка к верхнему краю */
-    left: 0;                    /* Привязка к левому краю */
-    right: 0;                   /* Привязка к правому краю */
-    bottom: 0;                  /* Привязка к нижнему краю */
-    background-color: #e0e0e0;  /* Цвет фона в выключенном состоянии */
-    transition: .3s;            /* Время анимации изменено для меньшего размера */
-    border-radius: 11px;        /* Половина высоты (22px/2 = 11px) */
+.ios-switch-slider-time {
+    position: absolute; /* Абсолютное позиционирование относительно контейнера */
+    cursor: pointer; /* Курсор-указатель при наведении */
+    top: 0; /* Привязка к верхнему краю */
+    left: 0; /* Привязка к левому краю */
+    right: 0; /* Привязка к правому краю */
+    bottom: 0; /* Привязка к нижнему краю */
+    background-color: #e0e0e0; /* Цвет фона в выключенном состоянии */
+    transition: .3s; /* Время анимации изменено для меньшего размера */
+    border-radius: 11px; /* Половина высоты (22px/2 = 11px) */
 }
 
-    .ios-switch-slider:before {
-        position: absolute;                         /* Абсолютное позиционирование */
-        content: "";                                /* Обязательно для псевдоэлементов */
-        height: 18px;                               /* Высота кнопки (28px -30% = 19.6 → 18px) */
-        width: 18px;                                /* Ширина кнопки (28px -30% = 19.6 → 18px) */
-        left: 2px;                                  /* Отступ от левого края */
-        bottom: 2px;                                /* Отступ от нижнего края */
-        background-color: white;                    /* Цвет кнопки */
-        transition: .3s;                            /* Синхронизация времени анимации */
-        border-radius: 50%;                         /* Идеально круглая форма */
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);   /* Уменьшенная тень */
+    .ios-switch-slider-time:before {
+        position: absolute; /* Абсолютное позиционирование */
+        content: ""; /* Обязательно для псевдоэлементов */
+        height: 18px; /* Высота кнопки (28px -30% = 19.6 → 18px) */
+        width: 18px; /* Ширина кнопки (28px -30% = 19.6 → 18px) */
+        left: 2px; /* Отступ от левого края */
+        bottom: 2px; /* Отступ от нижнего края */
+        background-color: white; /* Цвет кнопки */
+        transition: .3s; /* Синхронизация времени анимации */
+        border-radius: 50%; /* Идеально круглая форма */
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2); /* Уменьшенная тень */
     }
 
-.ios-switch-input:checked + .ios-switch-slider {
+.ios-switch-input-time:checked + .ios-switch-slider {
     background-color: #34C759; /* Сохранение фирменного зеленого цвета iOS */
 }
 
-    .ios-switch-input:checked + .ios-switch-slider:before {
+    .ios-switch-input-time:checked + .ios-switch-slider:before {
         transform: translateX(14px); /* Новое значение сдвига (20px × 0.7 = 14px) */
     }
 
-.ios-time-input-container {
+.ios-time-input-container-time {
     position: relative;
 }
 
-.ios-time-input {
+.ios-time-input-time {
     width: 100%;
     padding: 4px 12px;
     border: 1px solid #c8c7cc;
@@ -759,24 +785,321 @@ a, .btn-link {
     background: #ffffff;
 }
 
-    .ios-time-input:disabled {
+    .ios-time-input-time:disabled {
         background: #f5f5f5;
         opacity: 0.6;
     }
 
-    .ios-time-input::-webkit-datetime-edit-fields-wrapper {
+    .ios-time-input-time::-webkit-datetime-edit-fields-wrapper {
         color: #000000;
     }
 
-    .ios-time-input::-webkit-calendar-picker-indicator {
+    .ios-time-input-time::-webkit-calendar-picker-indicator {
         filter: invert(0.5);
     }
 /* ----------------- время в стиле ос deepseek ------------------ окончание ----------------*/
 
-/* ----------------- время в стиле ос google ai --------------------- начало ----------------*/
+/* ----------------- поле выбора даты начало ----------------*/
+/* Основной контейнер компонента */
+.ios-control-container {
+    padding: 12px 16px;         /* Стандартные iOS-отступы 12px вертикальные, 16px горизонтальные */
+    background: #ffffff;                        /* Чистый белый фон как в нативных компонентах */
+    border-radius: 12px;                       /* Характерное скругление для iOS-карточек */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); /* Мягкая тень для создания глубины */
+    margin-bottom: 16px; /* Отступ снизу по гайдлайнам iOS */
+}
 
-/* ----------------- время в стиле ос google ai ------------------ окончание ----------------*/
+/* Контейнер для группировки элементов */
+.ios-control-group {
+    display: flex; /* Использование flex-раскладки */
+    flex-direction: column; /* Вертикальное расположение элементов */
+    gap: 8px; /* Расстояние между дочерними элементами 8px */
+}
+
+/* Стиль текстовой метки */
+.ios-control-label {
+    font-family: -apple-system, BlinkMacSystemFont; /* Системный шрифт iOS */
+    font-size: 16px; /* Стандартный размер текста для полей ввода */
+    color: #000000; /* Основной цвет текста */
+    opacity: 0.9; /* Легкая прозрачность как в нативных интерфейсах */
+    margin-bottom: 4px; /* Тонкий отступ между лейблом и полем ввода */
+}
+
+/* Контейнер для поля ввода даты */
+.ios-date-input-container {
+    position: relative; /* Для позиционирования псевдоэлементов (если понадобятся) */
+}
+
+/* Стилизация поля ввода даты */
+.ios-date-input {
+    width: 100%; /* Занимает всю доступную ширину */
+    padding: 12px 16px; /* iOS-паттерн отступов: 12px вертикальные, 16px горизонтальные */
+    border: 1px solid #c8c7cc; /* Характерная серая граница iOS-полей */
+    border-radius: 8px; /* Скругление углов по стандарту iOS */
+    font-family: -apple-system, BlinkMacSystemFont; /* Наследование системного шрифта */
+    font-size: 16px; /* Размер текста идентичный системным полям ввода */
+    color: #000000; /* Цвет вводимого текста */
+    background: #ffffff; /* Белый фон поля */
+    -webkit-appearance: none; /* Отключение нативных стилей в WebKit-браузерах */
+    appearance: none; /* Отключение нативных стилей для других браузеров */
+}
+
+    /* Стилизация иконки календаря */
+    .ios-date-input::-webkit-calendar-picker-indicator {
+        filter: invert(0.5); /* Инверсия цвета иконки для соответствия iOS-стилю */
+        padding-left: 20px; /* Отступ для правильного позиционирования иконки */
+    }
+
+    /* Состояние фокуса поля ввода */
+    .ios-date-input:focus {
+        outline: none; /* Убираем стандартный outline */
+        border-color: #007AFF; /* Синий цвет акцента iOS при фокусе */
+        box-shadow: 0 0 0 2px rgba(0, 122, 255, 0.2); /* Свечение как в нативных полях */
+    }
+
+    /* Стилизация плейсхолдера */
+    .ios-date-input::placeholder {
+        color: #8e8e93; /* Стандартный iOS-цвет для placeholder */
+        opacity: 0.8; /* Легкая прозрачность */
+    }
+/* ----------------- поле выбора даты окончание ----------------*/
 
 
-/* ----------------- время в стиле ос gpt --------------------- начало ----------------*/
-/* ----------------- время в стиле ос gpt ------------------ окончание ----------------*/
+/* -----------------  начало 29-04-2025 ----------------*/
+/* Основной контейнер поля ввода */
+.ios-input-container-n {
+    padding: 0 16px; /* Боковые отступы как в iOS-формах */
+    margin-bottom: 12px; /* Стандартный вертикальный отступ */
+}
+
+/* Группа элементов ввода */
+.ios-input-group-n {
+    display: flex;
+    flex-direction: column;
+    gap: 6px; /* Точный отступ между лейблом и полем */
+    width: 100%; /* Адаптивная ширина */
+    max-width: 100%; /* Убрано ограничение в 340px */
+}
+
+/* Стиль метки */
+.ios-input-label-n {
+    font-family: -apple-system, BlinkMacSystemFont; /* Системный шрифт */
+    font-size: 15px; /* Размер как в нативных iOS-формах */
+    color: #6e6e73; /* Серый цвет из палитры iOS */
+    font-weight: 500; /* Средняя насыщенность */
+    padding-left: 12px; /* Выравнивание с текстовым полем */
+    letter-spacing: -0.2px; /* Характерный межбуквенный интервал */
+}
+
+/* Поле ввода */
+.ios-input-n {
+    width: 100%;
+    padding: 12px 16px; /* Стандартные iOS-отступы */
+    border: 1px solid #c8c7cc; /* Граница как в системных полях */
+    border-radius: 10px; /* Характерное скругление */
+    background: #ffffff; /* Чистый белый фон */
+    font-size: 16px; /* Размер текста по гайдлайнам */
+    color: #000000; /* Основной цвет текста */
+    transition: all 0.2s ease; /* Плавные переходы */
+    -webkit-appearance: none; /* Отключение нативных стилей */
+    appearance: none;
+}
+
+    /* Состояние фокуса */
+    .ios-input-n:focus {
+        outline: none;
+        border-color: #007AFF; /* Системный синий цвет */
+        box-shadow: 0 0 0 2px rgba(0, 122, 255, 0.15); /* Свечение */
+    }
+
+    /* Плейсхолдер */
+    .ios-input-n::placeholder {
+        color: #8e8e93; /* Системный цвет placeholder */
+        opacity: 0.9; /* Легкая прозрачность */
+    }
+
+    /* Иконка очистки (для некоторых браузеров) */
+    .ios-input-n::-webkit-clear-button {
+        filter: invert(0.7); /* Стилизация системной иконки */
+    }
+/* -----------------  окончание 29-04-2025 ----------------*/
+
+/* -------------------------------------------------------------------------------------*/
+/* ------------------------------------ Время взвешивания начало -----------------------*/
+/* Контейнер вокруг времени (похож на секцию настроек iOS) */
+.ios-time-container {
+    padding: 0.75rem; /* Отступы вокруг содержимого */
+    background-color: #f9f9f9; /* Светлый фон — почти белый */
+    border-radius: 1.25rem; /* Скруглённые углы секции */
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05); /* Мягкая тень для объёма */
+}
+
+/* Внутренняя группа, размещающая метку и инпут вертикально */
+.ios-time-group {
+    display: flex;
+    flex-direction: column; /* Ставим метку над полем */
+    gap: 0.5rem; /* Отступ между меткой и полем */
+}
+
+/* Метка над полем времени */
+.ios-time-label {
+    font-size: 0.9rem; /* Чуть меньше обычного текста */
+    color: #555; /* Серый цвет текста — не черный */
+    font-weight: 500; /* Полужирный текст */
+    padding-left: 0.25rem; /* Смещаем немного для выравнивания */
+}
+
+/* Обёртка вокруг поля времени */
+.ios-time-input-wrapper {
+    background-color: #ffffff; /* Белый фон, как у ввода на iOS */
+    border: 1px solid #ccc; /* Лёгкая рамка */
+    border-radius: 0.75rem; /* Скруглённые углы (iOS-style) */
+    padding: 0.25rem 0.75rem; /* Простор вокруг инпута */
+    display: flex;
+    align-items: center; /* Выравнивание по центру по вертикали */
+}
+
+/* Сам инпут времени */
+.ios-time-input {
+    border: none; /* Убираем границу по умолчанию */
+    outline: none; /* Без подсветки при фокусе */
+    background: transparent; /* Прозрачный фон, фон задаёт контейнер */
+    font-size: 1rem; /* Стандартный размер текста */
+    color: #333; /* Тёмно-серый текст */
+    width: 100%; /* Растягиваем на всю ширину */
+    appearance: none; /* Убираем стандартный браузерный стиль */
+}
+
+    /* Активация цвета текста при фокусе */
+    .ios-time-input:focus {
+        color: #000; /* Делает текст чёрным при фокусе */
+    }
+
+/*------------------------- Время взвешивания окончание --------------------------------*/
+/* -------------------------------------------------------------------------------------*/
+
+/* -------------------------------------------------------------------------------------*/
+/*------------------------- Номер вагона начало -----------------------------------*/
+
+/* Основной контейнер компонента */
+.ios-input-container-nvag {
+    padding: 0 16px; /* Боковые отступы как в iOS-интерфейсах */
+    margin-bottom: 16px; /* Стандартный вертикальный отступ между элементами */
+}
+
+/* Группировка элементов ввода */
+.ios-input-group-nvag {
+    display: flex;
+    flex-direction: column; /* Вертикальное расположение элементов */
+    gap: 6px; /* Точный отступ между лейблом и полем ввода */
+}
+
+/* Стиль текстовой метки */
+.ios-input-label-nvag {
+    font-family: -apple-system, BlinkMacSystemFont; /* Системный шрифт San Francisco */
+    font-size: 15px; /* Стандартный размер метки в iOS */
+    color: #6e6e73; /* Серый цвет из палитры Apple */
+    font-weight: 500; /* Средняя насыщенность шрифта */
+    padding-left: 4px; /* Выравнивание с текстовым полем */
+    letter-spacing: -0.2px; /* Характерное сжатие букв для iOS */
+}
+
+/* Обертка для поля ввода */
+.ios-input-wrapper-nvag {
+    position: relative; /* Для позиционирования дополнительных элементов */
+}
+
+/* Стилизация текстового поля */
+.ios-text-input-nvag {
+    width: 100%;
+    padding: 12px 16px; /* Стандартные iOS-отступы */
+    border: 1px solid #c8c7cc; /* Граница как в нативных полях ввода */
+    border-radius: 10px; /* Характерное скругление углов */
+    background: #ffffff; /* Чистый белый фон */
+    font-size: 16px; /* Размер текста по гайдлайнам */
+    color: #000000; /* Основной цвет текста */
+    transition: all 0.2s ease; /* Плавные анимации изменений */
+    -webkit-appearance: none; /* Отключение нативных стилей в Safari */
+    appearance: none; /* Отключение нативных стилей в других браузерах */
+}
+
+    /* Состояние фокуса */
+    .ios-text-input-nvag:focus {
+        outline: none; /* Убираем стандартный outline */
+        border-color: #007AFF; /* Системный синий цвет акцента */
+        box-shadow: 0 0 0 2px rgba(0, 122, 255, 0.15); /* Свечение при фокусе */
+    }
+
+    /* Стилизация плейсхолдера */
+    .ios-text-input-nvag::placeholder {
+        color: #8e8e93; /* Стандартный цвет placeholder в iOS */
+        opacity: 0.9; /* Легкая прозрачность */
+        font-weight: 400; /* Обычная насыщенность шрифта */
+    }
+
+    /* Состояние disabled */
+    .ios-text-input-nvag:disabled {
+        background: #f5f5f5; /* Светло-серый фон */
+        opacity: 0.7; /* Уменьшение непрозрачности */
+        cursor: not-allowed; /* Курсор "не разрешено" */
+    }
+
+    /* Стили для ошибки валидации (опционально) */
+    .ios-text-input-nvag.error {
+        border-color: #ff3b30; /* Системный красный цвет ошибки */
+        box-shadow: 0 0 0 2px rgba(255, 59, 48, 0.15);
+    }
+
+
+/*------------------------- Номер вагона окончание --------------------------------*/
+/* -------------------------------------------------------------------------------------*/
+
+/* Внешний отступ и выравнивание блока */
+.ios-control-container-gpt {
+    margin-bottom: 1rem; /* Отступ снизу для отделения от других элементов */
+    padding: 0.75rem; /* Внутренние отступы для "воздуха" */
+    background-color: #f9f9f9; /* Светло-серый фон, как у секций в iOS */
+    border-radius: 1.25rem; /* Скруглённые углы секции */
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05); /* Лёгкая тень для объёма */
+}
+
+/* Группа метки и инпута */
+.ios-control-group-gpt {
+    display: flex;
+    flex-direction: column; /* Располагаем метку и поле ввода вертикально */
+    gap: 0.5rem; /* Отступ между меткой и полем */
+}
+
+/* Метка */
+.ios-control-label-gpt {
+    font-size: 0.9rem; /* Немного меньше обычного текста */
+    color: #555; /* Спокойный серый — не кричащий */
+    font-weight: 500; /* Полужирный — читаемо, но аккуратно */
+    padding-left: 0.25rem; /* Чуть смещаем для эстетики */
+}
+
+/* Обертка для поля даты */
+.ios-date-input-container-gpt {
+    background-color: #fff; /* Белый фон ввода — как в iOS */
+    border-radius: 0.75rem; /* Скругленные углы — кнопка-пилюля */
+    border: 1px solid #ccc; /* Лёгкая серая рамка */
+    padding: 0.25rem 0.75rem; /* Удобные внутренние отступы */
+    display: flex;
+    align-items: center; /* Выравниваем по вертикали */
+}
+
+/* Само поле даты */
+.ios-date-input-gpt {
+    border: none; /* Без рамки — упрощает внешний вид */
+    outline: none; /* Без подсветки фокуса браузера */
+    font-size: 1rem; /* Обычный читаемый размер */
+    background: transparent; /* Прозрачный фон — в iOS поля почти сливаются */
+    width: 100%; /* Занимает всю ширину обертки */
+    color: #333; /* Спокойный тёмно-серый текст */
+    appearance: none; /* Убираем браузерный стиль поля */
+}
+
+    /* Настройка при фокусе — легкое затемнение */
+    .ios-date-input-gpt:focus {
+        color: #000;
+    }

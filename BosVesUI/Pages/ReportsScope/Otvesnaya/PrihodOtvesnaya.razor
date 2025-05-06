@@ -11,23 +11,23 @@
         </div>
 
         @* 3 Поле выбора "Время" --------------------- begin test ios ------------------- *@
-        <div class="ios-control-container">
-            <div class="ios-control-group">
-                <label class="ios-input-label">Время взвешивания</label>
+        <div class="ios-control-container-time">
+            <div class="ios-control-group-time">
+                <label class="ios-input-label-time">Время взвешивания</label>
 
                 <div class="ios-switch-container">
-                    <label class="ios-switch">
+                    <label class="ios-switch-time">
                         <input type="checkbox"
                                @bind-value="IsVrInputDisabled"
-                               class="ios-switch-input" />
-                        <span class="ios-switch-slider"></span>
+                               class="ios-switch-input-time" />
+                        <span class="ios-switch-slider-time"></span>
                     </label>
                 </div>
             </div>
 
-            <div class="ios-time-input-container">
+            <div class="ios-time-input-container-time">
                 <input type="time"
-                       class="ios-time-input"
+                       class="ios-time-input-time"
                        @bind="@InputTime"
                        disabled="@(!IsVrInputDisabled)"
                        step="1"
@@ -35,41 +35,55 @@
             </div>
         </div>
         @* 3 Поле выбора "Время" --------------------- end   test ios ------------------- *@
-                
+        
+        @*--------------------------------------------------------------------------*@
+        <div class="ios-input-container-n">
+            <div class="ios-input-group-n">
+                <label class="ios-input-label-n" for="wagonNumber">Номер вагона</label>
+                <input type="text"
+                       id="wagonNumber"
+                       class="ios-input-n"
+                       placeholder="Введите номер" />
+            </div>
+        </div>
+        @*--------------------------------------------------------------------------*@
 
-        @* "Один поставщик - один потребитель" - дичь *@
+        @* "Один поставщик - один потребитель" - дичь - 02.05.2025 -> здесь *@
         <div class="row">
-            <div class="col mb-1">
 
-                <div class="col-auto">
-                    <div class="input-group">
-                        <span class="input-group-text">Один потребитель/поставщик</span>
-                        <div class="input-group-text">
+            <div class="col mb-1 ios-control-container">
+                <div class="ios-control-group">
+                    <label class="ios-control-label">Один потребитель/поставщик</label>
+                    <div class="ios-switch-container" role="switch" aria-checked="@IsPostavPotrebChecked" aria-label="Один потребитель/поставщик" @onclick="TogglePostavPotreb">
+                        <label class="ios-switch">
                             <input type="checkbox"
-                            @bind-value="IsPostavPotrebChecked"
-                            checked="@(IsPostavPotrebChecked ? "checked" : null)"
-                            @oninput="PostavPotrebChange" />
-                        </div>
+                                   @bind-value="IsPostavPotrebChecked"
+                                   class="ios-switch-input" />
+                            <span class="ios-switch-slider"></span>
+                        </label>
                     </div>
                 </div>
 
-                <div class="col-md-2">
+                <div class="ios-input-container">
+                    <label class="ios-input-label" for="inlineFormInputGroupCex">ЦЕХ</label>
                     <input type="text"
-                    class="form-control input-corners-left input-corners-right"
-                    id="inlineFormInputGroupCex"
-                    Disabled="@true" 
-                    @bind="@InputCex" />
+                           class="ios-input"
+                           id="inlineFormInputGroupCex"
+                           Disabled="@true"
+                           @bind="@InputCex" />
                 </div>
 
-                <div class="col-md-4">
+                <div class="ios-input-container">
+                    <label class="ios-input-label" for="inlineFormInputGroupPostav">Поставщик</label>
                     <input type="text"
-                    class="form-control input-corners-left"
-                    id="inlineFormInputGroupPostav"
-                    Disabled="@true" 
-                    @bind="@InputPostav" />
+                           class="ios-input"
+                           id="inlineFormInputGroupPostav"
+                           Disabled="@true"
+                           @bind="@InputPostav" />
                 </div>
-
             </div>
+
+           
         </div>
 
     </div>
@@ -84,6 +98,10 @@
     private string InputCex;
     private string InputPostav;
 
+    private void TogglePostavPotreb()
+    {
+        IsPostavPotrebChecked = !IsPostavPotrebChecked;
+    }
 
     // гоогл
     // Эти свойства должны быть определены в вашем @code блоке

@@ -21,23 +21,26 @@ public partial class KorrPrihod
 
    //------------ nullable timespan end  ---------------------------------------------------
 
-   private string FormattedDate
-   {
-      get => inDt.ToString("dd.MM.yyyy"); // Get formatted string
-      set
-      {
-         if (DateTime.TryParseExact(value, "dd.MM.yyyy",
-                                    CultureInfo.InvariantCulture,
-                                    DateTimeStyles.None, out var parsedDate))
-         {
-            inDt = parsedDate; // Only set _date if parsing succeeds
-         }
-         else
-         {
-            // Handle invalid date input if necessary (e.g., show an error message)
-         }
-      }
-   }
+   //private string FormattedDate
+   //{
+   //   get => inDt.ToString("dd.MM.yyyy"); // Get formatted string
+   //   set
+   //   {
+   //      if (DateTime.TryParseExact(value, "dd.MM.yyyy",
+   //                                 CultureInfo.InvariantCulture,
+   //                                 DateTimeStyles.None, out var parsedDate))
+   //      {
+   //         inDt = parsedDate; // Only set _date if parsing succeeds
+   //      }
+   //      else
+   //      {
+   //         // Handle invalid date input if necessary (e.g., show an error message)
+   //      }
+   //   }
+   //}
+
+   private DateTime FormattedDate;
+
    #region
    private string? inputValue;
 
@@ -143,7 +146,7 @@ public partial class KorrPrihod
    #region работаем с модальным окном взять цех
    private bool IsOpenGetCex { get; set; }
    private int? selectedRowCex = 0;
-   private string PdfUrl;
+   private string pdfFrame;
 
 
    private void OpenModalGetCex()
@@ -227,13 +230,21 @@ public partial class KorrPrihod
          report.Export(pdfExport, memoryStream);
          memoryStream.Position = 0;                                                                              // Сбросить позицию потока для передачи данных
 
+         await CreateBlobUrlAsync(memoryStream.ToArray());
+
          // Преобразуем PDF в base64
-         var pdfBase64 = Convert.ToBase64String(memoryStream.ToArray());
+         //var pdfBase64 = Convert.ToBase64String(memoryStream.ToArray());
          // Создаем Data URL для iframe
-         PdfUrl = $"data:application/pdf;base64,{pdfBase64}";
+         //pdfFrame = $"data:application/pdf;base64,{pdfBase64}";
          StateHasChanged();
       }
    }
+
+   private async Task CreateBlobUrlAsync(byte[] pdfBytes) 
+   {
+      await JS.InvokeVoidAsync("createPdfBlob", pdfBytes);
+   }
+
    // ******************************************************
    private async Task GenerateAndStorePdf()
    {

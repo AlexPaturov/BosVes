@@ -1,0 +1,73 @@
+﻿/* Контейнер таблицы со скроллом */
+.scrollable-table {
+    overflow-x: auto;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    background-color: #ffffff;
+    padding: 10px;
+    margin-top: 10px;
+}
+
+/* Общие стили для таблицы */
+table.table-bordered {
+    width: 100%;
+    border-collapse: separate; /* чтобы закруглить углы */
+    border-spacing: 0;
+    border: none;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    color: #333;
+}
+
+    /* Заголовки */
+    table.table-bordered thead {
+        background-color: #f7f7f7;
+        border-bottom: 1px solid #ddd;
+    }
+
+    table.table-bordered th {
+        padding: 8px 12px;
+        font-weight: 600;
+        text-align: center;
+        color: #666;
+        border: none;
+    }
+
+    /* Ячейки данных */
+    table.table-bordered td {
+        padding: 6px 10px;
+        border-top: 1px solid #eee;
+        text-align: center;
+        vertical-align: middle;
+        transition: background-color 0.2s ease;
+    }
+
+    /* Эффект наведения */
+    table.table-bordered tr:hover td {
+        background-color: #f0f0f5;
+    }
+
+    /* Первый и последний столбец — скругление углов */
+    table.table-bordered thead tr:first-child th:first-child {
+        border-top-left-radius: 12px;
+    }
+
+    table.table-bordered thead tr:first-child th:last-child {
+        border-top-right-radius: 12px;
+    }
+
+    table.table-bordered tbody tr:last-child td:first-child {
+        border-bottom-left-radius: 12px;
+    }
+
+    table.table-bordered tbody tr:last-child td:last-child {
+        border-bottom-right-radius: 12px;
+    }
+
+/* Чекбокс */
+input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    accent-color: #007aff; /* iOS синий */
+    cursor: pointer;
+}
