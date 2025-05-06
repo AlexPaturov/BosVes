@@ -13,11 +13,7 @@ public partial class KorrPrihod
 
    private TimeSpan? myTimeSpan = null;
 
-   private void HandleTimeSpanChanged(TimeSpan? newTimeSpan)
-   {
-      myTimeSpan = newTimeSpan;
-      StateHasChanged(); // Обновляем UI
-   }
+
 
    //------------ nullable timespan end  ---------------------------------------------------
 

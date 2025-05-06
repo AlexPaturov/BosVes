@@ -5,7 +5,6 @@
 @using NetcodeHub.Packages.Components.Modal
 @using System.Globalization
 @using Newtonsoft.Json.Linq
-
 @inject IJSRuntime JS;
 @inject GpriData gpridata;
 @inject ILogger<KorrPrihod> logger;
@@ -31,7 +30,7 @@
         @* Поля ввода для фильтров - начало *@
         <div class="row justify-content-center">
 
-            @*------------------------------------------------------------------*@
+            @* Дата взвешивания *@
             <div class="col-auto mb-2">
                 <div class="ios-control-container-gpt">
                     <div class="ios-control-group-gpt">
@@ -41,14 +40,14 @@
                             <input type="date"
                                    id="idDT"
                                    class="ios-date-input-gpt"
-                                   @bind="FormattedDate"
+                                   @bind="inDt"
                                    @bind:event="oninput" />
                         </div>
                     </div>
                 </div>
             </div>
-            @*------------------------------------------------------------------*@
-            @*------------------------------------------------------------------*@
+
+            @* Время взвешивания *@
             <div class="col-auto mb-2">
                 <div class="ios-time-container">
                     <div class="ios-time-group">
@@ -64,8 +63,8 @@
                     </div>
                 </div>
             </div>
-            @*------------------------------------------------------------------*@
-            @*------------------------------------------------------------------*@
+
+            @* Номер вагона *@
             <div class="col-auto mb-2">
                 <div class="ios-input-container-nvag">
                     <div class="ios-input-group-nvag">
@@ -79,7 +78,6 @@
                     </div>
                 </div>
             </div>
-            @*------------------------------------------------------------------*@
 
             <div class="col-auto mb-2">
                 <div class="text-end">
