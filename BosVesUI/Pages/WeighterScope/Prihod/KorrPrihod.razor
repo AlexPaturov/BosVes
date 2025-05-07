@@ -88,142 +88,115 @@
         </div>
         @* Поля ввода для фильтров - окончание *@
          
-        @* Обертка для всего блока таблицы, чтобы применить общие стили, если нужно *@
-        <div class="ios-table-wrapper">
-            <div class="row d-flex justify-content-center mb-2" style="max-width: 95vw; margin-left:5px;">
-                <div class="col-auto" style="padding-left:1px; padding-right:1px;">
+        @* Убираем этот div, так как .ios-table-card будет основным контейнером *@
+        @* <div class="row d-flex justify-content-center mb-2 form-control" style="max-width: 95vw; margin-left:5px;"> *@
+        <div class="ios-table-card" style="max-width: 95vw; margin-left:auto; margin-right:auto;">
+            @* margin-left:auto и margin-right:auto для центрирования, если нужно *@
+            @* <div class="col-auto" style="padding-left:1px; padding-right:1px;"> Убираем, т.к. ios-table-card теперь главный *@
 
-                    <div class="text-center ios-table-title-container">
-                        @* Добавим класс для стилизации заголовка *@
-                        <span class="ios-table-title" style="font-style: italic;">Данные из базы данных предприятия</span>
-                    </div>
-
-                    @if (listVags == null)
-                    {
-                        @* Обертка для самой таблицы, для скругления углов и тени *@
-                        <div class="ios-table-container">
-                            <div class="scrollable-table">
-                                @* Уберем table-bordered, будем стилизовать сами. Добавим класс ios-table *@
-                                <table class="ios-table">
-                                    <thead>
-                                        <tr>
-                                            @foreach (var vp in GridCaptionHelper.GpriGridChapters.Values)
-                                            {
-                                                <th> @vp </th>
-                                            }
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @for (int i = 0; i < 10; i++)
-                                        {
-                                            <tr>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td> 0 </td>
-                                            </tr>
-                                        }
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    }
-                    else
-                    {
-                        @* Обертка для самой таблицы, для скругления углов и тени *@
-                        <div class="ios-table-container">
-                            <div class="scrollable-table">
-                                @* Уберем table-bordered, будем стилизовать сами. Добавим класс ios-table *@
-                                <table class="ios-table">
-                                    <thead>
-                                        <tr>
-                                            <th> </th>
-                                            @foreach (var vp in GridCaptionHelper.GpriGridChapters.Values)
-                                            {
-                                                <th> @vp </th>
-                                            }
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach (var item in listVags)
-                                        {
-                                            <tr @onclick="() => OnRowClick(item.ID)" class="@GetRowClass(item.ID)">
-                                                @* Уберем инлайн-стили, если возможно, или переопределим в CSS *@
-                                                <td class="checkbox-cell">
-                                                    <input type="checkbox" />
-                                                </td>
-                                                <td> @item.DT.ToShortDateString() </td>
-                                                <td> @item.VR.ToString(@"hh\:mm\:ss") </td>
-                                                <td> @item.NVAG </td>
-                                                <td> @item.NDOK </td>
-                                                <td> @item.ID </td>
-                                                <td> @item.GRUZ </td>
-                                                <td> @item.BRUTTO </td>
-                                                <td> @item.TAR_BRS </td>
-                                                <td> @item.TAR_DOK </td>
-                                                <td> @item.NETTO </td>
-                                                <td> @item.NET_DOK </td>
-                                                <td> @item.MUSOR </td>
-                                                <td> @item.CEX </td>
-                                                <td> @item.TARIF </td>
-                                                <td> @item.POTR </td>
-                                                <td> @item.PLAT </td>
-                                                <td> @item.SKOR </td>
-                                                <td> @item.VESY </td>
-                                                <td> @item.TN </td>
-                                                <td> @item.NPP </td>
-                                                <td> @item.V13 </td>
-                                                <td> @item.V24 </td>
-                                                <td> @item.V12 </td>
-                                                <td> @item.V34 </td>
-                                                <td> @item.PP </td>
-                                                <td> @item.PR </td>
-                                                <td> @item.DELTA </td>
-                                                <td> @item.N_TEPLOVOZ </td>
-                                                <td> @item.POGRESHNOST </td>
-                                                <td> @item.REJVZVESH </td>
-                                                <td> @item.PLATFORMS_TARA </td>
-                                                <td> @item.PLATFORMS_BRUTTO </td>
-                                                <td> @item.ID_PLATFORMS </td>
-                                                <td> @item.SHABLON </td>
-                                            </tr>
-                                        }
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    }
-                </div>
+            <div class="ios-table-title-container">
+                <span class="ios-table-title-text">Данные из базы данных предприятия</span>
             </div>
+
+            @if (listVags == null)
+            {
+                <div class="ios-scrollable-table-container">
+                    @* Обертка для прокрутки *@
+                    <table class="ios-table">
+                        @* Применяем стиль к таблице *@
+                        <thead>
+                            <tr>
+                                <th>  </th>
+                                @foreach (var vp in GridCaptionHelper.GpriGridChapters.Values)
+                                {
+                                    <th> @vp </th>
+                                }
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @* Пустые строки для демонстрации, если listVags is null *@
+                            @for (int i = 0; i < 15; i++) @* Сделаем 15 для теста прокрутки *@
+                            {
+                                <tr>
+                                    @foreach (var vp in GridCaptionHelper.GpriGridChapters.Values)
+                                    {
+                                        <td> </td> @* Непустая ячейка для корректной высоты *@
+                                    }
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+            else
+            {
+                <div class="ios-scrollable-table-container">
+                    @* Обертка для прокрутки *@
+                    <table class="ios-table">
+                        @* Применяем стиль к таблице *@
+                        <thead>
+                            <tr>
+                                <th> </th>
+                                @foreach (var vp in GridCaptionHelper.GpriGridChapters.Values)
+                                {
+                                    <th> @vp </th>
+                                }
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in listVags)
+                            {
+                                <tr @onclick="() => OnRowClick(item.ID)" class="@GetRowClass(item.ID)">
+                                    <td style="text-align:center; vertical-align:middle; max-width:50px; padding-right: 0; padding-left: 12px;">
+                                        @* Убрали max-width из инлайн стиля, так как чекбокс сам по себе узкий.
+                                       Добавили отступы для центрирования, если нужно.
+                                    *@
+                                        <input type="checkbox" @bind="item.IsSelected" @bind:event="onchange" @onclick:stopPropagation />
+                                        @* @bind для двусторонней привязки, если нужно отслеживать состояние
+                                       @onclick:stopPropagation чтобы клик по чекбоксу не вызывал OnRowClick
+                                    *@
+                                    </td>
+                                    <td> @item.DT.ToShortDateString() </td>
+                                    <td> @item.VR.ToString(@"hh\:mm\:ss") </td>
+                                    <td> @item.NVAG </td>
+                                    <td> @item.NDOK </td>
+                                    <td> @item.ID </td>
+                                    <td> @item.GRUZ </td>
+                                    <td> @item.BRUTTO </td>
+                                    <td> @item.TAR_BRS </td>
+                                    <td> @item.TAR_DOK </td>
+                                    <td> @item.NETTO </td>
+                                    <td> @item.NET_DOK </td>
+                                    <td> @item.MUSOR </td>
+                                    <td> @item.CEX </td>
+                                    <td> @item.TARIF </td>
+                                    <td> @item.POTR </td>
+                                    <td> @item.PLAT </td>
+                                    <td> @item.SKOR </td>
+                                    <td> @item.VESY </td>
+                                    <td> @item.TN </td>
+                                    <td> @item.NPP </td>
+                                    <td> @item.V13 </td>
+                                    <td> @item.V24 </td>
+                                    <td> @item.V12 </td>
+                                    <td> @item.V34 </td>
+                                    <td> @item.PP </td>
+                                    <td> @item.PR </td>
+                                    <td> @item.DELTA </td>
+                                    <td> @item.N_TEPLOVOZ </td>
+                                    <td> @item.POGRESHNOST </td>
+                                    <td> @item.REJVZVESH </td>
+                                    <td> @item.PLATFORMS_TARA </td>
+                                    <td> @item.PLATFORMS_BRUTTO </td>
+                                    <td> @item.ID_PLATFORMS </td>
+                                    <td> @item.SHABLON </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+            @* </div> Закрывающий div для col-auto, который был убран *@
         </div>
         @* Таблица - окончание *@
 

@@ -119,6 +119,9 @@ namespace BosVesAppLibrary.Models
       [Unicode(false)]
       public string SHABLON { get; set; }            // был ли взят шаблон 
 
+      [NotMapped]
+      public bool IsSelected { get; set; }
+
       public object Clone()
       {
          return MemberwiseClone();
